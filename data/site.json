@@ -1,0 +1,745 @@
+{
+  "generated_at": "2026-10-23T19:21:43+08:00",
+  "species": [
+    {
+      "key": "alfalfa",
+      "name": "紫花苜蓿",
+      "latin": "Medicago sativa",
+      "code": "Mt",
+      "clade": "dicot"
+    },
+    {
+      "key": "arabidopsis",
+      "name": "拟南芥",
+      "latin": "Arabidopsis thaliana",
+      "code": "At",
+      "clade": "dicot"
+    },
+    {
+      "key": "banana",
+      "name": "香蕉",
+      "latin": "Musa acuminata",
+      "code": "Ma",
+      "clade": "monocot"
+    },
+    {
+      "key": "barley",
+      "name": "大麦",
+      "latin": "Hordeum vulgare",
+      "code": "Hv",
+      "clade": "monocot"
+    },
+    {
+      "key": "broccoli",
+      "name": "西兰花",
+      "latin": "Brassica oleracea var. italica",
+      "code": "Bo",
+      "clade": "dicot"
+    },
+    {
+      "key": "cabbage",
+      "name": "甘蓝",
+      "latin": "Brassica oleracea",
+      "code": "Br",
+      "clade": "dicot"
+    },
+    {
+      "key": "cassava",
+      "name": "木薯",
+      "latin": "Manihot esculenta",
+      "code": "Me",
+      "clade": "dicot"
+    },
+    {
+      "key": "cotton",
+      "name": "棉花",
+      "latin": "Gossypium hirsutum",
+      "code": "Gh",
+      "clade": "dicot"
+    },
+    {
+      "key": "grape",
+      "name": "葡萄",
+      "latin": "Vitis vinifera",
+      "code": "Vv",
+      "clade": "dicot"
+    },
+    {
+      "key": "kiwifruit",
+      "name": "猕猴桃",
+      "latin": "Actinidia chinensis",
+      "code": "Ac",
+      "clade": "dicot"
+    },
+    {
+      "key": "maize",
+      "name": "玉米",
+      "latin": "Zea mays",
+      "code": "Zm",
+      "clade": "monocot"
+    },
+    {
+      "key": "peanut",
+      "name": "花生",
+      "latin": "Arachis hypogaea",
+      "code": "Ah",
+      "clade": "dicot"
+    },
+    {
+      "key": "potato",
+      "name": "马铃薯",
+      "latin": "Solanum tuberosum",
+      "code": "St",
+      "clade": "dicot"
+    },
+    {
+      "key": "rape",
+      "name": "油菜",
+      "latin": "Brassica napus",
+      "code": "Bn",
+      "clade": "dicot"
+    },
+    {
+      "key": "rice",
+      "name": "水稻",
+      "latin": "Oryza sativa",
+      "code": "Os",
+      "clade": "monocot"
+    },
+    {
+      "key": "sorghum",
+      "name": "高粱",
+      "latin": "Sorghum bicolor",
+      "code": "Sb",
+      "clade": "monocot"
+    },
+    {
+      "key": "soybean",
+      "name": "大豆",
+      "latin": "Glycine max",
+      "code": "Gm",
+      "clade": "dicot"
+    },
+    {
+      "key": "tea",
+      "name": "茶",
+      "latin": "Camellia sinensis",
+      "code": "Cs",
+      "clade": "dicot"
+    },
+    {
+      "key": "tobacco",
+      "name": "烟草",
+      "latin": "Nicotiana tabacum",
+      "code": "Nt",
+      "clade": "dicot"
+    },
+    {
+      "key": "tomato",
+      "name": "番茄",
+      "latin": "Solanum lycopersicum",
+      "code": "Sl",
+      "clade": "dicot"
+    },
+    {
+      "key": "wheat",
+      "name": "小麦",
+      "latin": "Triticum aestivum",
+      "code": "Ta",
+      "clade": "monocot"
+    }
+  ],
+  "groups": [
+    "数据与降维",
+    "注释与功能",
+    "轨迹与调控",
+    "状态与验证"
+  ],
+  "atlas_modules": [
+    {
+      "key": "00_QC_normalization",
+      "name": "质控与标准化",
+      "group": "数据与降维",
+      "desc": "原始表达矩阵的细胞/基因检出、线粒体比例与标准化后总计数，建立 21 物种可比的上游质控基线。",
+      "order": 0,
+      "figure_count": 1,
+      "categories": [
+        {
+          "name": "全部",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "key": "01_hvg_selection",
+      "name": "高变基因",
+      "group": "数据与降维",
+      "desc": "每个物种筛选 3,000 个批次感知高变基因，用于后续降维与聚类。",
+      "order": 1,
+      "figure_count": 1,
+      "categories": [
+        {
+          "name": "全部",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "key": "02_pca",
+      "name": "PCA 降维",
+      "group": "数据与降维",
+      "desc": "代表细胞上的 50 维稀疏 PCA，展示方差解释与 PC1/PC2 结构。",
+      "order": 2,
+      "figure_count": 2,
+      "categories": [
+        {
+          "name": "全部",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "key": "03_harmony_batch_correction",
+      "name": "Harmony 批次校正",
+      "group": "数据与降维",
+      "desc": "按器官内文库进行 Harmony 批次校正，并投影到全图谱，比较校正前后嵌入与批次效应。",
+      "order": 3,
+      "figure_count": 4,
+      "categories": [
+        {
+          "name": "全部",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "key": "04_neighbor_graph",
+      "name": "近邻图",
+      "group": "数据与降维",
+      "desc": "在 50 维 Harmony 空间构建 k=30 近邻图，检查同器官邻域保留与图结构。",
+      "order": 4,
+      "figure_count": 2,
+      "categories": [
+        {
+          "name": "全部",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "key": "06_leiden_clustering",
+      "name": "UMAP 与 Leiden 聚类",
+      "group": "注释与功能",
+      "desc": "基于近邻图计算全细胞 UMAP，并进行 Leiden 多分辨率聚类与分辨率诊断。",
+      "order": 5,
+      "figure_count": 24,
+      "categories": [
+        {
+          "name": "全部",
+          "count": 24
+        }
+      ]
+    },
+    {
+      "key": "07_marker_resolution_annotation",
+      "name": "Marker 与细胞注释",
+      "group": "注释与功能",
+      "desc": "Marker 检测、分辨率评估与最终细胞类型注释，包含每物种 marker 点图与注释 UMAP。",
+      "order": 6,
+      "figure_count": 81,
+      "categories": [
+        {
+          "name": "Marker 点图",
+          "count": 26
+        },
+        {
+          "name": "经典 Marker 点图",
+          "count": 25
+        },
+        {
+          "name": "Marker 特征 UMAP",
+          "count": 24
+        },
+        {
+          "name": "细胞类型注释",
+          "count": 4
+        },
+        {
+          "name": "注释总览",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "key": "08_cell_composition",
+      "name": "细胞组成",
+      "group": "注释与功能",
+      "desc": "物种、器官与细胞类型层面的细胞组成，以及跨物种细胞类型相关性。",
+      "order": 7,
+      "figure_count": 7,
+      "categories": [
+        {
+          "name": "全部",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "key": "09_celltype_DEG_and_enrichment",
+      "name": "细胞类型 DEG 与富集",
+      "group": "注释与功能",
+      "desc": "细胞类型差异表达、marker 特异性、GO/KEGG 富集与跨物种直系同源群比较。",
+      "order": 8,
+      "figure_count": 177,
+      "categories": [
+        {
+          "name": "单物种 DEG",
+          "count": 44
+        },
+        {
+          "name": "功能富集",
+          "count": 39
+        },
+        {
+          "name": "代表 marker 表达",
+          "count": 27
+        },
+        {
+          "name": "火山图",
+          "count": 22
+        },
+        {
+          "name": "DEG 与保守性主图",
+          "count": 13
+        },
+        {
+          "name": "保守直系同源群",
+          "count": 8
+        },
+        {
+          "name": "跨物种比较",
+          "count": 6
+        },
+        {
+          "name": "直系同源群特异性状态",
+          "count": 4
+        },
+        {
+          "name": "跨物种功能富集",
+          "count": 4
+        },
+        {
+          "name": "直系同源群交集",
+          "count": 3
+        },
+        {
+          "name": "细胞类型对应",
+          "count": 3
+        },
+        {
+          "name": "保守性分类",
+          "count": 1
+        },
+        {
+          "name": "同/异类型比较",
+          "count": 1
+        },
+        {
+          "name": "器官混杂检查",
+          "count": 1
+        },
+        {
+          "name": "物种间 Jaccard",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "key": "10_pseudotime",
+      "name": "拟时序与轨迹参考",
+      "group": "轨迹与调控",
+      "desc": "伪时序/轨迹参考分析：谱系结构、已知基因动态与工具一致性；作为虚拟细胞轨迹的先验参考。",
+      "order": 9,
+      "figure_count": 144,
+      "categories": [
+        {
+          "name": "拟时序参考轨迹",
+          "count": 104
+        },
+        {
+          "name": "轨迹工具一致性",
+          "count": 38
+        },
+        {
+          "name": "拟时序主图",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "key": "11_gene_regulatory_network",
+      "name": "基因调控网络",
+      "group": "轨迹与调控",
+      "desc": "pySCENIC regulon、共表达模块、hub TF、RSS 排序与 CellOracle 虚拟敲除。",
+      "order": 10,
+      "figure_count": 173,
+      "categories": [
+        {
+          "name": "CellOracle 虚拟敲除",
+          "count": 35
+        },
+        {
+          "name": "Regulon 特异性排序 (RSS)",
+          "count": 26
+        },
+        {
+          "name": "Hub TF 拓扑",
+          "count": 25
+        },
+        {
+          "name": "Regulon AUC UMAP",
+          "count": 25
+        },
+        {
+          "name": "补充分析",
+          "count": 23
+        },
+        {
+          "name": "Regulon 模块 (CSI)",
+          "count": 21
+        },
+        {
+          "name": "GRN 主图",
+          "count": 9
+        },
+        {
+          "name": "Regulon 拟时序",
+          "count": 9
+        }
+      ]
+    },
+    {
+      "key": "12_cell_communication",
+      "name": "细胞通讯",
+      "group": "轨迹与调控",
+      "desc": "LIANA + CellChat v2 的配体-受体推断、通路网络、NMF 模式与跨物种保守性；结果为计算推断。",
+      "order": 11,
+      "figure_count": 797,
+      "categories": [
+        {
+          "name": "单数据集通讯",
+          "count": 177
+        },
+        {
+          "name": "5. pathway network / chord",
+          "count": 174
+        },
+        {
+          "name": "7. NMF patterns + rank selection",
+          "count": 150
+        },
+        {
+          "name": "1. circle network",
+          "count": 33
+        },
+        {
+          "name": "2. sender vs receiver scatter",
+          "count": 33
+        },
+        {
+          "name": "4. cell type x cell type heatmaps",
+          "count": 33
+        },
+        {
+          "name": "6. pathway centrality heatmap",
+          "count": 33
+        },
+        {
+          "name": "3. ligand-receptor bubble plot",
+          "count": 30
+        },
+        {
+          "name": "8. ligand / receptor expression",
+          "count": 30
+        },
+        {
+          "name": "通路网络与弦图",
+          "count": 24
+        },
+        {
+          "name": "敏感性分析",
+          "count": 19
+        },
+        {
+          "name": "跨物种保守性",
+          "count": 13
+        },
+        {
+          "name": "NMF 模式与 rank 选择",
+          "count": 10
+        },
+        {
+          "name": "激素潜在通讯",
+          "count": 6
+        },
+        {
+          "name": "通讯圈图",
+          "count": 4
+        },
+        {
+          "name": "配体-受体气泡图",
+          "count": 4
+        },
+        {
+          "name": "配体/受体表达",
+          "count": 4
+        },
+        {
+          "name": "发送-接收散点",
+          "count": 3
+        },
+        {
+          "name": "细胞类型互作热图",
+          "count": 3
+        },
+        {
+          "name": "细胞通讯主图",
+          "count": 3
+        },
+        {
+          "name": "通路中心性热图",
+          "count": 3
+        },
+        {
+          "name": "12. hormone potential communication",
+          "count": 2
+        },
+        {
+          "name": "13. cross-species conservation",
+          "count": 1
+        },
+        {
+          "name": "14. resource coverage",
+          "count": 1
+        },
+        {
+          "name": "15. library consistency",
+          "count": 1
+        },
+        {
+          "name": "下游响应",
+          "count": 1
+        },
+        {
+          "name": "已知肽信号验证",
+          "count": 1
+        },
+        {
+          "name": "组织相邻性检验",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "key": "13_cell_states_ecotypes",
+      "name": "细胞状态与生态型",
+      "group": "状态与验证",
+      "desc": "细胞状态与生态型（EcoTyper）分析：状态分布、标志基因、共现、稳定性、样本得分、功能富集与跨物种相似性。",
+      "order": 12,
+      "figure_count": 245,
+      "categories": [
+        {
+          "name": "细胞状态标志基因热图",
+          "count": 67
+        },
+        {
+          "name": "各细胞类型内部的状态比例分布",
+          "count": 56
+        },
+        {
+          "name": "生态型GO/KEGG功能富集",
+          "count": 28
+        },
+        {
+          "name": "生态型得分在样本间的分布",
+          "count": 23
+        },
+        {
+          "name": "跨细胞类型的状态共现热图",
+          "count": 21
+        },
+        {
+          "name": "生态型成员组成",
+          "count": 19
+        },
+        {
+          "name": "生态型重抽样稳定性与置换检验",
+          "count": 14
+        },
+        {
+          "name": "数据覆盖、状态数量与生态型数量概览",
+          "count": 6
+        },
+        {
+          "name": "跨物种生态型相似性",
+          "count": 6
+        },
+        {
+          "name": "样本条件关联与差异效应量",
+          "count": 2
+        },
+        {
+          "name": "生态型得分与测序深度、检出基因数关联",
+          "count": 2
+        },
+        {
+          "name": "留出样本中的状态恢复评估",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "key": "14_bulk_deconvolution",
+      "name": "bulk 反卷积",
+      "group": "状态与验证",
+      "desc": "用单细胞图谱反卷积干旱/对照 bulk 数据，评估细胞类型组成变化与归因。",
+      "order": 13,
+      "figure_count": 10,
+      "categories": [
+        {
+          "name": "bulk 反卷积主图",
+          "count": 6
+        },
+        {
+          "name": "补充分析",
+          "count": 4
+        }
+      ]
+    }
+  ],
+  "virtual_tabs": [
+    {
+      "key": "framework",
+      "name": "模型框架",
+      "icon": "framework",
+      "order": 0,
+      "desc": "从 21 物种单细胞图谱与 bulk 干旱数据，到跨物种虚拟细胞预测的三阶段框架。",
+      "figure_count": 2
+    },
+    {
+      "key": "prediction",
+      "name": "干旱细胞预测",
+      "icon": "prediction",
+      "order": 1,
+      "desc": "21 物种正常 → 干旱的单细胞转录组预测生成；展示潜空间、TF 活性与轨迹概览。",
+      "figure_count": 84
+    },
+    {
+      "key": "trajectory",
+      "name": "细胞状态轨迹",
+      "icon": "trajectory",
+      "order": 2,
+      "desc": "正常到干旱的动态细胞状态轨迹：潜空间/表达空间路标点、密度与方向。",
+      "figure_count": 9
+    },
+    {
+      "key": "grn",
+      "name": "基因网络轨迹",
+      "icon": "network",
+      "order": 3,
+      "desc": "正常到干旱的动态基因调控网络轨迹：TF 活性、边权重与网络拓扑随时间的重塑。",
+      "figure_count": 7
+    },
+    {
+      "key": "pattern",
+      "name": "正常-干旱规律",
+      "icon": "pattern",
+      "order": 4,
+      "desc": "跨物种信号强度、细胞状态条件关联、bulk 细胞组成与跨物种保守性。",
+      "figure_count": 14
+    },
+    {
+      "key": "perturbation",
+      "name": "基因扰动效应",
+      "icon": "perturbation",
+      "order": 5,
+      "desc": "CellOracle 虚拟敲除与水稻模型扰动：TF 活性、表达变化与潜空间位移。",
+      "figure_count": 66
+    },
+    {
+      "key": "evaluation",
+      "name": "模型评估与边界",
+      "icon": "evaluation",
+      "order": 6,
+      "desc": "模型版本、内部留出与外部验证指标；计算预测不作为实验证据。",
+      "figure_count": 14
+    }
+  ],
+  "totals": {
+    "species": 21,
+    "atlas_cells": 5427550,
+    "model_cells": 5579934,
+    "bulk_samples": 12455,
+    "grn_edges": 6232084,
+    "figures": 1820,
+    "atlas_figures": 1668,
+    "virtual_figures": 196,
+    "atlas_modules": 14
+  },
+  "coverage": {
+    "prediction_species": [
+      "alfalfa",
+      "arabidopsis",
+      "banana",
+      "barley",
+      "broccoli",
+      "cabbage",
+      "cassava",
+      "cotton",
+      "grape",
+      "kiwifruit",
+      "maize",
+      "peanut",
+      "potato",
+      "rape",
+      "rice",
+      "sorghum",
+      "soybean",
+      "tea",
+      "tobacco",
+      "tomato",
+      "wheat"
+    ],
+    "trajectory_species": [
+      "rice"
+    ],
+    "grn_species": [
+      "rice"
+    ],
+    "perturbation_species": [
+      "arabidopsis",
+      "cabbage",
+      "rice",
+      "tobacco",
+      "tomato"
+    ],
+    "celloracle_datasets": [
+      "arabidopsis_leaf",
+      "arabidopsis_ovule",
+      "arabidopsis_root",
+      "cabbage_leaf",
+      "cabbage_shoot",
+      "tobacco_root",
+      "tobacco_whole_seedling",
+      "tomato_shoot_apex"
+    ]
+  },
+  "notes": {
+    "model_eval": "v8 模型的外部验证仍有限；模型输出为计算预测，不作为实验证据。",
+    "communication": "细胞通讯结果为基于表达的推断，细胞不是独立生物学重复。",
+    "perturbation": "基因扰动为模型内模拟，不是实验验证。"
+  },
+  "mode": "static",
+  "site_url": "https://ddxxz.github.io/DroAIVC-portal/",
+  "repo_url": "https://github.com/ddxxz/DroAIVC-portal"
+}

@@ -1,0 +1,3558 @@
+{
+  "generated_at": "2026-10-23T18:47:00+08:00",
+  "species": [
+    {
+      "key": "alfalfa",
+      "name": "紫花苜蓿",
+      "latin": "Medicago sativa",
+      "code": "Mt",
+      "clade": "dicot",
+      "sc_cells": 20527,
+      "bulk_samples": 100,
+      "bulk_control": 52,
+      "bulk_drought": 48,
+      "common_genes": 25549,
+      "sc_total_genes": 27444,
+      "bulk_total_genes": 56892,
+      "grn_edges": 201010,
+      "tf_total": 309,
+      "tf_matched": 263,
+      "signal": "NONE",
+      "sig_tfs": 0,
+      "n_tfs": 263,
+      "sig_frac": 0,
+      "traj_arc_len": 0.02138
+    },
+    {
+      "key": "arabidopsis",
+      "name": "拟南芥",
+      "latin": "Arabidopsis thaliana",
+      "code": "At",
+      "clade": "dicot",
+      "sc_cells": 1929267,
+      "bulk_samples": 2172,
+      "bulk_control": 841,
+      "bulk_drought": 1331,
+      "common_genes": 24068,
+      "sc_total_genes": 28358,
+      "bulk_total_genes": 53427,
+      "grn_edges": 528005,
+      "tf_total": 765,
+      "tf_matched": 715,
+      "signal": "HIGH",
+      "sig_tfs": 582,
+      "n_tfs": 715,
+      "sig_frac": 0.814,
+      "traj_arc_len": 0.01403
+    },
+    {
+      "key": "banana",
+      "name": "香蕉",
+      "latin": "Musa acuminata",
+      "code": "Ma",
+      "clade": "monocot",
+      "sc_cells": 43142,
+      "bulk_samples": 71,
+      "bulk_control": 36,
+      "bulk_drought": 35,
+      "common_genes": 27964,
+      "sc_total_genes": 28131,
+      "bulk_total_genes": 44852,
+      "grn_edges": 229807,
+      "tf_total": 264,
+      "tf_matched": 201,
+      "signal": "LOW",
+      "sig_tfs": 11,
+      "n_tfs": 201,
+      "sig_frac": 0.055,
+      "traj_arc_len": 0.0184
+    },
+    {
+      "key": "barley",
+      "name": "大麦",
+      "latin": "Hordeum vulgare",
+      "code": "Hv",
+      "clade": "monocot",
+      "sc_cells": 5729,
+      "bulk_samples": 1142,
+      "bulk_control": 567,
+      "bulk_drought": 575,
+      "common_genes": 18142,
+      "sc_total_genes": 18579,
+      "bulk_total_genes": 37906,
+      "grn_edges": 39318,
+      "tf_total": 191,
+      "tf_matched": 115,
+      "signal": "HIGH",
+      "sig_tfs": 101,
+      "n_tfs": 115,
+      "sig_frac": 0.878,
+      "traj_arc_len": 0.0349
+    },
+    {
+      "key": "broccoli",
+      "name": "西兰花",
+      "latin": "Brassica oleracea var. italica",
+      "code": "Bo",
+      "clade": "dicot",
+      "sc_cells": 14872,
+      "bulk_samples": 12,
+      "bulk_control": 3,
+      "bulk_drought": 9,
+      "common_genes": 30040,
+      "sc_total_genes": 32514,
+      "bulk_total_genes": 60586,
+      "grn_edges": 331047,
+      "tf_total": 545,
+      "tf_matched": 379,
+      "signal": "LOW",
+      "sig_tfs": 1,
+      "n_tfs": 379,
+      "sig_frac": 0.003,
+      "traj_arc_len": 0.03848
+    },
+    {
+      "key": "cabbage",
+      "name": "甘蓝",
+      "latin": "Brassica oleracea",
+      "code": "Br",
+      "clade": "dicot",
+      "sc_cells": 46441,
+      "bulk_samples": 139,
+      "bulk_control": 58,
+      "bulk_drought": 81,
+      "common_genes": 27396,
+      "sc_total_genes": 27626,
+      "bulk_total_genes": 42193,
+      "grn_edges": 402658,
+      "tf_total": 561,
+      "tf_matched": 418,
+      "signal": "HIGH",
+      "sig_tfs": 332,
+      "n_tfs": 418,
+      "sig_frac": 0.794,
+      "traj_arc_len": 0.02482
+    },
+    {
+      "key": "cassava",
+      "name": "木薯",
+      "latin": "Manihot esculenta",
+      "code": "Me",
+      "clade": "dicot",
+      "sc_cells": 39699,
+      "bulk_samples": 209,
+      "bulk_control": 75,
+      "bulk_drought": 134,
+      "common_genes": 25621,
+      "sc_total_genes": 26032,
+      "bulk_total_genes": 54324,
+      "grn_edges": 273923,
+      "tf_total": 338,
+      "tf_matched": 279,
+      "signal": "LOW",
+      "sig_tfs": 69,
+      "n_tfs": 279,
+      "sig_frac": 0.247,
+      "traj_arc_len": 0.02292
+    },
+    {
+      "key": "cotton",
+      "name": "棉花",
+      "latin": "Gossypium hirsutum",
+      "code": "Gh",
+      "clade": "dicot",
+      "sc_cells": 260297,
+      "bulk_samples": 215,
+      "bulk_control": 60,
+      "bulk_drought": 155,
+      "common_genes": 33974,
+      "sc_total_genes": 34835,
+      "bulk_total_genes": 38208,
+      "grn_edges": 361984,
+      "tf_total": 364,
+      "tf_matched": 352,
+      "signal": "LOW",
+      "sig_tfs": 8,
+      "n_tfs": 352,
+      "sig_frac": 0.023,
+      "traj_arc_len": 0.01419
+    },
+    {
+      "key": "grape",
+      "name": "葡萄",
+      "latin": "Vitis vinifera",
+      "code": "Vv",
+      "clade": "dicot",
+      "sc_cells": 70236,
+      "bulk_samples": 753,
+      "bulk_control": 291,
+      "bulk_drought": 462,
+      "common_genes": 21493,
+      "sc_total_genes": 24280,
+      "bulk_total_genes": 41005,
+      "grn_edges": 42578,
+      "tf_total": 269,
+      "tf_matched": 125,
+      "signal": "NONE",
+      "sig_tfs": 0,
+      "n_tfs": 125,
+      "sig_frac": 0,
+      "traj_arc_len": 0.01285
+    },
+    {
+      "key": "kiwifruit",
+      "name": "猕猴桃",
+      "latin": "Actinidia chinensis",
+      "code": "Ac",
+      "clade": "dicot",
+      "sc_cells": 15824,
+      "bulk_samples": 32,
+      "bulk_control": 17,
+      "bulk_drought": 15,
+      "common_genes": 26811,
+      "sc_total_genes": 26857,
+      "bulk_total_genes": 33106,
+      "grn_edges": 193936,
+      "tf_total": 271,
+      "tf_matched": 214,
+      "signal": "HIGH",
+      "sig_tfs": 74,
+      "n_tfs": 214,
+      "sig_frac": 0.346,
+      "traj_arc_len": 0.04083
+    },
+    {
+      "key": "maize",
+      "name": "玉米",
+      "latin": "Zea mays",
+      "code": "Zm",
+      "clade": "monocot",
+      "sc_cells": 526899,
+      "bulk_samples": 1331,
+      "bulk_control": 682,
+      "bulk_drought": 649,
+      "common_genes": 32412,
+      "sc_total_genes": 35818,
+      "bulk_total_genes": 74927,
+      "grn_edges": 159724,
+      "tf_total": 228,
+      "tf_matched": 191,
+      "signal": "NONE",
+      "sig_tfs": 0,
+      "n_tfs": 191,
+      "sig_frac": 0,
+      "traj_arc_len": 0.01658
+    },
+    {
+      "key": "peanut",
+      "name": "花生",
+      "latin": "Arachis hypogaea",
+      "code": "Ah",
+      "clade": "dicot",
+      "sc_cells": 96799,
+      "bulk_samples": 83,
+      "bulk_control": 43,
+      "bulk_drought": 40,
+      "common_genes": 43777,
+      "sc_total_genes": 45059,
+      "bulk_total_genes": 83107,
+      "grn_edges": 111014,
+      "tf_total": 260,
+      "tf_matched": 174,
+      "signal": "HIGH",
+      "sig_tfs": 150,
+      "n_tfs": 174,
+      "sig_frac": 0.862,
+      "traj_arc_len": 0.02585
+    },
+    {
+      "key": "potato",
+      "name": "马铃薯",
+      "latin": "Solanum tuberosum",
+      "code": "St",
+      "clade": "dicot",
+      "sc_cells": 111162,
+      "bulk_samples": 358,
+      "bulk_control": 131,
+      "bulk_drought": 227,
+      "common_genes": 28663,
+      "sc_total_genes": 40336,
+      "bulk_total_genes": 56950,
+      "grn_edges": 210324,
+      "tf_total": 284,
+      "tf_matched": 270,
+      "signal": "HIGH",
+      "sig_tfs": 149,
+      "n_tfs": 164,
+      "sig_frac": 0.909,
+      "traj_arc_len": 0.03595
+    },
+    {
+      "key": "rape",
+      "name": "油菜",
+      "latin": "Brassica napus",
+      "code": "Bn",
+      "clade": "dicot",
+      "sc_cells": 126782,
+      "bulk_samples": 506,
+      "bulk_control": 236,
+      "bulk_drought": 270,
+      "common_genes": 63493,
+      "sc_total_genes": 65798,
+      "bulk_total_genes": 104573,
+      "grn_edges": 1148228,
+      "tf_total": 581,
+      "tf_matched": 473,
+      "signal": "NONE",
+      "sig_tfs": 0,
+      "n_tfs": 473,
+      "sig_frac": 0,
+      "traj_arc_len": 0.0312
+    },
+    {
+      "key": "rice",
+      "name": "水稻",
+      "latin": "Oryza sativa",
+      "code": "Os",
+      "clade": "monocot",
+      "sc_cells": 1522284,
+      "bulk_samples": 1523,
+      "bulk_control": 729,
+      "bulk_drought": 794,
+      "common_genes": 33887,
+      "sc_total_genes": 36578,
+      "bulk_total_genes": 37864,
+      "grn_edges": 303344,
+      "tf_total": 246,
+      "tf_matched": 233,
+      "signal": "LOW",
+      "sig_tfs": 1,
+      "n_tfs": 233,
+      "sig_frac": 0.004,
+      "traj_arc_len": 0.01685
+    },
+    {
+      "key": "sorghum",
+      "name": "高粱",
+      "latin": "Sorghum bicolor",
+      "code": "Sb",
+      "clade": "monocot",
+      "sc_cells": 27410,
+      "bulk_samples": 635,
+      "bulk_control": 285,
+      "bulk_drought": 350,
+      "common_genes": 27024,
+      "sc_total_genes": 28639,
+      "bulk_total_genes": 46156,
+      "grn_edges": 271168,
+      "tf_total": 236,
+      "tf_matched": 220,
+      "signal": "HIGH",
+      "sig_tfs": 165,
+      "n_tfs": 220,
+      "sig_frac": 0.75,
+      "traj_arc_len": 0.01863
+    },
+    {
+      "key": "soybean",
+      "name": "大豆",
+      "latin": "Glycine max",
+      "code": "Gm",
+      "clade": "dicot",
+      "sc_cells": 328059,
+      "bulk_samples": 651,
+      "bulk_control": 244,
+      "bulk_drought": 407,
+      "common_genes": 40046,
+      "sc_total_genes": 42188,
+      "bulk_total_genes": 83614,
+      "grn_edges": 455262,
+      "tf_total": 360,
+      "tf_matched": 308,
+      "signal": "NONE",
+      "sig_tfs": 0,
+      "n_tfs": 308,
+      "sig_frac": 0,
+      "traj_arc_len": 0.02594
+    },
+    {
+      "key": "tea",
+      "name": "茶",
+      "latin": "Camellia sinensis",
+      "code": "Cs",
+      "clade": "dicot",
+      "sc_cells": 126100,
+      "bulk_samples": 141,
+      "bulk_control": 47,
+      "bulk_drought": 94,
+      "common_genes": 25221,
+      "sc_total_genes": 25728,
+      "bulk_total_genes": 61808,
+      "grn_edges": 371793,
+      "tf_total": 1004,
+      "tf_matched": 384,
+      "signal": "HIGH",
+      "sig_tfs": 198,
+      "n_tfs": 384,
+      "sig_frac": 0.516,
+      "traj_arc_len": 0.03636
+    },
+    {
+      "key": "tobacco",
+      "name": "烟草",
+      "latin": "Nicotiana tabacum",
+      "code": "Nt",
+      "clade": "dicot",
+      "sc_cells": 22875,
+      "bulk_samples": 186,
+      "bulk_control": 119,
+      "bulk_drought": 67,
+      "common_genes": 38293,
+      "sc_total_genes": 38782,
+      "bulk_total_genes": 74886,
+      "grn_edges": 219853,
+      "tf_total": 357,
+      "tf_matched": 223,
+      "signal": "LOW",
+      "sig_tfs": 1,
+      "n_tfs": 223,
+      "sig_frac": 0.004,
+      "traj_arc_len": 0.05772
+    },
+    {
+      "key": "tomato",
+      "name": "番茄",
+      "latin": "Solanum lycopersicum",
+      "code": "Sl",
+      "clade": "dicot",
+      "sc_cells": 218621,
+      "bulk_samples": 758,
+      "bulk_control": 321,
+      "bulk_drought": 437,
+      "common_genes": 24708,
+      "sc_total_genes": 26491,
+      "bulk_total_genes": 35825,
+      "grn_edges": 198238,
+      "tf_total": 306,
+      "tf_matched": 279,
+      "signal": "HIGH",
+      "sig_tfs": 194,
+      "n_tfs": 279,
+      "sig_frac": 0.695,
+      "traj_arc_len": 0.01534
+    },
+    {
+      "key": "wheat",
+      "name": "小麦",
+      "latin": "Triticum aestivum",
+      "code": "Ta",
+      "clade": "monocot",
+      "sc_cells": 26909,
+      "bulk_samples": 1438,
+      "bulk_control": 782,
+      "bulk_drought": 656,
+      "common_genes": 66722,
+      "sc_total_genes": 68027,
+      "bulk_total_genes": 143933,
+      "grn_edges": 178870,
+      "tf_total": 244,
+      "tf_matched": 138,
+      "signal": "NONE",
+      "sig_tfs": 0,
+      "n_tfs": 138,
+      "sig_frac": 0,
+      "traj_arc_len": 0.05604
+    }
+  ],
+  "totals": {
+    "species": 21,
+    "atlas_cells": 5427550,
+    "model_cells": 5579934,
+    "bulk_samples": 12455,
+    "grn_edges": 6232084,
+    "figures": 1820,
+    "atlas_figures": 1668,
+    "virtual_figures": 196,
+    "atlas_modules": 14
+  },
+  "top_tfs": {
+    "alfalfa": [
+      {
+        "gene": "MTR_2g023930",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "MTR_3g031220",
+        "delta_tfa": -6.8843366562987285e-09,
+        "abs_delta": 6.8843366562987285e-09,
+        "family": ""
+      },
+      {
+        "gene": "MTR_1g050502",
+        "delta_tfa": -6.854534162492598e-10,
+        "abs_delta": 6.854534162492598e-10,
+        "family": ""
+      },
+      {
+        "gene": "MTR_8g023860",
+        "delta_tfa": 3.278255444882916e-10,
+        "abs_delta": 3.278255444882916e-10,
+        "family": ""
+      },
+      {
+        "gene": "MTR_8g040120",
+        "delta_tfa": -1.788139358804841e-10,
+        "abs_delta": 1.788139358804841e-10,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g014890",
+        "delta_tfa": 1.1920929521291868e-10,
+        "abs_delta": 1.1920929521291868e-10,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g029470",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g030430",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g027440",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g054300",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g032520",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g026210",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g037080",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g038910",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g041940",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g043880",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g021710",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g048350",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_5g031880",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "MTR_1g008740",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      }
+    ],
+    "arabidopsis": [
+      {
+        "gene": "AT1G13300",
+        "delta_tfa": 0.000780940055847168,
+        "abs_delta": 0.000780940055847168,
+        "family": "G2-like"
+      },
+      {
+        "gene": "AT2G02080",
+        "delta_tfa": 0.0006718746153637767,
+        "abs_delta": 0.0006718746153637767,
+        "family": "C2H2"
+      },
+      {
+        "gene": "AT4G32890",
+        "delta_tfa": 0.0006454106769524515,
+        "abs_delta": 0.0006454106769524515,
+        "family": "GATA"
+      },
+      {
+        "gene": "AT2G46130",
+        "delta_tfa": 0.0006363391876220703,
+        "abs_delta": 0.0006363391876220703,
+        "family": "WRKY"
+      },
+      {
+        "gene": "AT3G16857",
+        "delta_tfa": 0.0006344200810417533,
+        "abs_delta": 0.0006344200810417533,
+        "family": "ARR-B"
+      },
+      {
+        "gene": "AT3G61910",
+        "delta_tfa": 0.0006230949657037854,
+        "abs_delta": 0.0006230949657037854,
+        "family": "NAC"
+      },
+      {
+        "gene": "AT5G59780",
+        "delta_tfa": 0.000622797233518213,
+        "abs_delta": 0.000622797233518213,
+        "family": "MYB_related"
+      },
+      {
+        "gene": "AT5G61270",
+        "delta_tfa": 0.0006015424733050168,
+        "abs_delta": 0.0006015424733050168,
+        "family": "bHLH"
+      },
+      {
+        "gene": "AT2G23290",
+        "delta_tfa": 0.0005949610495008528,
+        "abs_delta": 0.0005949610495008528,
+        "family": "MYB"
+      },
+      {
+        "gene": "AT3G10030",
+        "delta_tfa": -0.0005910900654271245,
+        "abs_delta": 0.0005910900654271245,
+        "family": "Trihelix"
+      },
+      {
+        "gene": "AT2G21230",
+        "delta_tfa": 0.0005891323089599609,
+        "abs_delta": 0.0005891323089599609,
+        "family": "bZIP"
+      },
+      {
+        "gene": "AT1G52150",
+        "delta_tfa": 0.0005724430084228516,
+        "abs_delta": 0.0005724430084228516,
+        "family": "HD-ZIP"
+      },
+      {
+        "gene": "AT1G71450",
+        "delta_tfa": 0.0005715955048799515,
+        "abs_delta": 0.0005715955048799515,
+        "family": "ERF"
+      },
+      {
+        "gene": "AT3G54990",
+        "delta_tfa": 0.000568442337680608,
+        "abs_delta": 0.000568442337680608,
+        "family": "AP2"
+      },
+      {
+        "gene": "AT1G46264",
+        "delta_tfa": 0.0005661117611452937,
+        "abs_delta": 0.0005661117611452937,
+        "family": "HSF"
+      },
+      {
+        "gene": "AT1G49480",
+        "delta_tfa": 0.0005644691991619766,
+        "abs_delta": 0.0005644691991619766,
+        "family": "B3"
+      },
+      {
+        "gene": "AT2G02070",
+        "delta_tfa": 0.0005637539434246719,
+        "abs_delta": 0.0005637539434246719,
+        "family": "C2H2"
+      },
+      {
+        "gene": "AT2G24260",
+        "delta_tfa": 0.0005617671995423734,
+        "abs_delta": 0.0005617671995423734,
+        "family": "bHLH"
+      },
+      {
+        "gene": "AT1G29280",
+        "delta_tfa": 0.0005539655685424805,
+        "abs_delta": 0.0005539655685424805,
+        "family": "WRKY"
+      },
+      {
+        "gene": "AT1G14687",
+        "delta_tfa": 0.0005422968533821404,
+        "abs_delta": 0.0005422968533821404,
+        "family": "ZF-HD"
+      }
+    ],
+    "banana": [
+      {
+        "gene": "Ma07_g18390",
+        "delta_tfa": 2.980232238769531e-07,
+        "abs_delta": 2.980232238769531e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma11_g24420",
+        "delta_tfa": 1.7881393432617188e-07,
+        "abs_delta": 1.7881393432617188e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma10_g22350",
+        "delta_tfa": 1.7881393432617188e-07,
+        "abs_delta": 1.7881393432617188e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma08_g26480",
+        "delta_tfa": 1.7881393432617188e-07,
+        "abs_delta": 1.7881393432617188e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma07_g05010",
+        "delta_tfa": 1.7881393432617188e-07,
+        "abs_delta": 1.7881393432617188e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma08_g30520",
+        "delta_tfa": 1.1920928955078125e-07,
+        "abs_delta": 1.1920928955078125e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma11_g14990",
+        "delta_tfa": 1.1920928955078125e-07,
+        "abs_delta": 1.1920928955078125e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma09_g29090",
+        "delta_tfa": 1.1920928955078125e-07,
+        "abs_delta": 1.1920928955078125e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma08_g10550",
+        "delta_tfa": 1.1920928955078125e-07,
+        "abs_delta": 1.1920928955078125e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma03_g31070",
+        "delta_tfa": 1.1920928955078125e-07,
+        "abs_delta": 1.1920928955078125e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma07_g22410",
+        "delta_tfa": 1.1920928955078125e-07,
+        "abs_delta": 1.1920928955078125e-07,
+        "family": ""
+      },
+      {
+        "gene": "Ma05_g14150",
+        "delta_tfa": 9.33706729711048e-08,
+        "abs_delta": 9.33706729711048e-08,
+        "family": ""
+      },
+      {
+        "gene": "Ma09_g27680",
+        "delta_tfa": 6.186962053789102e-08,
+        "abs_delta": 6.186962053789102e-08,
+        "family": ""
+      },
+      {
+        "gene": "Ma05_g03000",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Ma04_g01910",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Ma10_g09470",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Ma03_g22710",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Ma09_g27130",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Ma10_g22020",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Ma04_g18240",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      }
+    ],
+    "barley": [
+      {
+        "gene": "HORVU.MOREX.r3.7HG0699010",
+        "delta_tfa": -1.0579824447631836e-05,
+        "abs_delta": 1.0579824447631836e-05,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.5HG0443520",
+        "delta_tfa": -9.059906005859375e-06,
+        "abs_delta": 9.059906005859375e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.2HG0132160",
+        "delta_tfa": 7.629513675055932e-06,
+        "abs_delta": 7.629513675055932e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.4HG0355210",
+        "delta_tfa": -7.212162017822266e-06,
+        "abs_delta": 7.212162017822266e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.6HG0630410",
+        "delta_tfa": -6.300956101767952e-06,
+        "abs_delta": 6.300956101767952e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.7HG0658660",
+        "delta_tfa": -5.832135684613604e-06,
+        "abs_delta": 5.832135684613604e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.4HG0339300",
+        "delta_tfa": -4.9173831939697266e-06,
+        "abs_delta": 4.9173831939697266e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.4HG0403590",
+        "delta_tfa": 4.701599664258538e-06,
+        "abs_delta": 4.701599664258538e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.5HG0486260",
+        "delta_tfa": -4.297152372600976e-06,
+        "abs_delta": 4.297152372600976e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.3HG0255050",
+        "delta_tfa": 4.240810994815547e-06,
+        "abs_delta": 4.240810994815547e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.5HG0512730",
+        "delta_tfa": -3.8453040360764135e-06,
+        "abs_delta": 3.8453040360764135e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.1HG0070040",
+        "delta_tfa": -3.6356002510729013e-06,
+        "abs_delta": 3.6356002510729013e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.5HG0433240",
+        "delta_tfa": 3.3974647521972656e-06,
+        "abs_delta": 3.3974647521972656e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.3HG0299100",
+        "delta_tfa": -3.2169223231903743e-06,
+        "abs_delta": 3.2169223231903743e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.3HG0236590",
+        "delta_tfa": 2.7783810310211265e-06,
+        "abs_delta": 2.7783810310211265e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.1HG0012990",
+        "delta_tfa": 2.5331974029541016e-06,
+        "abs_delta": 2.5331974029541016e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.3HG0308890",
+        "delta_tfa": 2.429589585517533e-06,
+        "abs_delta": 2.429589585517533e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.1HG0052450",
+        "delta_tfa": -2.3542791041109012e-06,
+        "abs_delta": 2.3542791041109012e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.5HG0428450",
+        "delta_tfa": 2.3249090190802235e-06,
+        "abs_delta": 2.3249090190802235e-06,
+        "family": ""
+      },
+      {
+        "gene": "HORVU.MOREX.r3.6HG0596350",
+        "delta_tfa": 2.2823512608738383e-06,
+        "abs_delta": 2.2823512608738383e-06,
+        "family": ""
+      }
+    ],
+    "broccoli": [
+      {
+        "gene": "Bo4g026870",
+        "delta_tfa": -1.1920928955078125e-07,
+        "abs_delta": 1.1920928955078125e-07,
+        "family": ""
+      },
+      {
+        "gene": "Bo5g010880",
+        "delta_tfa": -9.307265003144494e-08,
+        "abs_delta": 9.307265003144494e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo6g122190",
+        "delta_tfa": -7.998943374332157e-08,
+        "abs_delta": 7.998943374332157e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo1g016960",
+        "delta_tfa": -7.608532825997827e-08,
+        "abs_delta": 7.608532825997827e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo8g005940",
+        "delta_tfa": 6.911158578759569e-08,
+        "abs_delta": 6.911158578759569e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo5g085440",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo1g003400",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo4g191530",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo8g053000",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo9g010090",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo7g011520",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo3g134590",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo4g010410",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo9g174770",
+        "delta_tfa": -5.957484106033917e-08,
+        "abs_delta": 5.957484106033917e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo6g006970",
+        "delta_tfa": -5.9306621835730766e-08,
+        "abs_delta": 5.9306621835730766e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo5g035170",
+        "delta_tfa": -5.8352945586648275e-08,
+        "abs_delta": 5.8352945586648275e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo6g081850",
+        "delta_tfa": -5.447864381835643e-08,
+        "abs_delta": 5.447864381835643e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo8g114410",
+        "delta_tfa": -5.444884365601865e-08,
+        "abs_delta": 5.444884365601865e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo6g018480",
+        "delta_tfa": 5.173682993131479e-08,
+        "abs_delta": 5.173682993131479e-08,
+        "family": ""
+      },
+      {
+        "gene": "Bo4g034870",
+        "delta_tfa": -4.664063624204573e-08,
+        "abs_delta": 4.664063624204573e-08,
+        "family": ""
+      }
+    ],
+    "cabbage": [
+      {
+        "gene": "Bra038360",
+        "delta_tfa": 0.0008839456713758409,
+        "abs_delta": 0.0008839456713758409,
+        "family": ""
+      },
+      {
+        "gene": "Bra005480",
+        "delta_tfa": 0.0007458825130015612,
+        "abs_delta": 0.0007458825130015612,
+        "family": ""
+      },
+      {
+        "gene": "Bra023254",
+        "delta_tfa": 0.0007361173629760742,
+        "abs_delta": 0.0007361173629760742,
+        "family": ""
+      },
+      {
+        "gene": "Bra009346",
+        "delta_tfa": 0.0007340908050537109,
+        "abs_delta": 0.0007340908050537109,
+        "family": ""
+      },
+      {
+        "gene": "Bra002828",
+        "delta_tfa": 0.0007295506075024605,
+        "abs_delta": 0.0007295506075024605,
+        "family": ""
+      },
+      {
+        "gene": "Bra001907",
+        "delta_tfa": 0.000564389571081847,
+        "abs_delta": 0.000564389571081847,
+        "family": ""
+      },
+      {
+        "gene": "Bra002510",
+        "delta_tfa": 0.0004879091284237802,
+        "abs_delta": 0.0004879091284237802,
+        "family": ""
+      },
+      {
+        "gene": "Bra034057",
+        "delta_tfa": -0.00047135353088378906,
+        "abs_delta": 0.00047135353088378906,
+        "family": ""
+      },
+      {
+        "gene": "Bra013358",
+        "delta_tfa": 0.0004352862888481468,
+        "abs_delta": 0.0004352862888481468,
+        "family": ""
+      },
+      {
+        "gene": "Bra027612",
+        "delta_tfa": 0.0004193801723886281,
+        "abs_delta": 0.0004193801723886281,
+        "family": ""
+      },
+      {
+        "gene": "Bra031866",
+        "delta_tfa": 0.00040555698797106743,
+        "abs_delta": 0.00040555698797106743,
+        "family": ""
+      },
+      {
+        "gene": "Bra021510",
+        "delta_tfa": 0.00040531158447265625,
+        "abs_delta": 0.00040531158447265625,
+        "family": ""
+      },
+      {
+        "gene": "Bra008001",
+        "delta_tfa": 0.00039277560426853597,
+        "abs_delta": 0.00039277560426853597,
+        "family": ""
+      },
+      {
+        "gene": "Bra000453",
+        "delta_tfa": 0.00038085412234067917,
+        "abs_delta": 0.00038085412234067917,
+        "family": ""
+      },
+      {
+        "gene": "Bra026554",
+        "delta_tfa": -0.000380098819732666,
+        "abs_delta": 0.000380098819732666,
+        "family": ""
+      },
+      {
+        "gene": "Bra002421",
+        "delta_tfa": -0.0003458857536315918,
+        "abs_delta": 0.0003458857536315918,
+        "family": ""
+      },
+      {
+        "gene": "Bra026578",
+        "delta_tfa": 0.0003353179490659386,
+        "abs_delta": 0.0003353179490659386,
+        "family": ""
+      },
+      {
+        "gene": "Bra004540",
+        "delta_tfa": 0.0003173959848936647,
+        "abs_delta": 0.0003173959848936647,
+        "family": ""
+      },
+      {
+        "gene": "Bra011720",
+        "delta_tfa": -0.00031644865521229804,
+        "abs_delta": 0.00031644865521229804,
+        "family": ""
+      },
+      {
+        "gene": "Bra012471",
+        "delta_tfa": 0.0003111722762696445,
+        "abs_delta": 0.0003111722762696445,
+        "family": ""
+      }
+    ],
+    "cassava": [
+      {
+        "gene": "Manes.16G134800",
+        "delta_tfa": 1.0120540537172928e-05,
+        "abs_delta": 1.0120540537172928e-05,
+        "family": ""
+      },
+      {
+        "gene": "Manes.07G095100",
+        "delta_tfa": 2.1764635675936006e-06,
+        "abs_delta": 2.1764635675936006e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.12G140100",
+        "delta_tfa": -1.9073486328125e-06,
+        "abs_delta": 1.9073486328125e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.09G034900",
+        "delta_tfa": -1.9073486328125e-06,
+        "abs_delta": 1.9073486328125e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.07G124500",
+        "delta_tfa": 1.6295909972541267e-06,
+        "abs_delta": 1.6295909972541267e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.06G172900",
+        "delta_tfa": 1.5125274330785032e-06,
+        "abs_delta": 1.5125274330785032e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.15G063600",
+        "delta_tfa": -1.1920928955078125e-06,
+        "abs_delta": 1.1920928955078125e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.01G263300",
+        "delta_tfa": -1.1324882507324219e-06,
+        "abs_delta": 1.1324882507324219e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.13G107900",
+        "delta_tfa": -1.102179339795839e-06,
+        "abs_delta": 1.102179339795839e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.16G040100",
+        "delta_tfa": -1.0728836059570312e-06,
+        "abs_delta": 1.0728836059570312e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.18G029600",
+        "delta_tfa": -1.0728836059570312e-06,
+        "abs_delta": 1.0728836059570312e-06,
+        "family": ""
+      },
+      {
+        "gene": "Manes.17G066200",
+        "delta_tfa": -9.923279549184372e-07,
+        "abs_delta": 9.923279549184372e-07,
+        "family": ""
+      },
+      {
+        "gene": "Manes.06G080300",
+        "delta_tfa": -9.838640835369006e-07,
+        "abs_delta": 9.838640835369006e-07,
+        "family": ""
+      },
+      {
+        "gene": "Manes.12G086200",
+        "delta_tfa": -9.5367431640625e-07,
+        "abs_delta": 9.5367431640625e-07,
+        "family": ""
+      },
+      {
+        "gene": "Manes.18G050100",
+        "delta_tfa": -9.5367431640625e-07,
+        "abs_delta": 9.5367431640625e-07,
+        "family": ""
+      },
+      {
+        "gene": "Manes.05G176800",
+        "delta_tfa": -5.227625479164999e-07,
+        "abs_delta": 5.227625479164999e-07,
+        "family": ""
+      },
+      {
+        "gene": "Manes.03G051300",
+        "delta_tfa": -4.172325134277344e-07,
+        "abs_delta": 4.172325134277344e-07,
+        "family": ""
+      },
+      {
+        "gene": "Manes.01G269700",
+        "delta_tfa": -2.880096303670143e-07,
+        "abs_delta": 2.880096303670143e-07,
+        "family": ""
+      },
+      {
+        "gene": "Manes.11G007100",
+        "delta_tfa": 1.7881393432617188e-07,
+        "abs_delta": 1.7881393432617188e-07,
+        "family": ""
+      },
+      {
+        "gene": "Manes.16G116200",
+        "delta_tfa": -1.7881393432617188e-07,
+        "abs_delta": 1.7881393432617188e-07,
+        "family": ""
+      }
+    ],
+    "cotton": [
+      {
+        "gene": "B456_001G053900",
+        "delta_tfa": 2.8312206268310547e-06,
+        "abs_delta": 2.8312206268310547e-06,
+        "family": ""
+      },
+      {
+        "gene": "B456_007G121200",
+        "delta_tfa": 2.6226043701171875e-06,
+        "abs_delta": 2.6226043701171875e-06,
+        "family": ""
+      },
+      {
+        "gene": "B456_001G268000",
+        "delta_tfa": -1.1920928955078125e-06,
+        "abs_delta": 1.1920928955078125e-06,
+        "family": ""
+      },
+      {
+        "gene": "B456_002G052400",
+        "delta_tfa": -3.875196057379071e-07,
+        "abs_delta": 3.875196057379071e-07,
+        "family": ""
+      },
+      {
+        "gene": "B456_007G198100",
+        "delta_tfa": -3.8743019104003906e-07,
+        "abs_delta": 3.8743019104003906e-07,
+        "family": ""
+      },
+      {
+        "gene": "B456_002G073800",
+        "delta_tfa": -3.804862558354216e-07,
+        "abs_delta": 3.804862558354216e-07,
+        "family": ""
+      },
+      {
+        "gene": "B456_004G135700",
+        "delta_tfa": -2.980232238769531e-07,
+        "abs_delta": 2.980232238769531e-07,
+        "family": ""
+      },
+      {
+        "gene": "B456_007G010100",
+        "delta_tfa": -2.1150708562345244e-07,
+        "abs_delta": 2.1150708562345244e-07,
+        "family": ""
+      },
+      {
+        "gene": "B456_007G040600",
+        "delta_tfa": 5.936622571312e-08,
+        "abs_delta": 5.936622571312e-08,
+        "family": ""
+      },
+      {
+        "gene": "B456_002G124400",
+        "delta_tfa": 2.0802021438726115e-08,
+        "abs_delta": 2.0802021438726115e-08,
+        "family": ""
+      },
+      {
+        "gene": "B456_011G193600",
+        "delta_tfa": 2.9802322831784522e-09,
+        "abs_delta": 2.9802322831784522e-09,
+        "family": ""
+      },
+      {
+        "gene": "B456_008G112400",
+        "delta_tfa": -5.066395081243513e-10,
+        "abs_delta": 5.066395081243513e-10,
+        "family": ""
+      },
+      {
+        "gene": "B456_009G071900",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "B456_009G071400",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "B456_009G055200",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "B456_009G051000",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "B456_001G002800",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "B456_009G049300",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "B456_008G295800",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "B456_009G090000",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      }
+    ],
+    "grape": [
+      {
+        "gene": "Vitis07g00695",
+        "delta_tfa": -8.226930958699086e-08,
+        "abs_delta": 8.226930958699086e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis07g00079",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis04g01397",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis02g00423",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis01g01877",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis06g00262",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis17g01009",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis12g00327",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis15g01385",
+        "delta_tfa": 5.574524308826767e-08,
+        "abs_delta": 5.574524308826767e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis05g00121",
+        "delta_tfa": -5.5402516352387465e-08,
+        "abs_delta": 5.5402516352387465e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis17g00980",
+        "delta_tfa": -3.84151945809208e-08,
+        "abs_delta": 3.84151945809208e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis02g01248",
+        "delta_tfa": -3.421306615791764e-08,
+        "abs_delta": 3.421306615791764e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis07g00606",
+        "delta_tfa": -3.236532108985557e-08,
+        "abs_delta": 3.236532108985557e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis07g00572",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis11g00301",
+        "delta_tfa": 2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis08g01270",
+        "delta_tfa": 2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis07g00003",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis08g01508",
+        "delta_tfa": 2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis09g00363",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Vitis11g00251",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      }
+    ],
+    "kiwifruit": [
+      {
+        "gene": "CEY00_Acc29290",
+        "delta_tfa": -0.00019538402557373047,
+        "abs_delta": 0.00019538402557373047,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc25685",
+        "delta_tfa": -0.00019538402557373047,
+        "abs_delta": 0.00019538402557373047,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc04681",
+        "delta_tfa": -0.00018486380577087402,
+        "abs_delta": 0.00018486380577087402,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc00040",
+        "delta_tfa": -0.00014927983283996582,
+        "abs_delta": 0.00014927983283996582,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc23145",
+        "delta_tfa": -0.00014927983283996582,
+        "abs_delta": 0.00014927983283996582,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc13117",
+        "delta_tfa": -0.00014927983283996582,
+        "abs_delta": 0.00014927983283996582,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc13130",
+        "delta_tfa": -0.00014927983283996582,
+        "abs_delta": 0.00014927983283996582,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc26542",
+        "delta_tfa": -0.00014927983283996582,
+        "abs_delta": 0.00014927983283996582,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc06381",
+        "delta_tfa": -0.00014922022819519043,
+        "abs_delta": 0.00014922022819519043,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc11788",
+        "delta_tfa": -0.00014922022819519043,
+        "abs_delta": 0.00014922022819519043,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc10447",
+        "delta_tfa": -0.00014406442642211914,
+        "abs_delta": 0.00014406442642211914,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc31058",
+        "delta_tfa": -0.00014400482177734375,
+        "abs_delta": 0.00014400482177734375,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc21334",
+        "delta_tfa": -0.00011810091382358223,
+        "abs_delta": 0.00011810091382358223,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc25113",
+        "delta_tfa": -0.00011807680130004883,
+        "abs_delta": 0.00011807680130004883,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc31275",
+        "delta_tfa": -9.92119312286377e-05,
+        "abs_delta": 9.92119312286377e-05,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc23959",
+        "delta_tfa": -8.821457595331594e-05,
+        "abs_delta": 8.821457595331594e-05,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc19119",
+        "delta_tfa": -8.809566497802734e-05,
+        "abs_delta": 8.809566497802734e-05,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc31363",
+        "delta_tfa": -8.273124694824219e-05,
+        "abs_delta": 8.273124694824219e-05,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc19870",
+        "delta_tfa": -7.283678860403597e-05,
+        "abs_delta": 7.283678860403597e-05,
+        "family": ""
+      },
+      {
+        "gene": "CEY00_Acc29377",
+        "delta_tfa": -7.191389886429533e-05,
+        "abs_delta": 7.191389886429533e-05,
+        "family": ""
+      }
+    ],
+    "maize": [
+      {
+        "gene": "Zm00001eb150010",
+        "delta_tfa": -5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb157620",
+        "delta_tfa": -1.3232231310666975e-08,
+        "abs_delta": 1.3232231310666975e-08,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb001460",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb226740",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb288420",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb288730",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb295830",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb296020",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb296340",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb296770",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb298580",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb301170",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb301280",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb307400",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb307600",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb309370",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb312600",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb315910",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb316720",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "Zm00001eb316730",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      }
+    ],
+    "peanut": [
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah02g046300",
+        "delta_tfa": 0.0007956402259878814,
+        "abs_delta": 0.0007956402259878814,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah05g390300",
+        "delta_tfa": 0.0006902217864990234,
+        "abs_delta": 0.0006902217864990234,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah02g274600",
+        "delta_tfa": 0.0006872415542602539,
+        "abs_delta": 0.0006872415542602539,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah20g516900",
+        "delta_tfa": 0.0006539821624755859,
+        "abs_delta": 0.0006539821624755859,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah10g410600",
+        "delta_tfa": 0.0006498098373413086,
+        "abs_delta": 0.0006498098373413086,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah02g033600",
+        "delta_tfa": 0.000645756721496582,
+        "abs_delta": 0.000645756721496582,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah08g154100",
+        "delta_tfa": 0.0006342403939925134,
+        "abs_delta": 0.0006342403939925134,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah07g249600",
+        "delta_tfa": 0.0006320942775346339,
+        "abs_delta": 0.0006320942775346339,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah09g377400",
+        "delta_tfa": 0.0005803108215332031,
+        "abs_delta": 0.0005803108215332031,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah01g391000",
+        "delta_tfa": 0.0005493706557899714,
+        "abs_delta": 0.0005493706557899714,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah07g280000",
+        "delta_tfa": 0.0005212525720708072,
+        "abs_delta": 0.0005212525720708072,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah08g192100",
+        "delta_tfa": 0.0005027182050980628,
+        "abs_delta": 0.0005027182050980628,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah05g104200",
+        "delta_tfa": 0.0004839301109313965,
+        "abs_delta": 0.0004839301109313965,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah05g402400",
+        "delta_tfa": 0.0004668703768402338,
+        "abs_delta": 0.0004668703768402338,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah05g472100",
+        "delta_tfa": 0.00046294921776279807,
+        "abs_delta": 0.00046294921776279807,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah08g191900",
+        "delta_tfa": 0.000443875789642334,
+        "abs_delta": 0.000443875789642334,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah10g023800",
+        "delta_tfa": 0.00043267011642456055,
+        "abs_delta": 0.00043267011642456055,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah07g322000",
+        "delta_tfa": 0.0004248619079589844,
+        "abs_delta": 0.0004248619079589844,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah06g459900",
+        "delta_tfa": 0.00037997111212462187,
+        "abs_delta": 0.00037997111212462187,
+        "family": ""
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah04g327000",
+        "delta_tfa": 0.0003787082387134433,
+        "abs_delta": 0.0003787082387134433,
+        "family": ""
+      }
+    ],
+    "potato": [
+      {
+        "gene": "PGSC0003DMG400017181",
+        "delta_tfa": -5.7172132983396295e-06,
+        "abs_delta": 5.7172132983396295e-06,
+        "family": "bHLH"
+      },
+      {
+        "gene": "PGSC0003DMG400021459",
+        "delta_tfa": -5.661209343088558e-06,
+        "abs_delta": 5.661209343088558e-06,
+        "family": "MYB_related"
+      },
+      {
+        "gene": "PGSC0003DMG400033078",
+        "delta_tfa": -4.842285306949634e-06,
+        "abs_delta": 4.842285306949634e-06,
+        "family": "TCP"
+      },
+      {
+        "gene": "PGSC0003DMG400025129",
+        "delta_tfa": -3.871932676702272e-06,
+        "abs_delta": 3.871932676702272e-06,
+        "family": "Dof"
+      },
+      {
+        "gene": "PGSC0003DMG400011433",
+        "delta_tfa": -3.7550926208496094e-06,
+        "abs_delta": 3.7550926208496094e-06,
+        "family": "SBP"
+      },
+      {
+        "gene": "PGSC0003DMG400031072",
+        "delta_tfa": -3.7550926208496094e-06,
+        "abs_delta": 3.7550926208496094e-06,
+        "family": "NAC"
+      },
+      {
+        "gene": "PGSC0003DMG400018280",
+        "delta_tfa": -3.5828172713081585e-06,
+        "abs_delta": 3.5828172713081585e-06,
+        "family": "bHLH"
+      },
+      {
+        "gene": "PGSC0003DMG400003701",
+        "delta_tfa": -3.5104199014313053e-06,
+        "abs_delta": 3.5104199014313053e-06,
+        "family": "bZIP"
+      },
+      {
+        "gene": "PGSC0003DMG400007110",
+        "delta_tfa": -2.896700380006223e-06,
+        "abs_delta": 2.896700380006223e-06,
+        "family": "bZIP"
+      },
+      {
+        "gene": "PGSC0003DMG401006284",
+        "delta_tfa": -2.889451252485742e-06,
+        "abs_delta": 2.889451252485742e-06,
+        "family": "SBP"
+      },
+      {
+        "gene": "PGSC0003DMG400019535",
+        "delta_tfa": -2.8014183044433594e-06,
+        "abs_delta": 2.8014183044433594e-06,
+        "family": "MYB"
+      },
+      {
+        "gene": "PGSC0003DMG400013213",
+        "delta_tfa": -2.6226043701171875e-06,
+        "abs_delta": 2.6226043701171875e-06,
+        "family": "ZF-HD"
+      },
+      {
+        "gene": "PGSC0003DMG400009475",
+        "delta_tfa": -2.5628100956964772e-06,
+        "abs_delta": 2.5628100956964772e-06,
+        "family": "ERF"
+      },
+      {
+        "gene": "PGSC0003DMG400000910",
+        "delta_tfa": -2.5307811029051663e-06,
+        "abs_delta": 2.5307811029051663e-06,
+        "family": "ERF"
+      },
+      {
+        "gene": "PGSC0003DMG400020247",
+        "delta_tfa": -2.5216838821506826e-06,
+        "abs_delta": 2.5216838821506826e-06,
+        "family": "TCP"
+      },
+      {
+        "gene": "PGSC0003DMG400026241",
+        "delta_tfa": -2.4960984319477575e-06,
+        "abs_delta": 2.4960984319477575e-06,
+        "family": "MYB_related"
+      },
+      {
+        "gene": "PGSC0003DMG400009909",
+        "delta_tfa": -2.4437904357910156e-06,
+        "abs_delta": 2.4437904357910156e-06,
+        "family": "Nin-like"
+      },
+      {
+        "gene": "PGSC0003DMG400000088",
+        "delta_tfa": -2.3928089376568096e-06,
+        "abs_delta": 2.3928089376568096e-06,
+        "family": "bZIP"
+      },
+      {
+        "gene": "PGSC0003DMG400033576",
+        "delta_tfa": -2.33462583310029e-06,
+        "abs_delta": 2.33462583310029e-06,
+        "family": "GATA"
+      },
+      {
+        "gene": "PGSC0003DMG400031071",
+        "delta_tfa": -2.3145364593801787e-06,
+        "abs_delta": 2.3145364593801787e-06,
+        "family": "NAC"
+      }
+    ],
+    "rape": [
+      {
+        "gene": "GSBRNA2T00000138001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00112431001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00114551001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00114132001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00113748001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00113602001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00113560001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00113524001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00113519001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00113252001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00113090001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00112877001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00112549001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00112456001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00112416001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00114833001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00112124001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00112096001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00112059001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GSBRNA2T00112009001",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      }
+    ],
+    "rice": [
+      {
+        "gene": "Os05g0121600",
+        "delta_tfa": 2.1612643763546657e-07,
+        "abs_delta": 2.1612643763546657e-07,
+        "family": ""
+      },
+      {
+        "gene": "Os04g0287400",
+        "delta_tfa": 5.960464477539063e-08,
+        "abs_delta": 5.960464477539063e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os06g0162700",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os06g0552300",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os02g0265200",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os03g0197800",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os08g0513700",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os02g0164900",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os06g0164400",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os01g0884300",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os07g0583700",
+        "delta_tfa": 2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os01g0911700",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os03g0752800",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os09g0457900",
+        "delta_tfa": 2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os09g0516200",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os09g0475400",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os05g0567200",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os01g0165000",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os05g0408200",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      },
+      {
+        "gene": "Os01g0305900",
+        "delta_tfa": -2.9802322387695312e-08,
+        "abs_delta": 2.9802322387695312e-08,
+        "family": ""
+      }
+    ],
+    "sorghum": [
+      {
+        "gene": "SORBI_3004G237900",
+        "delta_tfa": 0.00026753346901386976,
+        "abs_delta": 0.00026753346901386976,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3004G331300",
+        "delta_tfa": 0.00022602107492275536,
+        "abs_delta": 0.00022602107492275536,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3001G387600",
+        "delta_tfa": 0.00022602107492275536,
+        "abs_delta": 0.00022602107492275536,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3003G087600",
+        "delta_tfa": -0.0002243518829345703,
+        "abs_delta": 0.0002243518829345703,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3003G341100",
+        "delta_tfa": 0.0001966953423107043,
+        "abs_delta": 0.0001966953423107043,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3003G394900",
+        "delta_tfa": -0.00018981099128723145,
+        "abs_delta": 0.00018981099128723145,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3006G233500",
+        "delta_tfa": 0.00018793344497680664,
+        "abs_delta": 0.00018793344497680664,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3001G056700",
+        "delta_tfa": -0.00018337368965148926,
+        "abs_delta": 0.00018337368965148926,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3003G008700",
+        "delta_tfa": 0.00016668438911437988,
+        "abs_delta": 0.00016668438911437988,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3008G020300",
+        "delta_tfa": -0.00016158819198608398,
+        "abs_delta": 0.00016158819198608398,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3001G007200",
+        "delta_tfa": -0.00015575367433484644,
+        "abs_delta": 0.00015575367433484644,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3002G141300",
+        "delta_tfa": -0.00014224648475646973,
+        "abs_delta": 0.00014224648475646973,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3002G271100",
+        "delta_tfa": 0.00013582214887719601,
+        "abs_delta": 0.00013582214887719601,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3010G236300",
+        "delta_tfa": 0.00012630224227905273,
+        "abs_delta": 0.00012630224227905273,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3009G024400",
+        "delta_tfa": 0.00011980532144661993,
+        "abs_delta": 0.00011980532144661993,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3001G158900",
+        "delta_tfa": 0.00011396408081054688,
+        "abs_delta": 0.00011396408081054688,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3002G375400",
+        "delta_tfa": 0.00011071562767028809,
+        "abs_delta": 0.00011071562767028809,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3010G063900",
+        "delta_tfa": 0.00011071562767028809,
+        "abs_delta": 0.00011071562767028809,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3003G408400",
+        "delta_tfa": 0.00011047720909118652,
+        "abs_delta": 0.00011047720909118652,
+        "family": ""
+      },
+      {
+        "gene": "SORBI_3004G313900",
+        "delta_tfa": -0.00010575224587228149,
+        "abs_delta": 0.00010575224587228149,
+        "family": ""
+      }
+    ],
+    "soybean": [
+      {
+        "gene": "GLYMA_01G005500",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G279900",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G345200",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G342500",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G341700",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G314600",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G295400",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G294300",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G280000",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G236600",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G149900",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G234200",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G233800",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G219900",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G193700",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G187500",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G177400",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G174700",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G349500",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "GLYMA_13G352000",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      }
+    ],
+    "tea": [
+      {
+        "gene": "LOC114312474",
+        "delta_tfa": 0.0007372993277385831,
+        "abs_delta": 0.0007372993277385831,
+        "family": ""
+      },
+      {
+        "gene": "LOC114285732",
+        "delta_tfa": 0.0007372993277385831,
+        "abs_delta": 0.0007372993277385831,
+        "family": ""
+      },
+      {
+        "gene": "LOC114313372",
+        "delta_tfa": 0.0007372993277385831,
+        "abs_delta": 0.0007372993277385831,
+        "family": ""
+      },
+      {
+        "gene": "LOC114266540",
+        "delta_tfa": 0.0007372993277385831,
+        "abs_delta": 0.0007372993277385831,
+        "family": ""
+      },
+      {
+        "gene": "LOC114260627",
+        "delta_tfa": 0.0007372993277385831,
+        "abs_delta": 0.0007372993277385831,
+        "family": ""
+      },
+      {
+        "gene": "LOC114308854",
+        "delta_tfa": 0.0007372993277385831,
+        "abs_delta": 0.0007372993277385831,
+        "family": ""
+      },
+      {
+        "gene": "LOC114309413",
+        "delta_tfa": 0.0007372993277385831,
+        "abs_delta": 0.0007372993277385831,
+        "family": ""
+      },
+      {
+        "gene": "LOC114275359",
+        "delta_tfa": 0.0007372993277385831,
+        "abs_delta": 0.0007372993277385831,
+        "family": ""
+      },
+      {
+        "gene": "LOC114276831",
+        "delta_tfa": 0.0007372993277385831,
+        "abs_delta": 0.0007372993277385831,
+        "family": ""
+      },
+      {
+        "gene": "LOC114294064",
+        "delta_tfa": -0.0007074372842907906,
+        "abs_delta": 0.0007074372842907906,
+        "family": ""
+      },
+      {
+        "gene": "LOC114300717",
+        "delta_tfa": -0.0005940083065070212,
+        "abs_delta": 0.0005940083065070212,
+        "family": ""
+      },
+      {
+        "gene": "LOC114258580",
+        "delta_tfa": -0.0004210276820231229,
+        "abs_delta": 0.0004210276820231229,
+        "family": ""
+      },
+      {
+        "gene": "LOC114321209",
+        "delta_tfa": 0.00039279565680772066,
+        "abs_delta": 0.00039279565680772066,
+        "family": ""
+      },
+      {
+        "gene": "LOC114284088",
+        "delta_tfa": 0.0003859125426970422,
+        "abs_delta": 0.0003859125426970422,
+        "family": ""
+      },
+      {
+        "gene": "LOC114267438",
+        "delta_tfa": 0.0003812027571257204,
+        "abs_delta": 0.0003812027571257204,
+        "family": ""
+      },
+      {
+        "gene": "LOC114262612",
+        "delta_tfa": -0.00036622199695557356,
+        "abs_delta": 0.00036622199695557356,
+        "family": ""
+      },
+      {
+        "gene": "LOC114279736",
+        "delta_tfa": -0.00035021643270738423,
+        "abs_delta": 0.00035021643270738423,
+        "family": ""
+      },
+      {
+        "gene": "LOC114268760",
+        "delta_tfa": 0.0003113746643066406,
+        "abs_delta": 0.0003113746643066406,
+        "family": ""
+      },
+      {
+        "gene": "LOC114265459",
+        "delta_tfa": -0.00028721161652356386,
+        "abs_delta": 0.00028721161652356386,
+        "family": ""
+      },
+      {
+        "gene": "LOC114256033",
+        "delta_tfa": -0.00028383731842041016,
+        "abs_delta": 0.00028383731842041016,
+        "family": ""
+      }
+    ],
+    "tobacco": [
+      {
+        "gene": "LOC107795081",
+        "delta_tfa": 7.564991847175406e-06,
+        "abs_delta": 7.564991847175406e-06,
+        "family": ""
+      },
+      {
+        "gene": "LOC107802931",
+        "delta_tfa": -8.457899269842528e-08,
+        "abs_delta": 8.457899269842528e-08,
+        "family": ""
+      },
+      {
+        "gene": "LOC107762610",
+        "delta_tfa": -4.339218051541138e-08,
+        "abs_delta": 4.339218051541138e-08,
+        "family": ""
+      },
+      {
+        "gene": "LOC107778042",
+        "delta_tfa": 1.0401010719363057e-08,
+        "abs_delta": 1.0401010719363057e-08,
+        "family": ""
+      },
+      {
+        "gene": "LOC107778750",
+        "delta_tfa": -2.980232380322967e-11,
+        "abs_delta": 2.980232380322967e-11,
+        "family": ""
+      },
+      {
+        "gene": "LOC107808400",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107809390",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107809388",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107809033",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107759135",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107808040",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107810059",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107808010",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107807956",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107807704",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107807392",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107810005",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107810730",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107810510",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "LOC107810696",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      }
+    ],
+    "tomato": [
+      {
+        "gene": "Solyc04g005280",
+        "delta_tfa": 2.9921531677246094e-05,
+        "abs_delta": 2.9921531677246094e-05,
+        "family": ""
+      },
+      {
+        "gene": "Solyc11g065840",
+        "delta_tfa": 2.7000904083251953e-05,
+        "abs_delta": 2.7000904083251953e-05,
+        "family": ""
+      },
+      {
+        "gene": "Solyc11g010570",
+        "delta_tfa": 2.2172927856445312e-05,
+        "abs_delta": 2.2172927856445312e-05,
+        "family": ""
+      },
+      {
+        "gene": "Solyc10g084180",
+        "delta_tfa": 2.0205974578857422e-05,
+        "abs_delta": 2.0205974578857422e-05,
+        "family": ""
+      },
+      {
+        "gene": "Solyc08g076930",
+        "delta_tfa": 1.5043527128000278e-05,
+        "abs_delta": 1.5043527128000278e-05,
+        "family": ""
+      },
+      {
+        "gene": "Solyc12g077540",
+        "delta_tfa": 1.3679265975952148e-05,
+        "abs_delta": 1.3679265975952148e-05,
+        "family": ""
+      },
+      {
+        "gene": "Solyc06g005680",
+        "delta_tfa": 1.3182103430153802e-05,
+        "abs_delta": 1.3182103430153802e-05,
+        "family": ""
+      },
+      {
+        "gene": "Solyc02g085580",
+        "delta_tfa": 1.3142824172973633e-05,
+        "abs_delta": 1.3142824172973633e-05,
+        "family": ""
+      },
+      {
+        "gene": "Solyc10g047640",
+        "delta_tfa": 9.657353075454012e-06,
+        "abs_delta": 9.657353075454012e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc09g089870",
+        "delta_tfa": 9.597167263564188e-06,
+        "abs_delta": 9.597167263564188e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc08g006320",
+        "delta_tfa": 9.012312148115598e-06,
+        "abs_delta": 9.012312148115598e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc06g072310",
+        "delta_tfa": 8.285045623779297e-06,
+        "abs_delta": 8.285045623779297e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc02g067310",
+        "delta_tfa": 5.304575097397901e-06,
+        "abs_delta": 5.304575097397901e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc03g122030",
+        "delta_tfa": 4.945129148836713e-06,
+        "abs_delta": 4.945129148836713e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc06g071230",
+        "delta_tfa": -4.1983125811384525e-06,
+        "abs_delta": 4.1983125811384525e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc10g080310",
+        "delta_tfa": 4.097729743079981e-06,
+        "abs_delta": 4.097729743079981e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc11g008830",
+        "delta_tfa": 3.845006176561583e-06,
+        "abs_delta": 3.845006176561583e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc09g066260",
+        "delta_tfa": 3.725290298461914e-06,
+        "abs_delta": 3.725290298461914e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc08g048390",
+        "delta_tfa": 2.771884282992687e-06,
+        "abs_delta": 2.771884282992687e-06,
+        "family": ""
+      },
+      {
+        "gene": "Solyc07g063420",
+        "delta_tfa": 2.7679204777086852e-06,
+        "abs_delta": 2.7679204777086852e-06,
+        "family": ""
+      }
+    ],
+    "wheat": [
+      {
+        "gene": "TraesCS1A02G083100",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G068800",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5B02G406300",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5B02G445900",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5B02G508800",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5B02G512800",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5B02G565300",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G027700",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G113300",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G386500",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G116100",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G164600",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G183100",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G318300",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G323100",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5D02G335700",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5B02G406000",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5B02G358600",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5B02G317400",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      },
+      {
+        "gene": "TraesCS5B02G315600",
+        "delta_tfa": 0.0,
+        "abs_delta": 0.0,
+        "family": ""
+      }
+    ]
+  },
+  "v8": {
+    "summary": [
+      {
+        "set": "CRA024497",
+        "context": "nobulk",
+        "variant": "A_only",
+        "type_r": -0.002,
+        "type_r_sd": 0.0,
+        "spec_r": 0.064,
+        "spec_r_sd": 0.0,
+        "shift": -0.473,
+        "comp_r": null,
+        "ctx_vs_obs_lfc_r": -0.017
+      },
+      {
+        "set": "CRA024497",
+        "context": "nobulk",
+        "variant": "bulk_only",
+        "type_r": 0.007,
+        "type_r_sd": 0.01,
+        "spec_r": 0.007,
+        "spec_r_sd": 0.01,
+        "shift": -0.536,
+        "comp_r": -0.046,
+        "ctx_vs_obs_lfc_r": -0.017
+      },
+      {
+        "set": "CRA024497",
+        "context": "nobulk",
+        "variant": "full",
+        "type_r": 0.021,
+        "type_r_sd": 0.001,
+        "spec_r": 0.007,
+        "spec_r_sd": 0.002,
+        "shift": -0.408,
+        "comp_r": 0.847,
+        "ctx_vs_obs_lfc_r": -0.017
+      },
+      {
+        "set": "CRA024497",
+        "context": "nobulk",
+        "variant": "sc_only",
+        "type_r": 0.027,
+        "type_r_sd": 0.001,
+        "spec_r": -0.0,
+        "spec_r_sd": 0.003,
+        "shift": -0.694,
+        "comp_r": -0.367,
+        "ctx_vs_obs_lfc_r": -0.017
+      },
+      {
+        "set": "CRA024497",
+        "context": "oracle",
+        "variant": "A_only",
+        "type_r": 0.538,
+        "type_r_sd": 0.0,
+        "spec_r": -0.102,
+        "spec_r_sd": 0.0,
+        "shift": -1.147,
+        "comp_r": null,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "CRA024497",
+        "context": "oracle",
+        "variant": "bulk_only",
+        "type_r": 0.531,
+        "type_r_sd": 0.002,
+        "spec_r": -0.007,
+        "spec_r_sd": 0.013,
+        "shift": -1.21,
+        "comp_r": 0.24,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "CRA024497",
+        "context": "oracle",
+        "variant": "full",
+        "type_r": 0.37,
+        "type_r_sd": 0.006,
+        "spec_r": -0.004,
+        "spec_r_sd": 0.002,
+        "shift": -1.692,
+        "comp_r": 0.383,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "CRA024497",
+        "context": "oracle",
+        "variant": "sc_only",
+        "type_r": 0.252,
+        "type_r_sd": 0.018,
+        "spec_r": -0.004,
+        "spec_r_sd": 0.003,
+        "shift": -1.915,
+        "comp_r": -0.618,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE235495",
+        "context": "nobulk",
+        "variant": "A_only",
+        "type_r": -0.131,
+        "type_r_sd": 0.0,
+        "spec_r": -0.34,
+        "spec_r_sd": 0.0,
+        "shift": -0.201,
+        "comp_r": null,
+        "ctx_vs_obs_lfc_r": -0.065
+      },
+      {
+        "set": "GSE235495",
+        "context": "nobulk",
+        "variant": "bulk_only",
+        "type_r": -0.121,
+        "type_r_sd": 0.007,
+        "spec_r": -0.012,
+        "spec_r_sd": 0.049,
+        "shift": -0.192,
+        "comp_r": 0.59,
+        "ctx_vs_obs_lfc_r": -0.065
+      },
+      {
+        "set": "GSE235495",
+        "context": "nobulk",
+        "variant": "full",
+        "type_r": -0.074,
+        "type_r_sd": 0.005,
+        "spec_r": -0.067,
+        "spec_r_sd": 0.009,
+        "shift": -0.441,
+        "comp_r": -0.671,
+        "ctx_vs_obs_lfc_r": -0.065
+      },
+      {
+        "set": "GSE235495",
+        "context": "nobulk",
+        "variant": "sc_only",
+        "type_r": -0.019,
+        "type_r_sd": 0.003,
+        "spec_r": 0.02,
+        "spec_r_sd": 0.01,
+        "shift": -0.331,
+        "comp_r": 0.781,
+        "ctx_vs_obs_lfc_r": -0.065
+      },
+      {
+        "set": "GSE235495",
+        "context": "oracle",
+        "variant": "A_only",
+        "type_r": 0.608,
+        "type_r_sd": 0.0,
+        "spec_r": -0.298,
+        "spec_r_sd": 0.0,
+        "shift": 0.08,
+        "comp_r": null,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE235495",
+        "context": "oracle",
+        "variant": "bulk_only",
+        "type_r": 0.609,
+        "type_r_sd": 0.001,
+        "spec_r": -0.12,
+        "spec_r_sd": 0.033,
+        "shift": 0.101,
+        "comp_r": 0.621,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE235495",
+        "context": "oracle",
+        "variant": "full",
+        "type_r": 0.484,
+        "type_r_sd": 0.017,
+        "spec_r": 0.11,
+        "spec_r_sd": 0.017,
+        "shift": 0.176,
+        "comp_r": 0.698,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE235495",
+        "context": "oracle",
+        "variant": "sc_only",
+        "type_r": 0.4,
+        "type_r_sd": 0.015,
+        "spec_r": 0.124,
+        "spec_r_sd": 0.012,
+        "shift": 0.07,
+        "comp_r": 0.697,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE273033",
+        "context": "companion",
+        "variant": "A_only",
+        "type_r": 0.1,
+        "type_r_sd": 0.0,
+        "spec_r": 0.092,
+        "spec_r_sd": 0.0,
+        "shift": -0.271,
+        "comp_r": null,
+        "ctx_vs_obs_lfc_r": 0.245
+      },
+      {
+        "set": "GSE273033",
+        "context": "companion",
+        "variant": "bulk_only",
+        "type_r": 0.099,
+        "type_r_sd": 0.001,
+        "spec_r": 0.045,
+        "spec_r_sd": 0.042,
+        "shift": -0.206,
+        "comp_r": 0.2,
+        "ctx_vs_obs_lfc_r": 0.245
+      },
+      {
+        "set": "GSE273033",
+        "context": "companion",
+        "variant": "full",
+        "type_r": 0.086,
+        "type_r_sd": 0.003,
+        "spec_r": 0.01,
+        "spec_r_sd": 0.013,
+        "shift": -0.786,
+        "comp_r": -0.242,
+        "ctx_vs_obs_lfc_r": 0.245
+      },
+      {
+        "set": "GSE273033",
+        "context": "companion",
+        "variant": "sc_only",
+        "type_r": 0.073,
+        "type_r_sd": 0.003,
+        "spec_r": 0.015,
+        "spec_r_sd": 0.013,
+        "shift": -1.071,
+        "comp_r": 0.396,
+        "ctx_vs_obs_lfc_r": 0.245
+      },
+      {
+        "set": "GSE273033",
+        "context": "nobulk",
+        "variant": "A_only",
+        "type_r": 0.085,
+        "type_r_sd": 0.0,
+        "spec_r": 0.086,
+        "spec_r_sd": 0.0,
+        "shift": 0.076,
+        "comp_r": null,
+        "ctx_vs_obs_lfc_r": 0.186
+      },
+      {
+        "set": "GSE273033",
+        "context": "nobulk",
+        "variant": "bulk_only",
+        "type_r": 0.081,
+        "type_r_sd": 0.003,
+        "spec_r": 0.033,
+        "spec_r_sd": 0.023,
+        "shift": 0.067,
+        "comp_r": 0.041,
+        "ctx_vs_obs_lfc_r": 0.186
+      },
+      {
+        "set": "GSE273033",
+        "context": "nobulk",
+        "variant": "full",
+        "type_r": 0.069,
+        "type_r_sd": 0.002,
+        "spec_r": 0.009,
+        "spec_r_sd": 0.017,
+        "shift": -0.011,
+        "comp_r": -0.46,
+        "ctx_vs_obs_lfc_r": 0.186
+      },
+      {
+        "set": "GSE273033",
+        "context": "nobulk",
+        "variant": "sc_only",
+        "type_r": 0.049,
+        "type_r_sd": 0.002,
+        "spec_r": 0.018,
+        "spec_r_sd": 0.014,
+        "shift": -0.367,
+        "comp_r": 0.499,
+        "ctx_vs_obs_lfc_r": 0.186
+      },
+      {
+        "set": "GSE273033",
+        "context": "oracle",
+        "variant": "A_only",
+        "type_r": 0.524,
+        "type_r_sd": 0.0,
+        "spec_r": -0.105,
+        "spec_r_sd": 0.0,
+        "shift": 0.068,
+        "comp_r": null,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE273033",
+        "context": "oracle",
+        "variant": "bulk_only",
+        "type_r": 0.515,
+        "type_r_sd": 0.003,
+        "spec_r": 0.018,
+        "spec_r_sd": 0.031,
+        "shift": 0.121,
+        "comp_r": 0.548,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE273033",
+        "context": "oracle",
+        "variant": "full",
+        "type_r": 0.323,
+        "type_r_sd": 0.005,
+        "spec_r": 0.026,
+        "spec_r_sd": 0.014,
+        "shift": -0.521,
+        "comp_r": 0.977,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE273033",
+        "context": "oracle",
+        "variant": "sc_only",
+        "type_r": 0.28,
+        "type_r_sd": 0.009,
+        "spec_r": 0.019,
+        "spec_r_sd": 0.014,
+        "shift": -0.74,
+        "comp_r": 0.962,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE313726",
+        "context": "nobulk",
+        "variant": "A_only",
+        "type_r": 0.271,
+        "type_r_sd": 0.0,
+        "spec_r": 0.037,
+        "spec_r_sd": 0.0,
+        "shift": -0.533,
+        "comp_r": null,
+        "ctx_vs_obs_lfc_r": 0.383
+      },
+      {
+        "set": "GSE313726",
+        "context": "nobulk",
+        "variant": "bulk_only",
+        "type_r": 0.266,
+        "type_r_sd": 0.001,
+        "spec_r": 0.013,
+        "spec_r_sd": 0.012,
+        "shift": -0.564,
+        "comp_r": 0.222,
+        "ctx_vs_obs_lfc_r": 0.383
+      },
+      {
+        "set": "GSE313726",
+        "context": "nobulk",
+        "variant": "full",
+        "type_r": 0.229,
+        "type_r_sd": 0.005,
+        "spec_r": 0.008,
+        "spec_r_sd": 0.006,
+        "shift": -0.583,
+        "comp_r": -0.179,
+        "ctx_vs_obs_lfc_r": 0.383
+      },
+      {
+        "set": "GSE313726",
+        "context": "nobulk",
+        "variant": "sc_only",
+        "type_r": 0.121,
+        "type_r_sd": 0.007,
+        "spec_r": -0.003,
+        "spec_r_sd": 0.003,
+        "shift": -0.583,
+        "comp_r": -0.023,
+        "ctx_vs_obs_lfc_r": 0.383
+      },
+      {
+        "set": "GSE313726",
+        "context": "oracle",
+        "variant": "A_only",
+        "type_r": 0.691,
+        "type_r_sd": 0.0,
+        "spec_r": -0.048,
+        "spec_r_sd": 0.0,
+        "shift": -0.518,
+        "comp_r": null,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE313726",
+        "context": "oracle",
+        "variant": "bulk_only",
+        "type_r": 0.684,
+        "type_r_sd": 0.002,
+        "spec_r": -0.001,
+        "spec_r_sd": 0.016,
+        "shift": -0.518,
+        "comp_r": 0.182,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE313726",
+        "context": "oracle",
+        "variant": "full",
+        "type_r": 0.588,
+        "type_r_sd": 0.01,
+        "spec_r": -0.001,
+        "spec_r_sd": 0.007,
+        "shift": -0.486,
+        "comp_r": -0.239,
+        "ctx_vs_obs_lfc_r": 1.0
+      },
+      {
+        "set": "GSE313726",
+        "context": "oracle",
+        "variant": "sc_only",
+        "type_r": 0.408,
+        "type_r_sd": 0.018,
+        "spec_r": -0.004,
+        "spec_r_sd": 0.001,
+        "shift": -0.548,
+        "comp_r": 0.049,
+        "ctx_vs_obs_lfc_r": 1.0
+      }
+    ],
+    "internal": [
+      {
+        "variant": "A_only",
+        "type_r": 0.3049618948291066,
+        "spec_r": -0.048549798204750076,
+        "comp_r": 0.09251618145297462
+      },
+      {
+        "variant": "bulk_only",
+        "type_r": 0.2972090763630726,
+        "spec_r": -0.0022414340678307038,
+        "comp_r": 0.42242194739186734
+      },
+      {
+        "variant": "sc_only",
+        "type_r": 0.6057465183798985,
+        "spec_r": 0.5335679284987911,
+        "comp_r": 0.9105019005913261
+      },
+      {
+        "variant": "full",
+        "type_r": 0.6093944408880767,
+        "spec_r": 0.5348170297921344,
+        "comp_r": 0.9224460079081253
+      }
+    ]
+  },
+  "coverage": {
+    "prediction_species": [
+      "alfalfa",
+      "arabidopsis",
+      "banana",
+      "barley",
+      "broccoli",
+      "cabbage",
+      "cassava",
+      "cotton",
+      "grape",
+      "kiwifruit",
+      "maize",
+      "peanut",
+      "potato",
+      "rape",
+      "rice",
+      "sorghum",
+      "soybean",
+      "tea",
+      "tobacco",
+      "tomato",
+      "wheat"
+    ],
+    "trajectory_species": [
+      "rice"
+    ],
+    "grn_species": [
+      "rice"
+    ],
+    "perturbation_species": [
+      "arabidopsis",
+      "cabbage",
+      "rice",
+      "tobacco",
+      "tomato"
+    ],
+    "celloracle_datasets": [
+      "arabidopsis_leaf",
+      "arabidopsis_ovule",
+      "arabidopsis_root",
+      "cabbage_leaf",
+      "cabbage_shoot",
+      "tobacco_root",
+      "tobacco_whole_seedling",
+      "tomato_shoot_apex"
+    ]
+  },
+  "notes": {
+    "model_eval": "v8 模型的外部验证仍有限；模型输出为计算预测，不作为实验证据。",
+    "communication": "细胞通讯结果为基于表达的推断，细胞不是独立生物学重复。",
+    "perturbation": "基因扰动为模型内模拟，不是实验验证。"
+  },
+  "mode": "static"
+}
