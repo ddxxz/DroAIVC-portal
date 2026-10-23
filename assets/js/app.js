@@ -505,7 +505,7 @@
               <span class="line2">从单细胞图谱，到干旱响应预测</span>
             </h1>
             <p class="hero-lead">
-              汇集 21 个物种的单细胞转录组图谱与干旱/对照 bulk 数据，把质控、注释、轨迹、基因调控网络、细胞通讯与虚拟细胞模型放在同一个可交互门户中。每张图都保留原始路径与图注，网站本身不复制、不改动源结果。
+              ${S.site.mode === 'static' ? '汇集 21 个物种的单细胞转录组图谱与干旱/对照 bulk 数据，把质控、注释、轨迹、基因调控网络、细胞通讯与虚拟细胞模型放在同一个可交互门户中。公开静态版把原始图件导出为优化 JPEG，保留图注、模块与物种信息。' : '汇集 21 个物种的单细胞转录组图谱与干旱/对照 bulk 数据，把质控、注释、轨迹、基因调控网络、细胞通讯与虚拟细胞模型放在同一个可交互门户中。每张图都保留原始路径与图注，网站本身不复制、不改动源结果。'}
             </p>
             <div class="hero-actions">
               <a class="btn primary" href="#/atlas">进入单细胞图谱 ${ICONS.arrow}</a>
@@ -516,7 +516,7 @@
               <div class="stat"><div class="stat-value">${totals.species}<span class="unit">种</span></div><div class="stat-label">物种覆盖</div></div>
               <div class="stat"><div class="stat-value">${compact(totals.atlas_cells)}<span class="unit">cells</span></div><div class="stat-label">单细胞图谱</div></div>
               <div class="stat"><div class="stat-value">${compact(totals.bulk_samples)}<span class="unit">bulk</span></div><div class="stat-label">干旱/对照样本</div></div>
-              <div class="stat"><div class="stat-value">${compact(totals.figures)}<span class="unit">figures</span></div><div class="stat-label">图件与源表索引</div></div>
+              <div class="stat"><div class="stat-value">${compact(totals.figures)}<span class="unit">figures</span></div><div class="stat-label">${S.site.mode === 'static' ? '图件索引' : '图件与源表索引'}</div></div>
             </div>
             <div class="hero-note">${S.site.mode === 'static' ? `公开静态版 · 图件已导出为优化 JPEG${S.site.release_url ? ' · 完整原始文件见数据包' : ''}` : `数据生成时间 ${esc(formatDate(S.site.generated_at))} · 图件通过软链接读取，源目录保持不变`}</div>
           </div>
@@ -535,7 +535,7 @@
             ${moduleCard('single-cell', '单细胞转录组图谱', '21 物种的质控、降维、聚类、注释、DEG、拟时序、GRN、细胞通讯、细胞状态与 bulk 反卷积。', `${fmtInt(totals.atlas_figures)} 图件`, '#/atlas', ICONS.cell)}
             ${moduleCard('virtual', '抗旱虚拟细胞', '正常 → 干旱的单细胞预测、动态细胞状态轨迹、基因网络轨迹与基因扰动效应。', `${fmtInt(totals.virtual_figures)} 图件`, '#/virtual', ICONS.flask)}
             ${moduleCard('pattern', '正常 vs 干旱规律', '跨物种信号强度、细胞状态条件关联、bulk 细胞组成与干旱响应保守性。', '21 物种', '#/virtual/pattern', ICONS.chart)}
-            ${moduleCard('gallery', '全图库', '按物种、模块、类别和关键词检索全部图件；支持 PNG / SVG / PDF 与原始路径复制。', `${fmtInt(totals.figures)} 图件`, '#/gallery', ICONS.grid)}
+            ${moduleCard('gallery', '全图库', S.site.mode === 'static' ? '按物种、模块、类别和关键词检索全部图件；支持 JPG / PDF 查看与下载。' : '按物种、模块、类别和关键词检索全部图件；支持 PNG / SVG / PDF 与原始路径复制。', `${fmtInt(totals.figures)} 图件`, '#/gallery', ICONS.grid)}
           </div>
         </section>
 
