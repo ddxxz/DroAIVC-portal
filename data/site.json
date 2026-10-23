@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T19:21:43+08:00",
+  "generated_at": "2026-10-23T21:51:34+08:00",
   "species": [
     {
       "key": "alfalfa",
@@ -360,7 +360,7 @@
       "group": "轨迹与调控",
       "desc": "伪时序/轨迹参考分析：谱系结构、已知基因动态与工具一致性；作为虚拟细胞轨迹的先验参考。",
       "order": 9,
-      "figure_count": 144,
+      "figure_count": 159,
       "categories": [
         {
           "name": "拟时序参考轨迹",
@@ -372,7 +372,7 @@
         },
         {
           "name": "拟时序主图",
-          "count": 2
+          "count": 17
         }
       ]
     },
@@ -382,11 +382,11 @@
       "group": "轨迹与调控",
       "desc": "pySCENIC regulon、共表达模块、hub TF、RSS 排序与 CellOracle 虚拟敲除。",
       "order": 10,
-      "figure_count": 173,
+      "figure_count": 188,
       "categories": [
         {
           "name": "CellOracle 虚拟敲除",
-          "count": 35
+          "count": 50
         },
         {
           "name": "Regulon 特异性排序 (RSS)",
@@ -664,7 +664,7 @@
       "icon": "perturbation",
       "order": 5,
       "desc": "CellOracle 虚拟敲除与水稻模型扰动：TF 活性、表达变化与潜空间位移。",
-      "figure_count": 66
+      "figure_count": 81
     },
     {
       "key": "evaluation",
@@ -681,9 +681,9 @@
     "model_cells": 5579934,
     "bulk_samples": 12455,
     "grn_edges": 6232084,
-    "figures": 1820,
-    "atlas_figures": 1668,
-    "virtual_figures": 196,
+    "figures": 1850,
+    "atlas_figures": 1698,
+    "virtual_figures": 211,
     "atlas_modules": 14
   },
   "coverage": {
@@ -718,20 +718,30 @@
     ],
     "perturbation_species": [
       "arabidopsis",
+      "banana",
       "cabbage",
+      "cassava",
+      "cotton",
+      "rape",
       "rice",
       "tobacco",
-      "tomato"
+      "tomato",
+      "wheat"
     ],
     "celloracle_datasets": [
       "arabidopsis_leaf",
       "arabidopsis_ovule",
       "arabidopsis_root",
+      "banana_root",
       "cabbage_leaf",
       "cabbage_shoot",
+      "cassava_root",
+      "cotton_ovule_fibre",
+      "rape_leaf",
       "tobacco_root",
       "tobacco_whole_seedling",
-      "tomato_shoot_apex"
+      "tomato_shoot_apex",
+      "wheat_root"
     ]
   },
   "notes": {

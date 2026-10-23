@@ -2061,6 +2061,7 @@
             <div class="method-block">
               <h3>更新方式</h3>
               <p>在本地 DroAIVC 结果更新后，重新运行静态导出脚本，然后把 <code>public_site</code> 内容推送到 GitHub Pages 仓库。图件清单与交互数据会自动重新生成。</p>
+              <p>本地 <code>AIVC_web/update_public.sh</code> 已封装“重扫 → 导出 → 提交 → 推送 → 等待 Pages”的完整流程。</p>
               <div class="callout info">公开版的数据规模：${fmtInt(totals.figures)} 张唯一图件；${(coverage.prediction_species || []).length} / 21 物种已有干旱预测；深度轨迹/GRN 轨迹当前完成水稻。</div>
             </div>
           </div>
@@ -2163,6 +2164,7 @@
                 <div class="lb-source">python3 AIVC_web/tools/build_site_data.py<br>cd AIVC_web && ./start.sh</div>
               </div></details>
               <p style="margin-top:12px">启动后打开 <code>http://127.0.0.1:8765/</code>。建议通过本地服务器访问，不要直接双击 HTML（浏览器会限制本地文件读取）。</p>
+              <p style="margin-top:8px">同步到公开 GitHub Pages：运行 <code>./update_public.sh</code>，会重扫、导出静态图件、提交并推送。</p>
               <p>若需让局域网其他机器访问：<code>./start.sh --host 0.0.0.0 --port 8765</code>。</p>
             </div>
           </div>

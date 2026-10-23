@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T18:47:00+08:00",
+  "generated_at": "2026-10-23T21:48:41+08:00",
   "species": [
     {
       "key": "alfalfa",
@@ -470,9 +470,9 @@
     "model_cells": 5579934,
     "bulk_samples": 12455,
     "grn_edges": 6232084,
-    "figures": 1820,
-    "atlas_figures": 1668,
-    "virtual_figures": 196,
+    "figures": 1850,
+    "atlas_figures": 1698,
+    "virtual_figures": 211,
     "atlas_modules": 14
   },
   "top_tfs": {
@@ -3533,20 +3533,30 @@
     ],
     "perturbation_species": [
       "arabidopsis",
+      "banana",
       "cabbage",
+      "cassava",
+      "cotton",
+      "rape",
       "rice",
       "tobacco",
-      "tomato"
+      "tomato",
+      "wheat"
     ],
     "celloracle_datasets": [
       "arabidopsis_leaf",
       "arabidopsis_ovule",
       "arabidopsis_root",
+      "banana_root",
       "cabbage_leaf",
       "cabbage_shoot",
+      "cassava_root",
+      "cotton_ovule_fibre",
+      "rape_leaf",
       "tobacco_root",
       "tobacco_whole_seedling",
-      "tomato_shoot_apex"
+      "tomato_shoot_apex",
+      "wheat_root"
     ]
   },
   "notes": {
