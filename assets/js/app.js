@@ -2185,7 +2185,7 @@
         </section>
       </div>`;
   }
-  let ROOT_PATH = '/home/win/4T/GeneDL/data_output/DroAIVC';
+  let ROOT_PATH = 'DroAIVC 结果目录';
 
   /* ---------------- lightbox ---------------- */
   function openLightbox(list, index) {
