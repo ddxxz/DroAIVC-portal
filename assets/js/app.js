@@ -573,12 +573,6 @@
           <div id="home-highlights"></div>
         </section>
 
-        <section class="section">
-          <div class="callout warn">
-            <strong>解释边界：</strong>细胞通讯、拟时序、GRN 与基因扰动均为计算推断；模型输出不是实验证据。v8 模型的外部验证仍有限，网站按原始评估结果展示，不将模型预测解释为已验证的生物学结论。
-            <div style="margin-top:10px"><a class="btn tiny ghost" href="#/virtual/evaluation">查看模型评估与边界 ${ICONS.arrow}</a></div>
-          </div>
-        </section>
       </div>`;
     renderHighlights();
     renderCoverageChart();
