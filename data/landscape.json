@@ -1,0 +1,227 @@
+{
+  "generated_at": "2026-10-24T16:27:59+08:00",
+  "bulk": {
+    "projects": 425,
+    "species": 21,
+    "control_samples": 4764,
+    "drought_samples": 5924,
+    "model_samples": 10688,
+    "site_total_samples": 12455,
+    "organs": [
+      {
+        "organ": "leaf",
+        "projects": 222
+      },
+      {
+        "organ": "unknown",
+        "projects": 111
+      },
+      {
+        "organ": "root",
+        "projects": 71
+      },
+      {
+        "organ": "shoot",
+        "projects": 21
+      }
+    ]
+  },
+  "normal_sc": {
+    "species": 21,
+    "cells": 5427550,
+    "modules": 14,
+    "figures": 1698
+  },
+  "virtual": {
+    "prediction_species": 21,
+    "prediction_figures": 84,
+    "perturbation_species": 10,
+    "perturbation_figures": 81,
+    "trajectory_species": 1,
+    "grn_species": 1,
+    "tabs": [
+      {
+        "key": "framework",
+        "name": "模型框架",
+        "figures": 2
+      },
+      {
+        "key": "prediction",
+        "name": "干旱细胞预测",
+        "figures": 84
+      },
+      {
+        "key": "trajectory",
+        "name": "细胞状态轨迹",
+        "figures": 9
+      },
+      {
+        "key": "grn",
+        "name": "基因网络轨迹",
+        "figures": 7
+      },
+      {
+        "key": "pattern",
+        "name": "正常-干旱规律",
+        "figures": 14
+      },
+      {
+        "key": "perturbation",
+        "name": "基因扰动效应",
+        "figures": 81
+      },
+      {
+        "key": "evaluation",
+        "name": "模型评估与边界",
+        "figures": 14
+      }
+    ]
+  },
+  "drought_sc": {
+    "species": 3,
+    "datasets": 6,
+    "cells": 1759124,
+    "control_cells": 314118,
+    "drought_cells": 1304744,
+    "cell_types": 19,
+    "species_list": [
+      "arabidopsis",
+      "rice",
+      "soybean"
+    ],
+    "dataset_rows": [
+      {
+        "species": "arabidopsis",
+        "study": "GSE220277",
+        "tissue": "leaf",
+        "cells": 666703,
+        "control_cells": 182384,
+        "drought_cells": 344057,
+        "cell_types": 8,
+        "resolved_fraction": 0.9617
+      },
+      {
+        "species": "arabidopsis",
+        "study": "GSE235495",
+        "tissue": "root",
+        "cells": 24474,
+        "control_cells": 10062,
+        "drought_cells": 14412,
+        "cell_types": 13,
+        "resolved_fraction": 0.9394
+      },
+      {
+        "species": "arabidopsis",
+        "study": "GSE273033",
+        "tissue": "leaf",
+        "cells": 50797,
+        "control_cells": 28201,
+        "drought_cells": 22596,
+        "cell_types": 8,
+        "resolved_fraction": 0.988
+      },
+      {
+        "species": "arabidopsis",
+        "study": "GSE290214",
+        "tissue": "seedling",
+        "cells": 893922,
+        "control_cells": 20743,
+        "drought_cells": 873179,
+        "cell_types": 17,
+        "resolved_fraction": 0.8954
+      },
+      {
+        "species": "rice",
+        "study": "GSE313726",
+        "tissue": "leaf",
+        "cells": 83897,
+        "control_cells": 36455,
+        "drought_cells": 47442,
+        "cell_types": 9,
+        "resolved_fraction": 0.8035
+      },
+      {
+        "species": "soybean",
+        "study": "CRA024497",
+        "tissue": "seed",
+        "cells": 39331,
+        "control_cells": 36273,
+        "drought_cells": 3058,
+        "cell_types": 8,
+        "resolved_fraction": 0.8548
+      }
+    ],
+    "modules": [
+      {
+        "key": "00_QC_normalization",
+        "name": "质控与标准化",
+        "status": "已接入"
+      },
+      {
+        "key": "01_hvg_selection",
+        "name": "高变基因",
+        "status": "待运行"
+      },
+      {
+        "key": "02_pca",
+        "name": "PCA 降维",
+        "status": "待运行"
+      },
+      {
+        "key": "03_harmony_batch_correction",
+        "name": "Harmony 批次校正",
+        "status": "待运行"
+      },
+      {
+        "key": "04_neighbor_graph",
+        "name": "近邻图",
+        "status": "待运行"
+      },
+      {
+        "key": "06_leiden_clustering",
+        "name": "UMAP 与 Leiden 聚类",
+        "status": "待运行"
+      },
+      {
+        "key": "07_marker_resolution_annotation",
+        "name": "Marker 与细胞注释",
+        "status": "待运行"
+      },
+      {
+        "key": "08_cell_composition",
+        "name": "细胞组成",
+        "status": "已接入"
+      },
+      {
+        "key": "09_celltype_DEG_and_enrichment",
+        "name": "细胞类型 DEG 与富集",
+        "status": "待运行"
+      },
+      {
+        "key": "10_pseudotime",
+        "name": "拟时序与轨迹参考",
+        "status": "待运行"
+      },
+      {
+        "key": "11_gene_regulatory_network",
+        "name": "基因调控网络",
+        "status": "待运行"
+      },
+      {
+        "key": "12_cell_communication",
+        "name": "细胞通讯",
+        "status": "待运行"
+      },
+      {
+        "key": "13_cell_states_ecotypes",
+        "name": "细胞状态与生态型",
+        "status": "待运行"
+      },
+      {
+        "key": "14_bulk_deconvolution",
+        "name": "bulk 反卷积",
+        "status": "待运行"
+      }
+    ]
+  }
+}

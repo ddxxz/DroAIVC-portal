@@ -195,6 +195,7 @@
   }
   async function ensureAtlas() { if (!S.atlas) S.atlas = await loadJSON('atlas.json'); return S.atlas; }
   async function ensureVirtual() { if (!S.virtual) S.virtual = await loadJSON('virtual.json'); return S.virtual; }
+  async function ensureLandscape() { if (!S.landscape) S.landscape = await loadJSON('landscape.json'); return S.landscape; }
   async function ensureInteractive() { if (!S.interactive) S.interactive = await loadJSON('interactive.json'); return S.interactive; }
   async function ensureAllFigures() {
     if (S.allFigures) return S.allFigures;
@@ -404,7 +405,7 @@
     const name = S.route.name;
     $$('.nav-link').forEach((a) => {
       const k = a.dataset.nav;
-      const active = k === name || (name === 'species' && k === 'atlas') || (name === 'gallery' && k === 'gallery');
+      const active = k === name || (name === 'species' && k === 'atlas') || (name === 'drought' && k === 'atlas') || (name === 'design' && k === 'virtual') || (name === 'gallery' && k === 'gallery');
       a.classList.toggle('active', !!active);
     });
     const nav = $('#main-nav');
@@ -448,6 +449,10 @@
       S.gallery.limit = 36;
     } else if (parts[0] === 'methods') {
       route = { name: 'methods', module: null, tab: null };
+    } else if (parts[0] === 'drought') {
+      route = { name: 'drought', module: null, tab: null };
+    } else if (parts[0] === 'design') {
+      route = { name: 'design', module: null, tab: null };
     } else if (parts[0] === 'species' && parts[1]) {
       route = { name: 'species', module: null, tab: null, species: parts[1] };
     }
@@ -462,6 +467,8 @@
       else if (route.name === 'virtual') await (route.tab ? renderVirtualTab(route.tab) : renderVirtualOverview());
       else if (route.name === 'gallery') await renderGallery();
       else if (route.name === 'methods') renderMethods();
+      else if (route.name === 'drought') await renderDrought();
+      else if (route.name === 'design') await renderDesign();
       else if (route.name === 'species') await renderSpecies(route.species);
       else await renderHome();
     } catch (err) {
@@ -488,13 +495,17 @@
     if (route.name === 'virtual') return `${route.tab ? (S.tabByKey.get(route.tab)?.name || '虚拟细胞') + ' · ' : ''}虚拟细胞 · ${base}`;
     if (route.name === 'gallery') return `全图库 · ${base}`;
     if (route.name === 'methods') return `方法与数据 · ${base}`;
+    if (route.name === 'drought') return `干旱单细胞规律探索 · ${base}`;
+    if (route.name === 'design') return `耐旱状态设计 · ${base}`;
     if (route.name === 'species') return `${speciesName(route.species)} · ${base}`;
     return base;
   }
 
   /* ---------------- home ---------------- */
   async function renderHome() {
+    await ensureLandscape();
     const totals = S.site.totals;
+    const L = S.landscape;
     view.innerHTML = `
       <div class="page">
         <section class="hero">
@@ -528,28 +539,63 @@
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">Explore</div><h2 class="section-title">四个入口，覆盖从图谱到模型</h2></div>
-            <a class="btn tiny ghost" href="#/methods">查看数据与方法 ${ICONS.arrow}</a>
+            <div><div class="section-kicker">01 · Data</div><h2 class="section-title">数据底座：正常与干旱转录组</h2><p class="section-desc">先看数据，再看模型。正常/干旱 bulk、正常单细胞图谱，以及 14 个分析模块产出的结果。</p></div>
+            <a class="btn tiny ghost" href="#/methods">数据来源与方法 ${ICONS.arrow}</a>
           </div>
           <div class="module-grid">
-            ${moduleCard('single-cell', '单细胞转录组图谱', '21 物种的质控、降维、聚类、注释、DEG、拟时序、GRN、细胞通讯、细胞状态与 bulk 反卷积。', `${fmtInt(totals.atlas_figures)} 图件`, '#/atlas', ICONS.cell)}
-            ${moduleCard('virtual', '节水抗旱虚拟细胞', '正常 → 干旱的单细胞预测、动态细胞状态轨迹、基因网络轨迹与基因扰动效应。', `${fmtInt(totals.virtual_figures)} 图件`, '#/virtual', ICONS.flask)}
-            ${moduleCard('pattern', '正常 vs 干旱规律', '跨物种信号强度、细胞状态条件关联、bulk 细胞组成与干旱响应保守性。', '21 物种', '#/virtual/pattern', ICONS.chart)}
-            ${moduleCard('gallery', '全图库', S.site.mode === 'static' ? '按物种、模块、类别和关键词检索全部图件；支持在线查看与下载。' : '按物种、模块、类别和关键词检索全部图件；支持 PNG / SVG / PDF 与原始路径复制。', `${fmtInt(totals.figures)} 图件`, '#/gallery', ICONS.grid)}
+            ${moduleCard('bulk-normal', '正常 bulk 转录组', '对照条件下的批量 RNA-seq，覆盖 21 物种；为虚拟细胞提供正常表达上下文。', `${fmtInt(L.bulk.control_samples)} 样本`, '#/virtual/pattern', ICONS.layers)}
+            ${moduleCard('bulk-drought', '干旱 bulk 转录组', '干旱处理下的批量 RNA-seq；与正常 bulk 配对，提供干旱响应上下文。', `${fmtInt(L.bulk.drought_samples)} 样本`, '#/virtual/pattern', ICONS.chart)}
+            ${moduleCard('normal-sc', '正常单细胞转录组', '21 物种正常单细胞图谱：QC、降维、聚类、注释、GRN、通讯与细胞状态。', `${compact(L.normal_sc.cells)} cells`, '#/atlas', ICONS.cell)}
+            ${moduleCard('analysis', '分析结果', `正常图谱的 ${L.normal_sc.modules} 个分析模块与全图库；先看数据层，再进入模型层。`, `${fmtInt(L.normal_sc.figures)} 图`, '#/gallery', ICONS.grid)}
           </div>
         </section>
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">Pipeline</div><h2 class="section-title">从多物种数据到可交互虚拟细胞</h2><p class="section-desc">上游为 21 物种单细胞图谱；下游把 bulk 干旱上下文、跨物种直系同源映射与 GRN 先验组合成虚拟细胞模型。网站按模块展示每一层的可核查结果。</p></div>
+            <div><div class="section-kicker">02 · Virtual cell</div><h2 class="section-title">抗旱虚拟细胞：预测、扰动与设计</h2><p class="section-desc">输入正常/干旱 bulk 与正常单细胞，输出干旱单细胞、扰动效应和耐旱状态候选。</p></div>
+            <a class="btn tiny ghost" href="#/virtual">进入虚拟细胞 ${ICONS.arrow}</a>
           </div>
-          <div class="pipeline">
-            ${pipelineStep('01', '多物种数据', '21 物种 scRNA、bulk 干旱/对照与 GRN 先验；统一基因与直系同源群。', '21 species')}
-            ${pipelineStep('02', '图谱构建', 'QC、HVG、PCA、Harmony、近邻图、Leiden、marker 与细胞类型注释。', '5.43M cells')}
-            ${pipelineStep('03', '调控与通讯', 'pySCENIC regulon、hub TF、CellOracle、LIANA + CellChat 细胞通讯。', 'GRN / communication')}
-            ${pipelineStep('04', '跨物种对齐', '直系同源群映射、潜空间对齐与跨物种信号质量评估。', 'orthogroup / UOT')}
-            ${pipelineStep('05', '虚拟细胞模型', 'Transformer 编码 + 神经 ODE 轨迹 + 干旱上下文；输出预测与扰动。', 'v8 model')}
-            ${pipelineStep('06', '交互与验证', '预测生成、状态轨迹、网络轨迹、规律发现、扰动与模型边界。', 'interactive')}
+          <div class="virtual-grid">
+            <a class="virtual-card" href="#/virtual/prediction">
+              <span class="icon">${ICONS.spark}</span>
+              <h3>单细胞转录组生成</h3>
+              <p>输入正常/干旱 bulk 与正常 scRNA，生成干旱单细胞转录组；覆盖 21 物种。</p>
+              <div class="foot"><span>${L.virtual.prediction_species} 物种 · ${fmtInt(L.virtual.prediction_figures)} 图</span><span>进入 ↗</span></div>
+            </a>
+            <a class="virtual-card" href="#/virtual/perturbation">
+              <span class="icon">${ICONS.flask}</span>
+              <h3>基因扰动效应</h3>
+              <p>CellOracle 虚拟敲除与模型扰动：TF 活性、表达变化与潜空间位移。</p>
+              <div class="foot"><span>${L.virtual.perturbation_species} 物种 · ${fmtInt(L.virtual.perturbation_figures)} 图</span><span>进入 ↗</span></div>
+            </a>
+            <a class="virtual-card" href="#/design">
+              <span class="icon">${ICONS.layers}</span>
+              <h3>耐旱状态设计</h3>
+              <p>以目标耐旱状态为约束，结合 GRN 与扰动候选生成设计建议。</p>
+              <div class="foot"><span>设计入口 · 工作流</span><span>进入 ↗</span></div>
+            </a>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">03 · Drought scRNA</div><h2 class="section-title">干旱单细胞规律探索</h2><p class="section-desc">把正常图谱的分析逻辑迁移到干旱 scRNA：QC → HVG → PCA → Harmony → 聚类 → 注释 → DEG → 拟时序 → GRN → 通讯 → 状态 → 反卷积。</p></div>
+            <a class="btn tiny ghost" href="#/drought">进入干旱单细胞 ${ICONS.arrow}</a>
+          </div>
+          <div class="drought-band">
+            <div class="drought-stats">
+              <div class="drought-stat"><b>${L.drought_sc.species}</b><span>实测干旱物种</span></div>
+              <div class="drought-stat"><b>${compact(L.drought_sc.cells)}</b><span>干旱 scRNA 细胞</span></div>
+              <div class="drought-stat"><b>${L.drought_sc.datasets}</b><span>数据集</span></div>
+              <div class="drought-stat"><b>${L.drought_sc.cell_types}</b><span>细胞类型</span></div>
+              <div class="drought-stat"><b>${compact(L.drought_sc.control_cells)}</b><span>对照细胞</span></div>
+              <div class="drought-stat"><b>${compact(L.drought_sc.drought_cells)}</b><span>干旱细胞</span></div>
+            </div>
+            <div class="drought-modules">
+              ${L.drought_sc.modules.slice(0, 8).map((m) => `<span class="drought-chip">${esc(m.name)}</span>`).join('')}
+              <span class="drought-chip more">+ 其余 ${L.drought_sc.modules.length - 8} 模块</span>
+            </div>
+            <div class="drought-note">首批实测：拟南芥 / 水稻 / 大豆；其余 18 物种由虚拟细胞预测，见“单细胞转录组生成”。</div>
           </div>
         </section>
 
@@ -1146,6 +1192,146 @@
           <strong>模型边界：</strong>预测、轨迹、GRN 与扰动均为计算输出。v8 模型的外部验证仍有限；网站按原始评估结果展示，不将模型预测解释为已验证的生物学结论。
           <div style="margin-top:10px"><a class="btn tiny ghost" href="#/virtual/evaluation">查看完整评估 ${ICONS.arrow}</a></div>
         </div>
+      </div>`;
+  }
+
+  /* ---------------- drought scRNA ---------------- */
+  async function renderDrought() {
+    await ensureLandscape();
+    const D = S.landscape.drought_sc;
+    const rows = D.dataset_rows.map((r) => `<tr>
+      <td>${esc(speciesName(r.species))}</td>
+      <td><code>${esc(r.study)}</code></td>
+      <td>${esc(r.tissue || '—')}</td>
+      <td class="num">${fmtInt(r.cells)}</td>
+      <td class="num">${fmtInt(r.control_cells)}</td>
+      <td class="num">${fmtInt(r.drought_cells)}</td>
+      <td class="num">${r.cell_types}</td>
+      <td class="num">${r.resolved_fraction != null ? (r.resolved_fraction * 100).toFixed(1) + '%' : '—'}</td>
+    </tr>`).join('');
+    view.innerHTML = `
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <div class="eyebrow">Drought scRNA · ${D.species}-species pilot</div>
+            <h1 class="page-title">干旱单细胞<em>规律探索</em></h1>
+            <p class="page-lead">把正常单细胞图谱的分析逻辑迁移到干旱 scRNA：从 QC、降维、聚类、注释，到 DEG、拟时序、GRN、细胞通讯、细胞状态和 bulk 反卷积。首批接入 ${D.species} 个实测物种，其余物种通过虚拟细胞生成。</p>
+          </div>
+          <div class="page-actions">
+            <a class="btn primary" href="#/atlas">查看正常图谱流程 ${ICONS.arrow}</a>
+            <a class="btn ghost" href="#/virtual/prediction">21 物种干旱预测</a>
+          </div>
+        </div>
+        <div class="stat-grid six">
+          ${statBox(D.species, '实测干旱物种')}
+          ${statBox(compact(D.cells), '干旱 scRNA 细胞')}
+          ${statBox(D.datasets, '数据集')}
+          ${statBox(D.cell_types, '细胞类型')}
+          ${statBox(compact(D.control_cells), '对照细胞')}
+          ${statBox(compact(D.drought_cells), '干旱细胞')}
+        </div>
+
+        <section class="section">
+          <div class="callout info">
+            <strong>数据范围：</strong>当前实测干旱 scRNA 覆盖拟南芥、水稻、大豆 3 个物种；正常单细胞图谱覆盖 21 个物种。其余 18 个物种的干旱单细胞来自虚拟细胞预测，并非实测数据。
+            <div style="margin-top:10px"><a class="btn tiny ghost" href="#/virtual/prediction">查看预测数据 ${ICONS.arrow}</a></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Pipeline mirror</div><h2 class="section-title">14 个分析模块已对齐</h2><p class="section-desc">分析逻辑与正常图谱一致；QC 和细胞组成已接入，其余模块按同一流程迁移运行。</p></div>
+            <a class="btn tiny ghost" href="#/atlas">正常图谱模块 ${ICONS.arrow}</a>
+          </div>
+          <div class="drought-module-list">
+            ${D.modules.map((m) => `<div class="drought-module">
+              <span>${esc(m.name)}</span>
+              <span class="tag ${m.status === '已接入' ? 'teal' : 'gold'}">${esc(m.status)}</span>
+              <a href="#/atlas/${encode(m.key)}">正常流程</a>
+            </div>`).join('')}
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Datasets</div><h2 class="section-title">首批实测数据</h2><p class="section-desc">细胞数、正常/干旱条件与细胞类型解析情况；点击数据集可查看原始研究编号。</p></div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>物种</th><th>数据集</th><th>组织</th><th class="num">细胞</th><th class="num">对照</th><th class="num">干旱</th><th class="num">细胞类型</th><th class="num">解析率</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Next</div><h2 class="section-title">从数据到规律</h2><p class="section-desc">下一步在干旱 scRNA 上依次生成 QC/降维/聚类/注释、条件 DEG、拟时序、GRN、通讯与细胞状态结果，并与正常图谱逐层对照。</p></div>
+          </div>
+          <div class="framework-steps">
+            <div class="fw-step"><div class="n">01 · QC</div><h4>质控与标准化</h4><p>细胞/基因过滤、文库大小与线粒体比例；与正常图谱统一阈值。</p></div>
+            <div class="fw-step"><div class="n">02 · ANNOTATE</div><h4>聚类与注释</h4><p>HVG、PCA、Harmony、近邻图、Leiden、marker 与细胞类型。</p></div>
+            <div class="fw-step"><div class="n">03 · COMPARE</div><h4>干旱 vs 正常</h4><p>细胞组成、细胞类型 DEG、通路富集与跨物种保守性。</p></div>
+            <div class="fw-step"><div class="n">04 · REGULATE</div><h4>调控与状态</h4><p>GRN、细胞通讯、拟时序与细胞状态；为虚拟细胞提供验证。</p></div>
+          </div>
+        </section>
+      </div>`;
+  }
+
+  /* ---------------- drought-tolerant state design ---------------- */
+  async function renderDesign() {
+    await ensureLandscape();
+    const L = S.landscape;
+    const V = L.virtual;
+    view.innerHTML = `
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <div class="eyebrow">Drought-tolerant state · design</div>
+            <h1 class="page-title">耐旱状态<em>设计</em></h1>
+            <p class="page-lead">从预测的干旱细胞状态出发，结合基因调控网络与扰动效应，筛选把细胞推向目标耐旱状态的候选 TF/基因。这里是设计工作流入口；候选必须经过实验验证。</p>
+          </div>
+          <div class="page-actions">
+            <a class="btn primary" href="#/virtual/prediction">查看干旱状态 ${ICONS.arrow}</a>
+            <a class="btn ghost" href="#/virtual/perturbation">查看扰动证据</a>
+          </div>
+        </div>
+        <div class="stat-grid">
+          ${statBox(`${V.prediction_species} / 21`, '已有干旱预测')}
+          ${statBox(V.perturbation_species, '有扰动证据物种')}
+          ${statBox(V.grn_species, '深度 GRN 物种')}
+          ${statBox(fmtInt(V.perturbation_figures), '扰动图件')}
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Design loop</div><h2 class="section-title">三步设计闭环</h2><p class="section-desc">目标状态、候选扰动、状态位移评估；每一步都回到可核查的模型输出。</p></div>
+          </div>
+          <div class="design-steps">
+            <div class="design-step"><div class="n">01 · TARGET</div><h4>定义目标状态</h4><p>选择物种/组织与目标耐旱状态，输入正常/干旱 bulk 与正常单细胞上下文。</p></div>
+            <div class="design-step"><div class="n">02 · PERTURB</div><h4>生成候选扰动</h4><p>在 GRN 与虚拟细胞模型上筛选 TF/基因扰动，预测表达、TF 活性与潜空间位移。</p></div>
+            <div class="design-step"><div class="n">03 · SELECT</div><h4>评估与筛选</h4><p>比较候选对目标状态的推进幅度、跨物种一致性与模型边界，形成待验证设计清单。</p></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Evidence</div><h2 class="section-title">可用的模型证据</h2><p class="section-desc">先看预测状态，再看扰动与网络；不同物种的可用深度不同。</p></div>
+            <a class="btn tiny ghost" href="#/virtual">虚拟细胞总览 ${ICONS.arrow}</a>
+          </div>
+          <div class="module-grid">
+            ${moduleCard('design-pred', '干旱状态预测', '21 物种正常 → 干旱的单细胞预测、UMAP、TF 活性与轨迹。', `${V.prediction_species} 物种 · ${fmtInt(V.prediction_figures)} 图`, '#/virtual/prediction', ICONS.spark)}
+            ${moduleCard('design-pert', '扰动候选', 'CellOracle 虚拟敲除与水稻模型扰动；查看 TF 活性、表达变化和潜空间位移。', `${V.perturbation_species} 物种 · ${fmtInt(V.perturbation_figures)} 图`, '#/virtual/perturbation', ICONS.flask)}
+            ${moduleCard('design-grn', '调控网络', '水稻深度 GRN 轨迹与 TF 网络拓扑；用于候选调控因子筛选。', `${V.grn_species} 物种 · 网络轨迹`, '#/virtual/grn', ICONS.network)}
+            ${moduleCard('design-eval', '模型边界', '内部留出、外部验证与适用边界；设计候选不直接等同于实验结论。', '评估与边界', '#/virtual/evaluation', ICONS.book)}
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="callout warn">
+            <strong>设计边界：</strong>当前页面是耐旱状态设计的工作流入口，不是已验证的基因组合或育种方案。候选来自模型预测、GRN 与扰动模拟；需要实验验证后才能用于育种或工程改造。
+          </div>
+        </section>
       </div>`;
   }
 
@@ -2389,6 +2575,8 @@
       ['虚拟细胞', 'virtual', '干旱预测、轨迹、GRN、扰动'],
       ['全图库', 'gallery', '检索全部图件'],
       ['方法与数据', 'methods', '目录、软链接、模型边界'],
+      ['干旱单细胞规律探索', 'drought', '3 物种实测干旱 scRNA'],
+      ['耐旱状态设计', 'design', '预测 + 扰动 + GRN 工作流'],
     ];
     for (const [title, path, sub] of pages) entries.push({ type: 'page', title, sub, href: path, key: path });
     for (const m of S.site.atlas_modules) entries.push({ type: 'module', title: m.name, sub: `${m.group} · ${m.figure_count} 图件`, key: m.key, href: `atlas/${m.key}`, text: `${m.name} ${m.desc} ${m.group}` });
