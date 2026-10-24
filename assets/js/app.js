@@ -483,7 +483,7 @@
   }
 
   function pageTitle(route) {
-    const base = 'DroAIVC · 抗旱虚拟细胞';
+    const base = 'DroAIVC · 节水抗旱虚拟细胞';
     if (route.name === 'atlas') return `${route.module ? (S.moduleByKey.get(route.module)?.name || '图谱') + ' · ' : ''}单细胞图谱 · ${base}`;
     if (route.name === 'virtual') return `${route.tab ? (S.tabByKey.get(route.tab)?.name || '虚拟细胞') + ' · ' : ''}虚拟细胞 · ${base}`;
     if (route.name === 'gallery') return `全图库 · ${base}`;
@@ -501,11 +501,11 @@
           <div class="hero-copy">
             <div class="eyebrow">21 species · single-cell × virtual cell</div>
             <h1 class="hero-title">
-              <span class="accent">抗旱虚拟细胞</span>
+              <span class="accent">节水抗旱虚拟细胞</span>
               <span class="line2">从单细胞图谱，到干旱响应预测</span>
             </h1>
             <p class="hero-lead">
-              ${S.site.mode === 'static' ? '汇集 21 个物种的单细胞转录组图谱与干旱/对照 bulk 数据，把质控、注释、轨迹、基因调控网络、细胞通讯与虚拟细胞模型放在同一个可交互门户中。公开静态版把原始图件导出为优化 JPEG，保留图注、模块与物种信息。' : '汇集 21 个物种的单细胞转录组图谱与干旱/对照 bulk 数据，把质控、注释、轨迹、基因调控网络、细胞通讯与虚拟细胞模型放在同一个可交互门户中。每张图都保留原始路径与图注，网站本身不复制、不改动源结果。'}
+              汇集 21 个物种的单细胞转录组图谱与干旱/对照 bulk 数据，把质控、注释、轨迹、基因调控网络、细胞通讯与虚拟细胞模型放在同一个可交互门户中。
             </p>
             <div class="hero-actions">
               <a class="btn primary" href="#/atlas">进入单细胞图谱 ${ICONS.arrow}</a>
@@ -518,7 +518,7 @@
               <div class="stat"><div class="stat-value">${compact(totals.bulk_samples)}<span class="unit">bulk</span></div><div class="stat-label">干旱/对照样本</div></div>
               <div class="stat"><div class="stat-value">${compact(totals.figures)}<span class="unit">figures</span></div><div class="stat-label">${S.site.mode === 'static' ? '图件索引' : '图件与源表索引'}</div></div>
             </div>
-            <div class="hero-note">${S.site.mode === 'static' ? `公开静态版 · 图件已导出为优化 JPEG${S.site.release_url ? ' · 完整原始文件见数据包' : ''}` : `数据生成时间 ${esc(formatDate(S.site.generated_at))} · 图件通过软链接读取，源目录保持不变`}</div>
+            ${S.site.mode !== 'static' ? `<div class="hero-note">数据生成时间 ${esc(formatDate(S.site.generated_at))} · 图件通过软链接读取，源目录保持不变</div>` : ''}
           </div>
           <div class="constellation" aria-label="21 物种交互星座">
             <div id="constellation-svg"></div>
@@ -533,9 +533,9 @@
           </div>
           <div class="module-grid">
             ${moduleCard('single-cell', '单细胞转录组图谱', '21 物种的质控、降维、聚类、注释、DEG、拟时序、GRN、细胞通讯、细胞状态与 bulk 反卷积。', `${fmtInt(totals.atlas_figures)} 图件`, '#/atlas', ICONS.cell)}
-            ${moduleCard('virtual', '抗旱虚拟细胞', '正常 → 干旱的单细胞预测、动态细胞状态轨迹、基因网络轨迹与基因扰动效应。', `${fmtInt(totals.virtual_figures)} 图件`, '#/virtual', ICONS.flask)}
+            ${moduleCard('virtual', '节水抗旱虚拟细胞', '正常 → 干旱的单细胞预测、动态细胞状态轨迹、基因网络轨迹与基因扰动效应。', `${fmtInt(totals.virtual_figures)} 图件`, '#/virtual', ICONS.flask)}
             ${moduleCard('pattern', '正常 vs 干旱规律', '跨物种信号强度、细胞状态条件关联、bulk 细胞组成与干旱响应保守性。', '21 物种', '#/virtual/pattern', ICONS.chart)}
-            ${moduleCard('gallery', '全图库', S.site.mode === 'static' ? `按物种、模块、类别和关键词检索全部图件；${S.site.pdf_enabled !== false ? '支持 JPG / PDF 查看与下载。' : '支持 JPG 查看与下载。'}` : '按物种、模块、类别和关键词检索全部图件；支持 PNG / SVG / PDF 与原始路径复制。', `${fmtInt(totals.figures)} 图件`, '#/gallery', ICONS.grid)}
+            ${moduleCard('gallery', '全图库', S.site.mode === 'static' ? '按物种、模块、类别和关键词检索全部图件；支持在线查看与下载。' : '按物种、模块、类别和关键词检索全部图件；支持 PNG / SVG / PDF 与原始路径复制。', `${fmtInt(totals.figures)} 图件`, '#/gallery', ICONS.grid)}
           </div>
         </section>
 
@@ -2060,9 +2060,9 @@
       <div class="page">
         <div class="page-head">
           <div>
-            <div class="eyebrow">Static portal · ${platform}</div>
+            <div class="eyebrow">方法与数据 · ${platform}</div>
             <h1 class="page-title">方法与<em>数据</em></h1>
-            <p class="page-lead">这是 DroAIVC 的公开静态版：图件已从原始结果导出为浏览器可直接加载的优化 JPEG，卡片使用 640px 缩略图。页面不需要 Python 服务，适合 ${platform} 托管。</p>
+            <p class="page-lead">这里汇总数据来源、图件规范、模型评估与引用信息。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/gallery">全图库</a>
@@ -2083,11 +2083,11 @@
         <section class="section">
           <div class="method-grid">
             <div class="method-block">
-              <h3>静态数据布局</h3>
-              <p>公开版只保留展示所需的静态文件；原始结果目录不在仓库中。</p>
+              <h3>数据布局</h3>
+              <p>站点只保留展示所需的文件；原始结果目录不在仓库中。</p>
               <table class="path-table">
-                <tr><td>media/full/</td><td>2200px JPEG 预览图，灯箱查看</td></tr>
-                <tr><td>media/thumb/</td><td>640px JPEG 卡片缩略图</td></tr>
+                <tr><td>media/full/</td><td>预览图，灯箱查看</td></tr>
+                <tr><td>media/thumb/</td><td>卡片缩略图</td></tr>
                 ${hasPdf ? '<tr><td>media/pdf/</td><td>有 PDF 的图件保留原始 PDF，可下载</td></tr>' : ''}
                 <tr><td>data/</td><td>图件清单、统计、轨迹/GRN 交互数据</td></tr>
                 <tr><td>assets/</td><td>页面样式与前端逻辑</td></tr>
@@ -2095,8 +2095,8 @@
             </div>
             <div class="method-block">
               <h3>图件读取</h3>
-              <p>每张卡片先加载 <code>media/thumb</code> 缩略图；打开灯箱后加载 <code>media/full</code> 预览图。${hasPdf ? 'PDF 图件可切换到原始 PDF。' : '镜像版只包含 JPG 预览。'}所有路径都是相对路径，因此可以部署在仓库子路径下。</p>
-              <p>公开版为优化预览；如需完全原始分辨率，请使用下方数据包链接（如果已发布）。</p>
+              <p>每张卡片先加载 <code>media/thumb</code> 缩略图；打开灯箱后加载 <code>media/full</code> 预览图。所有路径都是相对路径，因此可以部署在仓库子路径下。</p>
+              <p>如需完全原始分辨率，请使用下方数据包链接（如果已发布）。</p>
               ${release ? `<p><a class="btn tiny primary" href="${esc(release)}" target="_blank" rel="noopener">下载完整原始图件包</a></p>` : `<p class="tag gold">完整原始图件包可在代码托管平台的 Release/附件中提供</p>`}
             </div>
           </div>
@@ -2106,7 +2106,7 @@
           <div class="method-grid">
             <div class="method-block">
               <h3>${platform} 发布</h3>
-              <p>仓库根目录即为静态站点，包含 <code>index.html</code>、<code>data/</code>、<code>media/</code> 与 <code>.nojekyll</code>。${isCloudflare ? '在 Cloudflare Pages 项目中直接上传 public_site 目录；构建输出目录为 /。' : isGitee ? '在仓库“服务 → Gitee Pages”中选择 main 分支根目录部署；Gitee Pages 可能需要实名认证。' : '在仓库 Settings → Pages 中选择从 main 分支根目录发布即可。'}</p>
+              <p>仓库根目录即为站点，包含 <code>index.html</code>、<code>data/</code>、<code>media/</code> 与 <code>.nojekyll</code>。${isCloudflare ? '在 Cloudflare Pages 项目中直接上传 public_site 目录；构建输出目录为 /。' : isGitee ? '在仓库“服务 → Gitee Pages”中选择 main 分支根目录部署；Gitee Pages 可能需要实名认证。' : '在仓库 Settings → Pages 中选择从 main 分支根目录发布即可。'}</p>
               ${S.site.site_url ? `<p><a class="btn tiny primary" href="${esc(S.site.site_url)}" target="_blank" rel="noopener">打开在线站点</a></p>` : ''}
               ${repo ? `<p><a class="btn tiny ghost" href="${esc(repo)}" target="_blank" rel="noopener">打开代码仓库</a></p>` : ''}
             </div>
@@ -2114,7 +2114,7 @@
               <h3>更新方式</h3>
               <p>在本地 DroAIVC 结果更新后，重新运行静态导出脚本，然后把 <code>public_site</code> 内容推送到代码仓库。图件清单与交互数据会自动重新生成。</p>
               <p>本地 <code>AIVC_web/update_public.sh</code> 已封装“重扫 → 导出 → 提交 → 推送 → 等待 Pages”的完整流程。</p>
-              <div class="callout info">公开版的数据规模：${fmtInt(totals.figures)} 张唯一图件；${(coverage.prediction_species || []).length} / 21 物种已有干旱预测；深度轨迹/GRN 轨迹当前完成水稻。</div>
+              <div class="callout info">数据规模：${fmtInt(totals.figures)} 张唯一图件；${(coverage.prediction_species || []).length} / 21 物种已有干旱预测；深度轨迹/GRN 轨迹当前完成水稻。</div>
             </div>
           </div>
         </section>
@@ -2125,13 +2125,12 @@
             <ul class="note-list">
               <li>细胞通讯、拟时序、GRN 与基因扰动均为计算推断；模型输出不是实验证据。</li>
               <li>v8 模型的外部验证仍有限；网站保留原始评估指标，不将预测解释为已验证结论。</li>
-              <li>公开版图片为 2200px JPEG 预览，可能与原始 PNG/PDF/SVG 存在压缩差异；完整原始文件以数据包为准。</li>
             </ul>
           </div>
         </section>
 
         <section class="section">
-          <div class="callout"><strong>公开版生成时间：</strong>${esc(formatDate(S.site.generated_at))} · 静态图件 ${fmtInt(totals.figures)} 张 · 无需本地服务器。</div>
+          <div class="callout"><strong>数据生成时间：</strong>${esc(formatDate(S.site.generated_at))} · 图件 ${fmtInt(totals.figures)} 张。</div>
         </section>
       </div>`;
   }
