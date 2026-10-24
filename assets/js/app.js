@@ -628,7 +628,7 @@
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / species.length;
       const x = C + R * Math.cos(a);
       const y = C + R * Math.sin(a);
-      const r = clamp(14 + Math.log10((sp.sc_cells || 1) + 1) * 0.85, 14, 21);
+      const r = clamp(18 + Math.log10((sp.sc_cells || 1) + 1) * 0.95, 18, 25);
       const sig = String(sp.signal || 'NONE').toUpperCase();
       const stroke = sig === 'HIGH' ? 'rgba(60,224,178,.96)' : sig === 'LOW' ? 'rgba(241,201,107,.96)' : 'rgba(140,168,159,.9)';
       const dot = sig === 'HIGH' ? '#3ce0b2' : sig === 'LOW' ? '#f1c96b' : '#8ca89f';
@@ -639,8 +639,8 @@
           <title>${esc(sp.name)} · ${esc(sp.latin)} · ${fmtInt(sp.sc_cells)} cells</title>
           <circle class="node-ring" cx="${x}" cy="${y}" r="${r}" fill="rgba(5,20,16,.86)" stroke="${stroke}" stroke-width="1.6"/>
           <svg x="${x - r * 0.65}" y="${y - r * 0.65}" width="${size}" height="${size}" viewBox="0 0 64 64" class="species-icon" aria-hidden="true">${icon}</svg>
-          <image href="assets/species/${esc(sp.key)}.png" x="${x - r * 0.78}" y="${y - r * 0.78}" width="${r * 1.56}" height="${r * 1.56}" class="species-img" preserveAspectRatio="xMidYMid meet"/>
-          <circle class="node-signal" cx="${x + r * 0.92}" cy="${y + r * 0.92}" r="3.2" fill="${dot}" stroke="rgba(5,20,16,.9)" stroke-width=".8"/>
+          <image href="assets/species/${esc(sp.key)}.png" x="${x - r * 0.9}" y="${y - r * 0.9}" width="${r * 1.8}" height="${r * 1.8}" class="species-img" preserveAspectRatio="xMidYMid meet"/>
+          <circle class="node-signal" cx="${x + r * 0.98}" cy="${y + r * 0.98}" r="3.2" fill="${dot}" stroke="rgba(5,20,16,.9)" stroke-width=".8"/>
         </g>`;
     }).join('');
     return `<svg id="constellation-svg" class="constellation-svg" viewBox="0 0 ${W} ${W}" role="img" aria-label="21 物种星座，节点为物种抽象图标，大小表示单细胞数量，圆环颜色表示干旱信号等级">
