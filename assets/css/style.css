@@ -364,6 +364,13 @@ body::before {
   transform-origin: center;
 }
 .node:hover .species-icon { transform: scale(1.12); }
+.species-img {
+  pointer-events: none;
+  transition: transform .2s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.node:hover .species-img { transform: scale(1.06); }
 .node text { fill: var(--text); font-size: 9px; font-family: var(--font); text-anchor: middle; pointer-events: none; }
 .orbit { fill: none; stroke: rgba(116, 219, 188, .12); stroke-width: .7; }
 .orbit-dash { fill: none; stroke: rgba(241, 201, 107, .13); stroke-width: .7; stroke-dasharray: 3 6; }

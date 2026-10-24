@@ -638,8 +638,9 @@
         <g class="node" data-species-option="${esc(sp.key)}" data-tip="${esc(`${sp.name} · ${sp.latin}<br>${compact(sp.sc_cells)} cells · signal ${sp.signal}`)}" data-species-nav="1" tabindex="0" role="button" aria-label="${esc(sp.name)}">
           <title>${esc(sp.name)} · ${esc(sp.latin)} · ${fmtInt(sp.sc_cells)} cells</title>
           <circle class="node-ring" cx="${x}" cy="${y}" r="${r}" fill="rgba(5,20,16,.86)" stroke="${stroke}" stroke-width="1.6"/>
-          <circle class="node-signal" cx="${x + r * 0.68}" cy="${y + r * 0.68}" r="3.2" fill="${dot}" stroke="rgba(5,20,16,.9)" stroke-width=".8"/>
           <svg x="${x - r * 0.65}" y="${y - r * 0.65}" width="${size}" height="${size}" viewBox="0 0 64 64" class="species-icon" aria-hidden="true">${icon}</svg>
+          <image href="assets/species/${esc(sp.key)}.png" x="${x - r * 0.78}" y="${y - r * 0.78}" width="${r * 1.56}" height="${r * 1.56}" class="species-img" preserveAspectRatio="xMidYMid meet"/>
+          <circle class="node-signal" cx="${x + r * 0.92}" cy="${y + r * 0.92}" r="3.2" fill="${dot}" stroke="rgba(5,20,16,.9)" stroke-width=".8"/>
         </g>`;
     }).join('');
     return `<svg id="constellation-svg" class="constellation-svg" viewBox="0 0 ${W} ${W}" role="img" aria-label="21 物种星座，节点为物种抽象图标，大小表示单细胞数量，圆环颜色表示干旱信号等级">
