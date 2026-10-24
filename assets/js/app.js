@@ -287,7 +287,7 @@
       ['home', '首页', ''],
       ['data', '数据', 'data'],
       ['virtual', '抗旱虚拟细胞', 'virtual'],
-      ['drought', '干旱单细胞', 'drought'],
+      ['drought', '干旱细胞规律', 'drought'],
       ['gallery', '全图库', 'gallery'],
       ['methods', '方法与数据', 'methods'],
     ];
@@ -504,7 +504,7 @@
     if (route.name === 'virtual') return `${route.tab ? (S.tabByKey.get(route.tab)?.name || '虚拟细胞') + ' · ' : ''}虚拟细胞 · ${base}`;
     if (route.name === 'gallery') return `全图库 · ${base}`;
     if (route.name === 'methods') return `方法与数据 · ${base}`;
-    if (route.name === 'drought') return `干旱单细胞规律探索 · ${base}`;
+    if (route.name === 'drought') return `干旱细胞规律 · ${base}`;
     if (route.name === 'design') return `耐旱状态设计 · ${base}`;
     if (route.name === 'species') return `${speciesName(route.species)} · ${base}`;
     return base;
@@ -588,8 +588,8 @@
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">03 · Drought scRNA</div><h2 class="section-title">干旱单细胞规律探索</h2><p class="section-desc">把正常图谱的分析逻辑迁移到干旱 scRNA：QC → HVG → PCA → Harmony → 聚类 → 注释 → DEG → 拟时序 → GRN → 通讯 → 状态 → 反卷积。</p></div>
-            <a class="btn tiny ghost" href="#/drought">进入干旱单细胞 ${ICONS.arrow}</a>
+            <div><div class="section-kicker">03 · Drought cell patterns</div><h2 class="section-title">干旱细胞规律</h2><p class="section-desc">把正常图谱的分析逻辑迁移到干旱 scRNA：QC → HVG → PCA → Harmony → 聚类 → 注释 → DEG → 拟时序 → GRN → 通讯 → 状态 → 反卷积。</p></div>
+            <a class="btn tiny ghost" href="#/drought">进入干旱细胞规律 ${ICONS.arrow}</a>
           </div>
           <div class="drought-band">
             <div class="drought-stats">
@@ -682,7 +682,7 @@
           </div>
           <div class="virtual-grid">
             <a class="virtual-card" href="#/virtual"><span class="icon">${ICONS.spark}</span><h3>抗旱虚拟细胞</h3><p>单细胞生成、基因扰动与耐旱状态设计。</p><div class="foot"><span>3 个功能</span><span>进入 ↗</span></div></a>
-            <a class="virtual-card" href="#/drought"><span class="icon">${ICONS.chart}</span><h3>干旱单细胞规律探索</h3><p>把正常图谱的 14 步分析逻辑迁移到干旱 scRNA。</p><div class="foot"><span>${L.drought_sc.species} 实测物种</span><span>进入 ↗</span></div></a>
+            <a class="virtual-card" href="#/drought"><span class="icon">${ICONS.chart}</span><h3>干旱细胞规律</h3><p>把正常图谱的 14 步分析逻辑迁移到干旱 scRNA。</p><div class="foot"><span>${L.drought_sc.species} 实测物种</span><span>进入 ↗</span></div></a>
             <a class="virtual-card" href="#/gallery"><span class="icon">${ICONS.grid}</span><h3>全图库</h3><p>按物种、模块、类别与关键词检索全部图件。</p><div class="foot"><span>${fmtInt(S.site.totals.figures)} 图件</span><span>进入 ↗</span></div></a>
           </div>
         </section>
@@ -1278,8 +1278,8 @@
       <div class="page">
         <div class="page-head">
           <div>
-            <div class="eyebrow">Drought scRNA · ${D.species}-species pilot</div>
-            <h1 class="page-title">干旱单细胞<em>规律探索</em></h1>
+            <div class="eyebrow">Drought cell patterns · ${D.species}-species pilot</div>
+            <h1 class="page-title">干旱细胞<em>规律</em></h1>
             <p class="page-lead">把正常单细胞图谱的分析逻辑迁移到干旱 scRNA：从 QC、降维、聚类、注释，到 DEG、拟时序、GRN、细胞通讯、细胞状态和 bulk 反卷积。首批接入 ${D.species} 个实测物种，其余物种通过虚拟细胞生成。</p>
           </div>
           <div class="page-actions">
@@ -2641,7 +2641,7 @@
       ['虚拟细胞', 'virtual', '干旱预测、轨迹、GRN、扰动'],
       ['全图库', 'gallery', '检索全部图件'],
       ['方法与数据', 'methods', '目录、软链接、模型边界'],
-      ['干旱单细胞规律探索', 'drought', '3 物种实测干旱 scRNA'],
+      ['干旱细胞规律', 'drought', '3 物种实测干旱 scRNA'],
       ['耐旱状态设计', 'design', '预测 + 扰动 + GRN 工作流'],
     ];
     for (const [title, path, sub] of pages) entries.push({ type: 'page', title, sub, href: path, key: path });
