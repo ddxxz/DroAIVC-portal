@@ -285,8 +285,9 @@
     const top = $('#topbar');
     const nav = [
       ['home', '首页', ''],
-      ['atlas', '单细胞图谱', 'atlas'],
-      ['virtual', '虚拟细胞', 'virtual'],
+      ['data', '数据', 'data'],
+      ['virtual', '抗旱虚拟细胞', 'virtual'],
+      ['drought', '干旱单细胞', 'drought'],
       ['gallery', '全图库', 'gallery'],
       ['methods', '方法与数据', 'methods'],
     ];
@@ -405,7 +406,11 @@
     const name = S.route.name;
     $$('.nav-link').forEach((a) => {
       const k = a.dataset.nav;
-      const active = k === name || (name === 'species' && k === 'atlas') || (name === 'drought' && k === 'atlas') || (name === 'design' && k === 'virtual') || (name === 'gallery' && k === 'gallery');
+      const active = k === name
+        || (name === 'species' && k === 'data')
+        || (name === 'atlas' && k === 'data')
+        || (name === 'design' && k === 'virtual')
+        || (name === 'gallery' && k === 'gallery');
       a.classList.toggle('active', !!active);
     });
     const nav = $('#main-nav');
@@ -433,6 +438,8 @@
         S.atlasCategory = params.get('cat') || 'all';
         S.atlasQuery = params.get('q') || '';
       }
+    } else if (parts[0] === 'data') {
+      route = { name: 'data', module: null, tab: null };
     } else if (parts[0] === 'virtual') {
       route = { name: 'virtual', module: null, tab: parts[1] || null };
       if (parts[1]) S.tab = parts[1];
@@ -463,6 +470,7 @@
     view.innerHTML = '<div class="boot"><div class="boot-drop"></div><p>正在载入视图…</p></div>';
     try {
       if (route.name === 'home') await renderHome();
+      else if (route.name === 'data') await renderData();
       else if (route.name === 'atlas') await (route.module ? renderAtlasModule(route.module) : renderAtlasOverview());
       else if (route.name === 'virtual') await (route.tab ? renderVirtualTab(route.tab) : renderVirtualOverview());
       else if (route.name === 'gallery') await renderGallery();
@@ -491,6 +499,7 @@
 
   function pageTitle(route) {
     const base = 'DroAIVC · 节水抗旱虚拟细胞';
+    if (route.name === 'data') return `数据层 · ${base}`;
     if (route.name === 'atlas') return `${route.module ? (S.moduleByKey.get(route.module)?.name || '图谱') + ' · ' : ''}单细胞图谱 · ${base}`;
     if (route.name === 'virtual') return `${route.tab ? (S.tabByKey.get(route.tab)?.name || '虚拟细胞') + ' · ' : ''}虚拟细胞 · ${base}`;
     if (route.name === 'gallery') return `全图库 · ${base}`;
@@ -622,6 +631,62 @@
       </div>`;
     renderHighlights();
     renderCoverageChart();
+  }
+
+  async function renderData() {
+    await ensureLandscape();
+    const L = S.landscape;
+    view.innerHTML = `
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <div class="eyebrow">Data layer · bulk + normal scRNA</div>
+            <h1 class="page-title">数据层：正常与<em>干旱转录组</em></h1>
+            <p class="page-lead">正常与干旱 bulk 提供条件上下文，正常单细胞图谱提供细胞分辨率；两者共同构成虚拟细胞的输入，并产出 14 个分析模块的结果。</p>
+          </div>
+          <div class="page-actions">
+            <a class="btn primary" href="#/atlas">打开正常单细胞图谱 ${ICONS.arrow}</a>
+            <a class="btn ghost" href="#/virtual/prediction">查看干旱预测</a>
+          </div>
+        </div>
+        <div class="stat-grid six">
+          ${statBox(L.bulk.species, '物种')}
+          ${statBox(fmtInt(L.bulk.control_samples), '正常 bulk 样本')}
+          ${statBox(fmtInt(L.bulk.drought_samples), '干旱 bulk 样本')}
+          ${statBox(compact(L.normal_sc.cells), '正常 scRNA 细胞')}
+          ${statBox(L.normal_sc.modules, '分析模块')}
+          ${statBox(fmtInt(L.normal_sc.figures), '分析图件')}
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Inputs</div><h2 class="section-title">两类数据，一个入口</h2><p class="section-desc">bulk 给出正常/干旱条件，单细胞给出细胞类型与状态；分析结果保留在正常图谱与全图库中。</p></div>
+          </div>
+          <div class="module-grid">
+            ${moduleCard('bulk-normal', '正常 bulk 转录组', '对照条件下的批量 RNA-seq，覆盖 21 物种；为虚拟细胞提供正常表达上下文。', `${fmtInt(L.bulk.control_samples)} 样本`, '#/virtual/pattern', ICONS.layers)}
+            ${moduleCard('bulk-drought', '干旱 bulk 转录组', '干旱处理下的批量 RNA-seq；与正常 bulk 配对，提供干旱响应上下文。', `${fmtInt(L.bulk.drought_samples)} 样本`, '#/virtual/pattern', ICONS.chart)}
+            ${moduleCard('normal-sc', '正常单细胞转录组', '21 物种正常单细胞图谱：QC、降维、聚类、注释、GRN、通讯与细胞状态。', `${compact(L.normal_sc.cells)} cells`, '#/atlas', ICONS.cell)}
+            ${moduleCard('analysis', '分析结果', `正常图谱的 ${L.normal_sc.modules} 个分析模块与全图库；先看数据层，再进入模型层。`, `${fmtInt(L.normal_sc.figures)} 图`, '#/gallery', ICONS.grid)}
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="callout info">
+            <strong>数值口径：</strong>模型输入 bulk 样本 ${fmtInt(L.bulk.model_samples)} 个（正常 ${fmtInt(L.bulk.control_samples)} / 干旱 ${fmtInt(L.bulk.drought_samples)}）；网站总索引 ${fmtInt(L.bulk.site_total_samples)} 个 bulk 样本。正常单细胞图谱 ${compact(L.normal_sc.cells)} 个细胞、${L.normal_sc.modules} 个分析模块。
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Next layers</div><h2 class="section-title">从数据进入模型与干旱探索</h2></div>
+          </div>
+          <div class="virtual-grid">
+            <a class="virtual-card" href="#/virtual"><span class="icon">${ICONS.spark}</span><h3>抗旱虚拟细胞</h3><p>单细胞生成、基因扰动与耐旱状态设计。</p><div class="foot"><span>3 个功能</span><span>进入 ↗</span></div></a>
+            <a class="virtual-card" href="#/drought"><span class="icon">${ICONS.chart}</span><h3>干旱单细胞规律探索</h3><p>把正常图谱的 14 步分析逻辑迁移到干旱 scRNA。</p><div class="foot"><span>${L.drought_sc.species} 实测物种</span><span>进入 ↗</span></div></a>
+            <a class="virtual-card" href="#/gallery"><span class="icon">${ICONS.grid}</span><h3>全图库</h3><p>按物种、模块、类别与关键词检索全部图件。</p><div class="foot"><span>${fmtInt(S.site.totals.figures)} 图件</span><span>进入 ↗</span></div></a>
+          </div>
+        </section>
+      </div>`;
   }
 
   function moduleCard(key, title, desc, countLabel, href, icon) {
@@ -2571,6 +2636,7 @@
     const entries = [];
     const pages = [
       ['首页', '', 'DroAIVC 总览'],
+      ['数据层', 'data', '正常/干旱 bulk 与正常单细胞'],
       ['单细胞图谱', 'atlas', '21 物种单细胞分析'],
       ['虚拟细胞', 'virtual', '干旱预测、轨迹、GRN、扰动'],
       ['全图库', 'gallery', '检索全部图件'],
