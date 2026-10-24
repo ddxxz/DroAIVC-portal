@@ -196,6 +196,7 @@
   async function ensureAtlas() { if (!S.atlas) S.atlas = await loadJSON('atlas.json'); return S.atlas; }
   async function ensureVirtual() { if (!S.virtual) S.virtual = await loadJSON('virtual.json'); return S.virtual; }
   async function ensureLandscape() { if (!S.landscape) S.landscape = await loadJSON('landscape.json'); return S.landscape; }
+  async function ensureResults() { if (!S.results) S.results = await loadJSON('results.json'); return S.results; }
   async function ensureInteractive() { if (!S.interactive) S.interactive = await loadJSON('interactive.json'); return S.interactive; }
   async function ensureAllFigures() {
     if (S.allFigures) return S.allFigures;
@@ -408,7 +409,7 @@
       const k = a.dataset.nav;
       const active = k === name
         || (name === 'species' && k === 'data')
-        || (name === 'atlas' && k === 'data')
+        || (['atlas','bulk','single'].includes(name) && k === 'data')
         || (name === 'design' && k === 'virtual')
         || (name === 'gallery' && k === 'gallery');
       a.classList.toggle('active', !!active);
@@ -440,6 +441,10 @@
       }
     } else if (parts[0] === 'data') {
       route = { name: 'data', module: null, tab: null };
+    } else if (parts[0] === 'bulk') {
+      route = { name: 'bulk', module: null, tab: null };
+    } else if (parts[0] === 'single-cell') {
+      route = { name: 'single', module: null, tab: null };
     } else if (parts[0] === 'virtual') {
       route = { name: 'virtual', module: null, tab: parts[1] || null };
       if (parts[1]) S.tab = parts[1];
@@ -471,6 +476,8 @@
     try {
       if (route.name === 'home') await renderHome();
       else if (route.name === 'data') await renderData();
+      else if (route.name === 'bulk') await renderBulk();
+      else if (route.name === 'single') await renderSingle();
       else if (route.name === 'atlas') await (route.module ? renderAtlasModule(route.module) : renderAtlasOverview());
       else if (route.name === 'virtual') await (route.tab ? renderVirtualTab(route.tab) : renderVirtualOverview());
       else if (route.name === 'gallery') await renderGallery();
@@ -500,6 +507,8 @@
   function pageTitle(route) {
     const base = 'DroAIVC · 节水抗旱虚拟细胞';
     if (route.name === 'data') return `数据层 · ${base}`;
+    if (route.name === 'bulk') return `批量转录组 · ${base}`;
+    if (route.name === 'single') return `单细胞转录组 · ${base}`;
     if (route.name === 'atlas') return `${route.module ? (S.moduleByKey.get(route.module)?.name || '图谱') + ' · ' : ''}单细胞图谱 · ${base}`;
     if (route.name === 'virtual') return `${route.tab ? (S.tabByKey.get(route.tab)?.name || '虚拟细胞') + ' · ' : ''}虚拟细胞 · ${base}`;
     if (route.name === 'gallery') return `全图库 · ${base}`;
@@ -548,14 +557,12 @@
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">01 · Data</div><h2 class="section-title">数据底座：正常与干旱转录组</h2><p class="section-desc">先看数据，再看模型。正常/干旱 bulk、正常单细胞图谱，以及 14 个分析模块产出的结果。</p></div>
-            <a class="btn tiny ghost" href="#/methods">数据来源与方法 ${ICONS.arrow}</a>
+            <div><div class="section-kicker">01 · Data</div><h2 class="section-title">数据底座：批量与单细胞转录组</h2><p class="section-desc">只保留两部分入口：批量转录组（正常/干旱）与单细胞转录组（全物种、单物种、单器官结果）。</p></div>
+            <a class="btn tiny ghost" href="#/data">进入数据层 ${ICONS.arrow}</a>
           </div>
-          <div class="module-grid">
-            ${moduleCard('bulk-normal', '正常 bulk 转录组', '对照条件下的批量 RNA-seq，覆盖 21 物种；为虚拟细胞提供正常表达上下文。', `${fmtInt(L.bulk.control_samples)} 样本`, '#/virtual/pattern', ICONS.layers)}
-            ${moduleCard('bulk-drought', '干旱 bulk 转录组', '干旱处理下的批量 RNA-seq；与正常 bulk 配对，提供干旱响应上下文。', `${fmtInt(L.bulk.drought_samples)} 样本`, '#/virtual/pattern', ICONS.chart)}
-            ${moduleCard('normal-sc', '正常单细胞转录组', '21 物种正常单细胞图谱：QC、降维、聚类、注释、GRN、通讯与细胞状态。', `${compact(L.normal_sc.cells)} cells`, '#/atlas', ICONS.cell)}
-            ${moduleCard('analysis', '分析结果', `正常图谱的 ${L.normal_sc.modules} 个分析模块与全图库；先看数据层，再进入模型层。`, `${fmtInt(L.normal_sc.figures)} 图`, '#/gallery', ICONS.grid)}
+          <div class="data-entry-grid">
+            ${moduleCard('bulk', '批量转录组', '正常/干旱 bulk RNA-seq，覆盖 21 物种；提供全部物种汇总与单物种结果。', `${fmtInt(L.bulk.model_samples)} 样本`, '#/bulk', ICONS.layers)}
+            ${moduleCard('single', '单细胞转录组', '21 物种正常单细胞图谱；提供全部物种、单物种与单器官结果。', `${compact(L.normal_sc.cells)} cells`, '#/single-cell', ICONS.cell)}
           </div>
         </section>
 
@@ -640,13 +647,12 @@
       <div class="page">
         <div class="page-head">
           <div>
-            <div class="eyebrow">Data layer · bulk + normal scRNA</div>
-            <h1 class="page-title">数据层：正常与<em>干旱转录组</em></h1>
-            <p class="page-lead">正常与干旱 bulk 提供条件上下文，正常单细胞图谱提供细胞分辨率；两者共同构成虚拟细胞的输入，并产出 14 个分析模块的结果。</p>
+            <div class="eyebrow">Data layer · bulk + single-cell</div>
+            <h1 class="page-title">数据层：批量与<em>单细胞转录组</em></h1>
+            <p class="page-lead">数据底座只保留两条主线：批量转录组（正常/干旱）与单细胞转录组（正常图谱）。每条主线都包含全部物种汇总、单物种结果；单细胞还包括单器官结果。</p>
           </div>
           <div class="page-actions">
-            <a class="btn primary" href="#/atlas">打开正常单细胞图谱 ${ICONS.arrow}</a>
-            <a class="btn ghost" href="#/virtual/prediction">查看干旱预测</a>
+            <a class="btn ghost" href="#/methods">数据来源与方法</a>
           </div>
         </div>
         <div class="stat-grid six">
@@ -660,13 +666,11 @@
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">Inputs</div><h2 class="section-title">两类数据，一个入口</h2><p class="section-desc">bulk 给出正常/干旱条件，单细胞给出细胞类型与状态；分析结果保留在正常图谱与全图库中。</p></div>
+            <div><div class="section-kicker">Two tracks</div><h2 class="section-title">两部分，两个入口</h2><p class="section-desc">批量转录组看全物种与单物种的 bulk 结果；单细胞转录组看全物种、单物种与单器官的单细胞结果。</p></div>
           </div>
-          <div class="module-grid">
-            ${moduleCard('bulk-normal', '正常 bulk 转录组', '对照条件下的批量 RNA-seq，覆盖 21 物种；为虚拟细胞提供正常表达上下文。', `${fmtInt(L.bulk.control_samples)} 样本`, '#/virtual/pattern', ICONS.layers)}
-            ${moduleCard('bulk-drought', '干旱 bulk 转录组', '干旱处理下的批量 RNA-seq；与正常 bulk 配对，提供干旱响应上下文。', `${fmtInt(L.bulk.drought_samples)} 样本`, '#/virtual/pattern', ICONS.chart)}
-            ${moduleCard('normal-sc', '正常单细胞转录组', '21 物种正常单细胞图谱：QC、降维、聚类、注释、GRN、通讯与细胞状态。', `${compact(L.normal_sc.cells)} cells`, '#/atlas', ICONS.cell)}
-            ${moduleCard('analysis', '分析结果', `正常图谱的 ${L.normal_sc.modules} 个分析模块与全图库；先看数据层，再进入模型层。`, `${fmtInt(L.normal_sc.figures)} 图`, '#/gallery', ICONS.grid)}
+          <div class="data-entry-grid">
+            ${moduleCard('bulk', '批量转录组', '正常/干旱 bulk RNA-seq，覆盖 21 物种；提供全部物种汇总与单物种结果。', `${fmtInt(L.bulk.model_samples)} 样本`, '#/bulk', ICONS.layers)}
+            ${moduleCard('single', '单细胞转录组', '21 物种正常单细胞图谱；提供全部物种、单物种与单器官结果。', `${compact(L.normal_sc.cells)} cells`, '#/single-cell', ICONS.cell)}
           </div>
         </section>
 
@@ -675,18 +679,168 @@
             <strong>数值口径：</strong>模型输入 bulk 样本 ${fmtInt(L.bulk.model_samples)} 个（正常 ${fmtInt(L.bulk.control_samples)} / 干旱 ${fmtInt(L.bulk.drought_samples)}）；网站总索引 ${fmtInt(L.bulk.site_total_samples)} 个 bulk 样本。正常单细胞图谱 ${compact(L.normal_sc.cells)} 个细胞、${L.normal_sc.modules} 个分析模块。
           </div>
         </section>
+      </div>`;
+  }
+
+  function resultCard(item) {
+    const sub = item.scope === 'all'
+      ? (item.stage_name ? `${item.stage_name} · 全部物种` : '全部物种')
+      : item.scope === 'organ'
+        ? `${speciesName(item.species)} · ${organName(item.organ)} · 器官`
+        : `${speciesName(item.species)} · ${item.stage_name || item.group || ''}`;
+    return `<a class="fig-card result-card" href="${esc(item.image)}" target="_blank" rel="noopener">
+      <div class="fig-media"><img loading="lazy" src="${esc(item.thumb || item.image)}" alt="${esc(item.title)}"></div>
+      <div class="fig-body"><div class="fig-title">${esc(item.title)}</div><div class="fig-sub">${esc(sub)}</div></div>
+    </a>`;
+  }
+  function resultGrid(items) {
+    if (!items.length) return '<div class="empty"><strong>暂无可展示结果</strong><span>该范围尚未生成对应图片。</span></div>';
+    return `<div class="fig-grid">${items.map(resultCard).join('')}</div>`;
+  }
+
+  async function renderBulk() {
+    await Promise.all([ensureResults(), ensureLandscape()]);
+    const R = S.results.bulk;
+    const L = S.landscape;
+    const species = [...new Set(R.species.map((x) => x.species))].sort((a,b) => speciesName(a).localeCompare(speciesName(b), 'zh'));
+    const defaultSp = species.includes(S.species) ? S.species : (species.includes('rice') ? 'rice' : species[0]);
+    view.innerHTML = `
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <div class="eyebrow">Bulk transcriptome · normal vs drought</div>
+            <h1 class="page-title">批量<em>转录组</em></h1>
+            <p class="page-lead">正常与干旱 bulk 的 21 物种结果。上半部分是全部物种合并结果，下半部分按物种查看单物种结果；图片为本次更新后的结果汇总。</p>
+          </div>
+          <div class="page-actions">
+            <a class="btn ghost" href="#/data">返回数据层</a>
+            <a class="btn ghost" href="#/single-cell">单细胞转录组</a>
+          </div>
+        </div>
+        <div class="stat-grid six">
+          ${statBox(fmtInt(L.bulk.control_samples), '正常 bulk 样本')}
+          ${statBox(fmtInt(L.bulk.drought_samples), '干旱 bulk 样本')}
+          ${statBox(L.bulk.species, '物种')}
+          ${statBox(R.all.length, '全物种结果')}
+          ${statBox(fmtInt(R.species.length), '单物种结果')}
+          ${statBox(L.bulk.projects, 'bulk 项目')}
+        </div>
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">Next layers</div><h2 class="section-title">从数据进入模型与干旱探索</h2></div>
+            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">21 物种合并的批量分析结果：质控、DEG、富集、GSEA、WGCNA、TF、机器学习等。</p></div>
           </div>
-          <div class="virtual-grid">
-            <a class="virtual-card" href="#/virtual"><span class="icon">${ICONS.spark}</span><h3>抗旱虚拟细胞</h3><p>单细胞生成、基因扰动与耐旱状态设计。</p><div class="foot"><span>3 个功能</span><span>进入 ↗</span></div></a>
-            <a class="virtual-card" href="#/drought"><span class="icon">${ICONS.chart}</span><h3>干旱细胞规律</h3><p>把正常图谱的 14 步分析逻辑迁移到干旱 scRNA。</p><div class="foot"><span>${L.drought_sc.species} 实测物种</span><span>进入 ↗</span></div></a>
-            <a class="virtual-card" href="#/gallery"><span class="icon">${ICONS.grid}</span><h3>全图库</h3><p>按物种、模块、类别与关键词检索全部图件。</p><div class="foot"><span>${fmtInt(S.site.totals.figures)} 图件</span><span>进入 ↗</span></div></a>
+          ${resultGrid(R.all)}
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Single species</div><h2 class="section-title">单个物种结果</h2><p class="section-desc">按物种筛选，查看该物种的 bulk 分析图。</p></div>
           </div>
+          <div class="filter-bar">
+            <div class="filter-row">
+              <label class="field"><span>物种</span>
+                <select class="select" id="bulk-species-select">${species.map((sp) => `<option value="${esc(sp)}" ${sp===defaultSp?'selected':''}>${esc(speciesName(sp))}</option>`).join('')}</select>
+              </label>
+            </div>
+          </div>
+          <div id="bulk-species-grid" style="margin-top:18px">${resultGrid(R.species.filter((x) => x.species === defaultSp))}</div>
         </section>
       </div>`;
+    const sel = $('#bulk-species-select');
+    if (sel) sel.addEventListener('change', () => {
+      const grid = $('#bulk-species-grid');
+      if (grid) grid.innerHTML = resultGrid(R.species.filter((x) => x.species === sel.value));
+    });
+  }
+
+  async function renderSingle() {
+    await Promise.all([ensureResults(), ensureLandscape()]);
+    const R = S.results.single;
+    const L = S.landscape;
+    const stages = R.stages || [];
+    const species = (R.species_keys || []).slice();
+    const defaultSp = species.includes(S.species) ? S.species : (species.includes('rice') ? 'rice' : species[0]);
+    const organOptions = R.organs || [];
+    view.innerHTML = `
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <div class="eyebrow">Single-cell transcriptome · 21 species</div>
+            <h1 class="page-title">单细胞<em>转录组</em></h1>
+            <p class="page-lead">正常单细胞图谱的新版结果汇总：全部物种、单物种、单器官三层视图。14 个分析模块的完整交互结果仍可从单细胞图谱进入。</p>
+          </div>
+          <div class="page-actions">
+            <a class="btn ghost" href="#/data">返回数据层</a>
+            <a class="btn primary" href="#/atlas">打开单细胞图谱 ${ICONS.arrow}</a>
+          </div>
+        </div>
+        <div class="stat-grid six">
+          ${statBox(L.normal_sc.species, '物种')}
+          ${statBox(compact(L.normal_sc.cells), '正常 scRNA 细胞')}
+          ${statBox(stages.length, '分析阶段')}
+          ${statBox(R.all.length, '全物种汇总图')}
+          ${statBox(fmtInt(R.species.length), '单物种结果')}
+          ${statBox(R.organ.length, '单器官结果')}
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">每个分析阶段的跨物种概览；可按阶段筛选。</p></div>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-row">
+              <label class="field"><span>分析阶段</span>
+                <select class="select" id="single-stage-filter"><option value="all">全部阶段</option>${stages.map((st) => `<option value="${esc(st.key)}">${esc(st.name)}</option>`).join('')}</select>
+              </label>
+            </div>
+          </div>
+          <div id="single-all-grid" style="margin-top:18px">${resultGrid(R.all)}</div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Single species</div><h2 class="section-title">单个物种结果</h2><p class="section-desc">按物种筛选；每个阶段展示该物种的汇总图。</p></div>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-row">
+              <label class="field"><span>物种</span>
+                <select class="select" id="single-species-select">${species.map((sp) => `<option value="${esc(sp)}" ${sp===defaultSp?'selected':''}>${esc(speciesName(sp))}</option>`).join('')}</select>
+              </label>
+            </div>
+          </div>
+          <div id="single-species-grid" style="margin-top:18px">${resultGrid(R.species.filter((x) => x.species === defaultSp))}</div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Single organ</div><h2 class="section-title">单个器官结果</h2><p class="section-desc">按器官筛选；单器官视图当前覆盖 UMAP 器官图（58 个物种-器官组合）。</p></div>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-row">
+              <label class="field"><span>器官</span>
+                <select class="select" id="single-organ-select"><option value="all">全部器官</option>${organOptions.map((o) => `<option value="${esc(o)}">${esc(organName(o))}</option>`).join('')}</select>
+              </label>
+            </div>
+          </div>
+          <div id="single-organ-grid" style="margin-top:18px">${resultGrid(R.organ)}</div>
+        </section>
+      </div>`;
+    const stageSel = $('#single-stage-filter');
+    if (stageSel) stageSel.addEventListener('change', () => {
+      const grid = $('#single-all-grid');
+      if (grid) grid.innerHTML = resultGrid(stageSel.value === 'all' ? R.all : R.all.filter((x) => x.stage === stageSel.value));
+    });
+    const spSel = $('#single-species-select');
+    if (spSel) spSel.addEventListener('change', () => {
+      const grid = $('#single-species-grid');
+      if (grid) grid.innerHTML = resultGrid(R.species.filter((x) => x.species === spSel.value));
+    });
+    const orgSel = $('#single-organ-select');
+    if (orgSel) orgSel.addEventListener('change', () => {
+      const grid = $('#single-organ-grid');
+      if (grid) grid.innerHTML = resultGrid(orgSel.value === 'all' ? R.organ : R.organ.filter((x) => x.organ === orgSel.value));
+    });
   }
 
   function moduleCard(key, title, desc, countLabel, href, icon) {
@@ -2636,7 +2790,9 @@
     const entries = [];
     const pages = [
       ['首页', '', 'DroAIVC 总览'],
-      ['数据层', 'data', '正常/干旱 bulk 与正常单细胞'],
+      ['数据层', 'data', '批量转录组与单细胞转录组'],
+      ['批量转录组', 'bulk', '全物种与单物种 bulk 结果'],
+      ['单细胞转录组', 'single-cell', '全物种、单物种与单器官结果'],
       ['单细胞图谱', 'atlas', '21 物种单细胞分析'],
       ['虚拟细胞', 'virtual', '干旱预测、轨迹、GRN、扰动'],
       ['全图库', 'gallery', '检索全部图件'],
