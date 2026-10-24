@@ -522,7 +522,7 @@
           </div>
           <div class="constellation" aria-label="21 物种交互星座">
             <div id="constellation-svg"></div>
-            <div class="constellation-note">点击物种节点，进入物种档案</div>
+            <div class="constellation-note">点击物种图标 · 圆环颜色表示干旱信号</div>
           </div>
         </section>
 
@@ -535,7 +535,7 @@
             ${moduleCard('single-cell', '单细胞转录组图谱', '21 物种的质控、降维、聚类、注释、DEG、拟时序、GRN、细胞通讯、细胞状态与 bulk 反卷积。', `${fmtInt(totals.atlas_figures)} 图件`, '#/atlas', ICONS.cell)}
             ${moduleCard('virtual', '抗旱虚拟细胞', '正常 → 干旱的单细胞预测、动态细胞状态轨迹、基因网络轨迹与基因扰动效应。', `${fmtInt(totals.virtual_figures)} 图件`, '#/virtual', ICONS.flask)}
             ${moduleCard('pattern', '正常 vs 干旱规律', '跨物种信号强度、细胞状态条件关联、bulk 细胞组成与干旱响应保守性。', '21 物种', '#/virtual/pattern', ICONS.chart)}
-            ${moduleCard('gallery', '全图库', S.site.mode === 'static' ? '按物种、模块、类别和关键词检索全部图件；支持 JPG / PDF 查看与下载。' : '按物种、模块、类别和关键词检索全部图件；支持 PNG / SVG / PDF 与原始路径复制。', `${fmtInt(totals.figures)} 图件`, '#/gallery', ICONS.grid)}
+            ${moduleCard('gallery', '全图库', S.site.mode === 'static' ? `按物种、模块、类别和关键词检索全部图件；${S.site.pdf_enabled !== false ? '支持 JPG / PDF 查看与下载。' : '支持 JPG 查看与下载。'}` : '按物种、模块、类别和关键词检索全部图件；支持 PNG / SVG / PDF 与原始路径复制。', `${fmtInt(totals.figures)} 图件`, '#/gallery', ICONS.grid)}
           </div>
         </section>
 
@@ -596,6 +596,31 @@
     return `<div class="pipeline-step"><div class="step-num">${n}</div><div class="step-body"><h4>${esc(title)}</h4><p>${esc(desc)}</p><span class="tag">${esc(tag)}</span></div></div>`;
   }
 
+
+  const SPECIES_ICONS = {
+    alfalfa: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V32"/><path d="M32 36C23 36 16 29 16 20c9 0 16 7 16 16Z"/><path d="M32 36c9 0 16-7 16-16-9 0-16 7-16 16Z"/><path d="M32 48c-7 0-12-5-12-12 7 0 12 5 12 12Z"/><circle cx="22" cy="14" r="2.2" fill="currentColor" stroke="none"/><circle cx="32" cy="10" r="2.2" fill="currentColor" stroke="none"/><circle cx="42" cy="14" r="2.2" fill="currentColor" stroke="none"/></g>`,
+    arabidopsis: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V30"/><path d="M32 38C23 38 16 31 16 22c9 0 16 7 16 16Z"/><path d="M32 38c9 0 16-7 16-16-9 0-16 7-16 16Z"/><path d="M32 48c-7 0-12-5-12-12 7 0 12 5 12 12Z"/><path d="M32 48c7 0 12-5 12-12-7 0-12 5-12 12Z"/><circle cx="32" cy="18" r="2" fill="currentColor" stroke="none"/><circle cx="26" cy="13" r="1.6" fill="currentColor" stroke="none"/><circle cx="38" cy="13" r="1.6" fill="currentColor" stroke="none"/></g>`,
+    banana: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 54c-5-14 2-30 14-39 8-6 17-5 22 1-11 2-20 10-25 21-4 8-6 14-11 17Z"/><path d="M34 15C31 29 23 41 12 48"/><path d="M26 27c6 2 12 1 17-2"/><path d="M22 37c5 2 10 1 15-2"/></g>`,
+    barley: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V18"/><path d="M32 24c-6 0-9-4-9-9 6 0 9 4 9 9Z"/><path d="M32 24c6 0 9-4 9-9-6 0-9 4-9 9Z"/><path d="M32 34c-6 0-9-4-9-9 6 0 9 4 9 9Z"/><path d="M32 34c6 0 9-4 9-9-6 0-9 4-9 9Z"/><path d="M32 44c-6 0-9-4-9-9 6 0 9 4 9 9Z"/><path d="M32 44c6 0 9-4 9-9-6 0-9 4-9 9Z"/><path d="M32 18 25 5M32 18l7-13"/></g>`,
+    broccoli: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V38"/><path d="M32 42c-5 0-9-4-9-9 5 0 9 4 9 9Z"/><path d="M32 42c5 0 9-4 9-9-5 0-9 4-9 9Z"/><circle cx="23" cy="25" r="7"/><circle cx="32" cy="19" r="8"/><circle cx="41" cy="25" r="7"/><circle cx="32" cy="30" r="6"/></g>`,
+    cabbage: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="34" r="19"/><path d="M32 15c-7 6-10 15-8 25"/><path d="M32 15c7 6 10 15 8 25"/><path d="M19 28c4 9 11 13 20 13"/><path d="M45 28c-4 9-11 13-20 13"/><path d="M32 53V44"/></g>`,
+    cassava: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 32V13M32 32 18 20M32 32l14-12M32 32 16 40M32 32l16 8"/><path d="M32 32c-4-7-4-14 0-19 4 5 4 12 0 19Z"/><path d="M32 32c-7-3-11-9-10-16 6 2 10 8 10 16Z"/><path d="M32 32c7-3 11-9 10-16-6 2-10 8-10 16Z"/><path d="M32 32c-7 4-9 11-5 17 5-3 7-10 5-17Z"/><path d="M32 32c7 4 9 11 5 17-5-3-7-10-5-17Z"/><ellipse cx="32" cy="50" rx="8" ry="6"/></g>`,
+    cotton: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V40"/><path d="M32 40c-6 0-10-4-10-10 6 0 10 4 10 10Z"/><path d="M32 40c6 0 10-4 10-10-6 0-10 4-10 10Z"/><circle cx="23" cy="23" r="7"/><circle cx="32" cy="17" r="8"/><circle cx="41" cy="23" r="7"/><circle cx="32" cy="29" r="7"/></g>`,
+    grape: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="19" r="4"/><circle cx="25" cy="27" r="4"/><circle cx="39" cy="27" r="4"/><circle cx="21" cy="36" r="4"/><circle cx="32" cy="36" r="4"/><circle cx="43" cy="36" r="4"/><circle cx="26" cy="45" r="4"/><circle cx="38" cy="45" r="4"/><circle cx="32" cy="53" r="4"/><path d="M32 15c-2-7 3-11 9-13"/><path d="M35 10c4-3 9-2 12 2-4 3-9 2-12-2Z"/></g>`,
+    kiwifruit: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="36" r="17"/><circle cx="32" cy="36" r="5"/><circle cx="32" cy="23" r="1.7" fill="currentColor" stroke="none"/><circle cx="41" cy="27" r="1.7" fill="currentColor" stroke="none"/><circle cx="45" cy="36" r="1.7" fill="currentColor" stroke="none"/><circle cx="41" cy="45" r="1.7" fill="currentColor" stroke="none"/><circle cx="32" cy="49" r="1.7" fill="currentColor" stroke="none"/><circle cx="23" cy="45" r="1.7" fill="currentColor" stroke="none"/><circle cx="19" cy="36" r="1.7" fill="currentColor" stroke="none"/><circle cx="23" cy="27" r="1.7" fill="currentColor" stroke="none"/><path d="M32 19c0-6 4-10 10-12"/><path d="M38 11c4-3 9-2 12 2-4 3-9 2-12-2Z"/></g>`,
+    maize: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V20"/><path d="M25 22c0-7 2-11 7-14 5 3 7 7 7 14v23c0 7-2 11-7 14-5-3-7-7-7-14Z"/><path d="M25 28h14M25 36h14M25 44h14M32 18v36"/><path d="M25 29c-6 2-9 8-9 15 6 0 9-5 11-11"/><path d="M39 29c6 2 9 8 9 15-6 0-9-5-11-11"/></g>`,
+    peanut: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 10c8 0 12 7 12 14 0 4-2 7-4 9 2 2 4 5 4 9 0 7-4 12-12 12s-12-5-12-12c0-4 2-7 4-9-2-2-4-5-4-9 0-7 4-14 12-14Z"/><path d="M23 25c5 2 13 2 18 0"/><path d="M23 45c5-2 13-2 18 0"/></g>`,
+    potato: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 13c10 0 19 8 19 19s-9 19-19 19-19-8-19-19 9-19 19-19Z"/><circle cx="25" cy="25" r="1.8" fill="currentColor" stroke="none"/><circle cx="39" cy="30" r="1.8" fill="currentColor" stroke="none"/><circle cx="29" cy="39" r="1.8" fill="currentColor" stroke="none"/><path d="M32 13c0-4 3-7 7-8"/></g>`,
+    rape: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V31"/><circle cx="32" cy="23" r="4.5"/><circle cx="24" cy="28" r="4.5"/><circle cx="40" cy="28" r="4.5"/><circle cx="27" cy="35" r="4.5"/><circle cx="37" cy="35" r="4.5"/><path d="M32 31c-8 3-12 9-14 16"/><path d="M32 40c6 2 9 7 11 13"/></g>`,
+    rice: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V20"/><path d="M32 25c-8 2-12 8-12 15 6 0 10-4 12-11"/><path d="M32 25c8 2 12 8 12 15-6 0-10-4-12-11"/><path d="M32 35c-6 2-9 7-9 13 5 0 8-4 9-9"/><path d="M32 35c6 2 9 7 9 13-5 0-8-4-9-9"/><path d="M32 45c-4 2-6 5-6 9 3 0 5-2 6-5"/><path d="M32 45c4 2 6 5 6 9-3 0-5-2-6-5"/></g>`,
+    sorghum: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V30"/><circle cx="32" cy="21" r="11"/><circle cx="26" cy="16" r="1.8" fill="currentColor" stroke="none"/><circle cx="38" cy="16" r="1.8" fill="currentColor" stroke="none"/><circle cx="22" cy="24" r="1.8" fill="currentColor" stroke="none"/><circle cx="42" cy="24" r="1.8" fill="currentColor" stroke="none"/><circle cx="32" cy="28" r="1.8" fill="currentColor" stroke="none"/><path d="M32 32c-4 0-7-3-7-7M32 32c4 0 7-3 7-7"/></g>`,
+    soybean: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 40c0-12 9-21 21-21h9c0 12-9 21-21 21Z"/><circle cx="25" cy="33" r="2.4" fill="currentColor" stroke="none"/><circle cx="33" cy="28" r="2.4" fill="currentColor" stroke="none"/><circle cx="41" cy="23" r="2.4" fill="currentColor" stroke="none"/><path d="M20 44c-4 4-6 8-6 12"/><path d="M18 45c-6-2-10-8-10-14 6 0 10 4 12 10Z"/></g>`,
+    tea: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V28"/><path d="M32 32C22 32 14 24 14 14c10 0 18 8 18 18Z"/><path d="M32 40c10 0 18-8 18-18-10 0-18 8-18 18Z"/><path d="M32 49c-7 0-12-5-12-12 7 0 12 5 12 12Z"/></g>`,
+    tobacco: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V24"/><path d="M32 37C20 37 10 29 10 19c12 0 22 8 22 18Z"/><path d="M32 45c10 0 18-6 18-14-10 0-18 6-18 14Z"/><path d="M32 24c0-8 4-14 10-17"/><path d="M38 10c4-4 10-4 14 0-4 4-10 4-14 0Z"/></g>`,
+    tomato: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="37" r="17"/><path d="M32 20v-7"/><path d="M32 20l3 7 8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1 3-7Z" fill="currentColor" stroke="none" opacity=".85"/></g>`,
+    wheat: `<g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V16"/><path d="M32 23c-6 0-9-4-9-9 6 0 9 4 9 9Z"/><path d="M32 23c6 0 9-4 9-9-6 0-9 4-9 9Z"/><path d="M32 33c-6 0-9-4-9-9 6 0 9 4 9 9Z"/><path d="M32 33c6 0 9-4 9-9-6 0-9 4-9 9Z"/><path d="M32 43c-6 0-9-4-9-9 6 0 9 4 9 9Z"/><path d="M32 43c6 0 9-4 9-9-6 0-9 4-9 9Z"/><path d="M32 16 24 4M32 16l8-12"/></g>`,
+  };
+
   function constellationSVG() {
     const species = (S.stats?.species || []).slice().sort((a, b) => a.key.localeCompare(b.key));
     const W = 560, C = 280, R = 216;
@@ -603,19 +628,21 @@
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / species.length;
       const x = C + R * Math.cos(a);
       const y = C + R * Math.sin(a);
-      const r = clamp(6.5 + Math.log10((sp.sc_cells || 1) + 1) * 1.05, 6.5, 14);
+      const r = clamp(14 + Math.log10((sp.sc_cells || 1) + 1) * 0.85, 14, 21);
       const sig = String(sp.signal || 'NONE').toUpperCase();
-      const fill = sig === 'HIGH' ? 'rgba(60,224,178,.88)' : sig === 'LOW' ? 'rgba(241,201,107,.86)' : 'rgba(112,140,131,.78)';
-      const stroke = sp.clade === 'monocot' ? 'rgba(241,201,107,.9)' : 'rgba(60,224,178,.9)';
-      const textFill = sig === 'NONE' ? '#f2fbf7' : '#04130f';
-      return `<g class="node" data-species-option="${esc(sp.key)}" data-tip="${esc(`${sp.name} · ${sp.latin}<br>${compact(sp.sc_cells)} cells · signal ${sp.signal}`)}" data-species-nav="1" tabindex="0" role="button" aria-label="${esc(sp.name)}">
-        <title>${esc(sp.name)} · ${esc(sp.latin)} · ${fmtInt(sp.sc_cells)} cells</title>
-        <line class="spoke" x1="${C}" y1="${C}" x2="${x}" y2="${y}"/>
-        <circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="1.1"/>
-        <text x="${x}" y="${y + 2.2}" fill="${textFill}" class="node-code" style="font-size:${r > 10 ? 6.4 : 5.6}px">${esc(sp.code)}</text>
-      </g>`;
+      const stroke = sig === 'HIGH' ? 'rgba(60,224,178,.96)' : sig === 'LOW' ? 'rgba(241,201,107,.96)' : 'rgba(140,168,159,.9)';
+      const dot = sig === 'HIGH' ? '#3ce0b2' : sig === 'LOW' ? '#f1c96b' : '#8ca89f';
+      const icon = SPECIES_ICONS[sp.key] || '';
+      const size = (r * 1.3).toFixed(1);
+      return `<line class="spoke" x1="${C}" y1="${C}" x2="${x}" y2="${y}"/>
+        <g class="node" data-species-option="${esc(sp.key)}" data-tip="${esc(`${sp.name} · ${sp.latin}<br>${compact(sp.sc_cells)} cells · signal ${sp.signal}`)}" data-species-nav="1" tabindex="0" role="button" aria-label="${esc(sp.name)}">
+          <title>${esc(sp.name)} · ${esc(sp.latin)} · ${fmtInt(sp.sc_cells)} cells</title>
+          <circle class="node-ring" cx="${x}" cy="${y}" r="${r}" fill="rgba(5,20,16,.86)" stroke="${stroke}" stroke-width="1.6"/>
+          <circle class="node-signal" cx="${x + r * 0.68}" cy="${y + r * 0.68}" r="3.2" fill="${dot}" stroke="rgba(5,20,16,.9)" stroke-width=".8"/>
+          <svg x="${x - r * 0.65}" y="${y - r * 0.65}" width="${size}" height="${size}" viewBox="0 0 64 64" class="species-icon" aria-hidden="true">${icon}</svg>
+        </g>`;
     }).join('');
-    return `<svg id="constellation-svg" class="constellation-svg" viewBox="0 0 ${W} ${W}" role="img" aria-label="21 物种星座，节点大小表示单细胞数量，颜色表示干旱信号等级">
+    return `<svg id="constellation-svg" class="constellation-svg" viewBox="0 0 ${W} ${W}" role="img" aria-label="21 物种星座，节点为物种抽象图标，大小表示单细胞数量，圆环颜色表示干旱信号等级">
       <defs>
         <radialGradient id="cellGrad" cx="38%" cy="32%" r="72%">
           <stop offset="0" stop-color="#b9ffea" stop-opacity=".95"/>
@@ -640,8 +667,8 @@
         <circle cx="${C + 9}" cy="${C + 5}" r="4.4" fill="rgba(241,201,107,.7)"/>
         <circle cx="${C + 2}" cy="${C - 13}" r="2.2" fill="rgba(178,255,232,.9)"/>
       </g>
-      <text x="${C}" y="${C + 84}" class="central-label">VIRTUAL CELL</text>
-      <text x="${C}" y="${C + 96}" class="central-sub">21 SPECIES · DROUGHT RESPONSE</text>
+      <text id="constellation-focus" x="${C}" y="${C + 84}" class="central-label">VIRTUAL CELL</text>
+      <text id="constellation-sub" x="${C}" y="${C + 96}" class="central-sub">21 SPECIES · DROUGHT RESPONSE</text>
     </svg>`;
   }
 
@@ -649,6 +676,26 @@
     const host = $('#constellation-svg');
     if (!host) return;
     host.outerHTML = constellationSVG();
+    const svg = $('#constellation-svg');
+    if (!svg) return;
+    const focus = $('#constellation-focus');
+    const sub = $('#constellation-sub');
+    const reset = () => {
+      if (focus) focus.textContent = 'VIRTUAL CELL';
+      if (sub) sub.textContent = '21 SPECIES · DROUGHT RESPONSE';
+    };
+    svg.addEventListener('mouseover', (e) => {
+      const node = e.target.closest('.node');
+      if (!node) return;
+      const key = node.dataset.speciesOption;
+      const sp = S.speciesByKey.get(key);
+      const st = S.statsBySpecies.get(key);
+      if (sp && focus) focus.textContent = sp.name;
+      if (sp && sub) sub.textContent = `${sp.code} · ${st?.signal || 'NA'} · ${compact(st?.sc_cells || 0)} cells`;
+    });
+    svg.addEventListener('mouseout', (e) => {
+      if (e.target.closest('.node')) reset();
+    });
   }
 
   function renderHighlights() {
@@ -1904,7 +1951,7 @@
           <div>
             <div class="eyebrow">Gallery · ${fmtInt(S.allFigures.length)} entries · ${fmtInt(S.site.totals.figures)} unique</div>
             <h1 class="page-title">全图<em>库</em></h1>
-            <p class="page-lead">跨单细胞图谱与虚拟细胞模块检索全部图件。每张卡片保留模块、物种、类别和图注；点击打开原图查看器，${S.site.mode === 'static' ? '可切换 JPG / PDF 或打开原文件' : '可切换 PNG / SVG / PDF 或复制源路径'}。</p>
+            <p class="page-lead">跨单细胞图谱与虚拟细胞模块检索全部图件。每张卡片保留模块、物种、类别和图注；点击打开原图查看器，${S.site.mode === 'static' ? (S.site.pdf_enabled !== false ? '可切换 JPG / PDF 或打开原文件' : '可查看 JPG 原图或打开原文件') : '可切换 PNG / SVG / PDF 或复制源路径'}。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/atlas">图谱总览</a>
@@ -2004,13 +2051,17 @@
     const coverage = S.site.coverage;
     const repo = S.site.repo_url || '';
     const release = S.site.release_url || '';
+    const hasPdf = S.site.pdf_enabled !== false;
+    const isGitee = S.site.platform === 'gitee' || (repo || '').includes('gitee.com');
+    const isCloudflare = S.site.platform === 'cloudflare';
+    const platform = isCloudflare ? 'Cloudflare Pages' : isGitee ? 'Gitee Pages' : 'GitHub Pages';
     view.innerHTML = `
       <div class="page">
         <div class="page-head">
           <div>
-            <div class="eyebrow">Static portal · GitHub Pages</div>
+            <div class="eyebrow">Static portal · ${platform}</div>
             <h1 class="page-title">方法与<em>数据</em></h1>
-            <p class="page-lead">这是 DroAIVC 的公开静态版：图件已从原始结果导出为浏览器可直接加载的优化 JPEG，卡片使用 640px 缩略图。页面不需要 Python 服务，适合 GitHub Pages 托管。</p>
+            <p class="page-lead">这是 DroAIVC 的公开静态版：图件已从原始结果导出为浏览器可直接加载的优化 JPEG，卡片使用 640px 缩略图。页面不需要 Python 服务，适合 ${platform} 托管。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/gallery">全图库</a>
@@ -2036,16 +2087,16 @@
               <table class="path-table">
                 <tr><td>media/full/</td><td>2200px JPEG 预览图，灯箱查看</td></tr>
                 <tr><td>media/thumb/</td><td>640px JPEG 卡片缩略图</td></tr>
-                <tr><td>media/pdf/</td><td>有 PDF 的图件保留原始 PDF，可下载</td></tr>
+                ${hasPdf ? '<tr><td>media/pdf/</td><td>有 PDF 的图件保留原始 PDF，可下载</td></tr>' : ''}
                 <tr><td>data/</td><td>图件清单、统计、轨迹/GRN 交互数据</td></tr>
                 <tr><td>assets/</td><td>页面样式与前端逻辑</td></tr>
               </table>
             </div>
             <div class="method-block">
               <h3>图件读取</h3>
-              <p>每张卡片先加载 <code>media/thumb</code> 缩略图；打开灯箱后加载 <code>media/full</code> 预览图。PDF 图件可切换到原始 PDF。所有路径都是相对路径，因此可以部署在 GitHub Pages 的仓库子路径下。</p>
+              <p>每张卡片先加载 <code>media/thumb</code> 缩略图；打开灯箱后加载 <code>media/full</code> 预览图。${hasPdf ? 'PDF 图件可切换到原始 PDF。' : '镜像版只包含 JPG 预览。'}所有路径都是相对路径，因此可以部署在仓库子路径下。</p>
               <p>公开版为优化预览；如需完全原始分辨率，请使用下方数据包链接（如果已发布）。</p>
-              ${release ? `<p><a class="btn tiny primary" href="${esc(release)}" target="_blank" rel="noopener">下载完整原始图件包</a></p>` : `<p class="tag gold">完整原始图件包可在 GitHub Release 中提供</p>`}
+              ${release ? `<p><a class="btn tiny primary" href="${esc(release)}" target="_blank" rel="noopener">下载完整原始图件包</a></p>` : `<p class="tag gold">完整原始图件包可在代码托管平台的 Release/附件中提供</p>`}
             </div>
           </div>
         </section>
@@ -2053,14 +2104,14 @@
         <section class="section">
           <div class="method-grid">
             <div class="method-block">
-              <h3>GitHub Pages 发布</h3>
-              <p>仓库根目录即为静态站点，包含 <code>index.html</code>、<code>data/</code>、<code>media/</code> 与 <code>.nojekyll</code>。在仓库 Settings → Pages 中选择从 <code>main</code> 分支根目录发布即可。</p>
+              <h3>${platform} 发布</h3>
+              <p>仓库根目录即为静态站点，包含 <code>index.html</code>、<code>data/</code>、<code>media/</code> 与 <code>.nojekyll</code>。${isCloudflare ? '在 Cloudflare Pages 项目中直接上传 public_site 目录；构建输出目录为 /。' : isGitee ? '在仓库“服务 → Gitee Pages”中选择 main 分支根目录部署；Gitee Pages 可能需要实名认证。' : '在仓库 Settings → Pages 中选择从 main 分支根目录发布即可。'}</p>
               ${S.site.site_url ? `<p><a class="btn tiny primary" href="${esc(S.site.site_url)}" target="_blank" rel="noopener">打开在线站点</a></p>` : ''}
-              ${repo ? `<p><a class="btn tiny ghost" href="${esc(repo)}" target="_blank" rel="noopener">打开 GitHub 仓库</a></p>` : ''}
+              ${repo ? `<p><a class="btn tiny ghost" href="${esc(repo)}" target="_blank" rel="noopener">打开代码仓库</a></p>` : ''}
             </div>
             <div class="method-block">
               <h3>更新方式</h3>
-              <p>在本地 DroAIVC 结果更新后，重新运行静态导出脚本，然后把 <code>public_site</code> 内容推送到 GitHub Pages 仓库。图件清单与交互数据会自动重新生成。</p>
+              <p>在本地 DroAIVC 结果更新后，重新运行静态导出脚本，然后把 <code>public_site</code> 内容推送到代码仓库。图件清单与交互数据会自动重新生成。</p>
               <p>本地 <code>AIVC_web/update_public.sh</code> 已封装“重扫 → 导出 → 提交 → 推送 → 等待 Pages”的完整流程。</p>
               <div class="callout info">公开版的数据规模：${fmtInt(totals.figures)} 张唯一图件；${(coverage.prediction_species || []).length} / 21 物种已有干旱预测；深度轨迹/GRN 轨迹当前完成水稻。</div>
             </div>

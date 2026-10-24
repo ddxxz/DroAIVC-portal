@@ -351,13 +351,20 @@ body::before {
   border: 1px dashed rgba(116, 219, 188, .13); border-radius: 50%;
   pointer-events: none;
 }
-.constellation svg { width: 100%; height: 100%; overflow: visible; }
+.constellation > svg { width: 100%; height: 100%; overflow: visible; }
 .node { cursor: pointer; }
-.node circle { transition: transform .25s, fill .25s, stroke .25s; transform-box: fill-box; transform-origin: center; }
-.node:hover circle { transform: scale(1.45); }
+.node-ring { transition: stroke-width .2s, filter .2s; }
+.node:hover .node-ring { stroke-width: 2.7; filter: drop-shadow(0 0 7px rgba(60, 224, 178, .35)); }
+.species-icon {
+  color: #e9fff7;
+  overflow: visible;
+  pointer-events: none;
+  transition: transform .2s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.node:hover .species-icon { transform: scale(1.12); }
 .node text { fill: var(--text); font-size: 9px; font-family: var(--font); text-anchor: middle; pointer-events: none; }
-.node .node-code { fill: var(--teal); font-family: var(--mono); font-size: 7px; font-weight: 700; }
-.node .node-label { fill: var(--muted); font-size: 7px; }
 .orbit { fill: none; stroke: rgba(116, 219, 188, .12); stroke-width: .7; }
 .orbit-dash { fill: none; stroke: rgba(241, 201, 107, .13); stroke-width: .7; stroke-dasharray: 3 6; }
 .spoke { stroke: rgba(116, 219, 188, .08); stroke-width: .6; }
