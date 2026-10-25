@@ -159,6 +159,8 @@
     return map[key] || key.replaceAll('_', ' ');
   }
   function scopeName(rec) {
+    if (rec.module === 'bulk') return '批量转录组';
+    if (rec.module === 'single-cell') return '单细胞转录组';
     if (rec.scope === 'virtual' || rec.module === 'virtual') {
       const tab = S.tabByKey.get(rec.tab);
       return `虚拟细胞 · ${tab?.name || rec.tab || ''}`;
@@ -682,20 +684,37 @@
       </div>`;
   }
 
-  function resultCard(item) {
+  function resultCard(item, listKey, index) {
     const sub = item.scope === 'all'
       ? (item.stage_name ? `${item.stage_name} · 全部物种` : '全部物种')
       : item.scope === 'organ'
         ? `${speciesName(item.species)} · ${organName(item.organ)} · 器官`
         : `${speciesName(item.species)} · ${item.stage_name || item.group || ''}`;
-    return `<a class="fig-card result-card" href="${esc(item.image)}" target="_blank" rel="noopener">
+    return `<a class="fig-card result-card" href="${esc(item.image)}" data-result-list="${esc(listKey)}" data-result-index="${index}">
       <div class="fig-media"><img loading="lazy" src="${esc(item.thumb || item.image)}" alt="${esc(item.title)}"></div>
       <div class="fig-body"><div class="fig-title">${esc(item.title)}</div><div class="fig-sub">${esc(sub)}</div></div>
     </a>`;
   }
-  function resultGrid(items) {
+  function resultGrid(items, listKey = 'results') {
+    S.resultLists = S.resultLists || {};
+    S.resultLists[listKey] = items;
     if (!items.length) return '<div class="empty"><strong>暂无可展示结果</strong><span>该范围尚未生成对应图片。</span></div>';
-    return `<div class="fig-grid">${items.map(resultCard).join('')}</div>`;
+    return `<div class="fig-grid">${items.map((item, i) => resultCard(item, listKey, i)).join('')}</div>`;
+  }
+  function openResultLightbox(listKey, index) {
+    const items = (S.resultLists && S.resultLists[listKey]) || [];
+    const recs = items.map((x) => ({
+      ...x,
+      jpg: x.image,
+      png: undefined,
+      svg: undefined,
+      pdf: undefined,
+      caption: '',
+      formats: ['jpg'],
+      module: x.stage ? 'single-cell' : 'bulk',
+      category: x.stage_name || x.group || '',
+    }));
+    openLightbox(recs, Number(index) || 0);
   }
 
   async function renderBulk() {
@@ -733,7 +752,7 @@
           <div class="section-head">
             <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">21 物种合并的批量分析结果：质控、DEG、富集、GSEA、WGCNA、TF、机器学习等。</p></div>
           </div>
-          ${resultGrid(R.all)}
+          ${resultGrid(R.all, 'bulk-all')}
         </section>
 
         <section class="section">
@@ -747,13 +766,13 @@
               </label>
             </div>
           </div>
-          <div id="bulk-species-grid" style="margin-top:18px">${resultGrid(R.species.filter((x) => x.species === defaultSp))}</div>
+          <div id="bulk-species-grid" style="margin-top:18px">${resultGrid(R.species.filter((x) => x.species === defaultSp), `bulk-species-${defaultSp}`)}</div>
         </section>
       </div>`;
     const sel = $('#bulk-species-select');
     if (sel) sel.addEventListener('change', () => {
       const grid = $('#bulk-species-grid');
-      if (grid) grid.innerHTML = resultGrid(R.species.filter((x) => x.species === sel.value));
+      if (grid) grid.innerHTML = resultGrid(R.species.filter((x) => x.species === sel.value), `bulk-species-${sel.value}`);
     });
   }
 
@@ -802,7 +821,7 @@
               </label>
             </div>
           </div>
-          <div id="single-all-grid" style="margin-top:18px">${resultGrid(allItems)}</div>
+          <div id="single-all-grid" style="margin-top:18px">${resultGrid(allItems, 'single-all')}</div>
         </section>
 
         <section class="section">
@@ -816,7 +835,7 @@
               </label>
             </div>
           </div>
-          <div id="single-species-grid" style="margin-top:18px">${resultGrid(speciesItems.filter((x) => x.species === defaultSp))}</div>
+          <div id="single-species-grid" style="margin-top:18px">${resultGrid(speciesItems.filter((x) => x.species === defaultSp), `single-species-${defaultSp}`)}</div>
         </section>
 
         <section class="section">
@@ -830,23 +849,23 @@
               </label>
             </div>
           </div>
-          <div id="single-organ-grid" style="margin-top:18px">${resultGrid(organItems)}</div>
+          <div id="single-organ-grid" style="margin-top:18px">${resultGrid(organItems, 'single-organ')}</div>
         </section>
       </div>`;
     const stageSel = $('#single-stage-filter');
     if (stageSel) stageSel.addEventListener('change', () => {
       const grid = $('#single-all-grid');
-      if (grid) grid.innerHTML = resultGrid(stageSel.value === 'all' ? allItems : allItems.filter((x) => x.stage === stageSel.value));
+      if (grid) grid.innerHTML = resultGrid(stageSel.value === 'all' ? allItems : allItems.filter((x) => x.stage === stageSel.value), 'single-all');
     });
     const spSel = $('#single-species-select');
     if (spSel) spSel.addEventListener('change', () => {
       const grid = $('#single-species-grid');
-      if (grid) grid.innerHTML = resultGrid(speciesItems.filter((x) => x.species === spSel.value));
+      if (grid) grid.innerHTML = resultGrid(speciesItems.filter((x) => x.species === spSel.value), `single-species-${spSel.value}`);
     });
     const orgSel = $('#single-organ-select');
     if (orgSel) orgSel.addEventListener('change', () => {
       const grid = $('#single-organ-grid');
-      if (grid) grid.innerHTML = resultGrid(orgSel.value === 'all' ? organItems : organItems.filter((x) => x.organ === orgSel.value));
+      if (grid) grid.innerHTML = resultGrid(orgSel.value === 'all' ? organItems : organItems.filter((x) => x.organ === orgSel.value), 'single-organ');
     });
   }
 
@@ -2647,6 +2666,47 @@
   let ROOT_PATH = 'DroAIVC 结果目录';
 
   /* ---------------- lightbox ---------------- */
+  let FIGURE_METHODS = null;
+  let FIGURE_METHODS_PROMISE = null;
+  async function ensureFigureMethods() {
+    if (FIGURE_METHODS) return FIGURE_METHODS;
+    if (!FIGURE_METHODS_PROMISE) {
+      FIGURE_METHODS_PROMISE = fetch('data/figure_methods.json')
+        .then((r) => { if (!r.ok) throw new Error(`figure_methods: ${r.status}`); return r.json(); })
+        .then((d) => { FIGURE_METHODS = d; return d; })
+        .catch(() => { FIGURE_METHODS = { by_web_id: {} }; return FIGURE_METHODS; });
+    }
+    return FIGURE_METHODS_PROMISE;
+  }
+
+  function renderLightboxDetails(rec) {
+    const method = $('#lb-method');
+    const result = $('#lb-result');
+    if (!method || !result) return;
+    if (!FIGURE_METHODS) {
+      method.hidden = false;
+      result.hidden = true;
+      const body = $('.lb-detail-body', method);
+      if (body) body.textContent = '正在加载方法与生物学结论…';
+      ensureFigureMethods().then(() => {
+        if (S.lightbox.list[S.lightbox.index] === rec) renderLightboxDetails(rec);
+      });
+      return;
+    }
+    const d = FIGURE_METHODS.by_web_id?.[rec.id];
+    if (!d) {
+      method.hidden = true;
+      result.hidden = true;
+      return;
+    }
+    method.hidden = false;
+    result.hidden = false;
+    const mb = $('.lb-detail-body', method);
+    const rb = $('.lb-detail-body', result);
+    if (mb) mb.textContent = d.method || '—';
+    if (rb) rb.textContent = d.result || '—';
+  }
+
   function openLightbox(list, index) {
     if (!list || !list.length) return;
     S.lightbox.list = list;
@@ -2690,7 +2750,10 @@
       ].filter(Boolean).join('');
     }
     const cap = $('#lb-caption');
-    if (cap) cap.textContent = rec.caption || '（无图注）';
+    if (cap) {
+      cap.textContent = rec.caption || '';
+      cap.hidden = !rec.caption;
+    }
     const srcWrap = $('#lb-source-wrap');
     if (srcWrap) {
       const src = rec.source || '';
@@ -2702,6 +2765,7 @@
     }
     const counter = $('#lb-counter');
     if (counter) counter.textContent = `${lb.index + 1} / ${lb.list.length}`;
+    renderLightboxDetails(rec);
     renderLightboxMedia();
   }
 
@@ -3046,6 +3110,12 @@
 
   function wireGlobalEvents() {
     document.addEventListener('click', (e) => {
+      const resultCard = e.target.closest('.result-card');
+      if (resultCard) {
+        e.preventDefault();
+        openResultLightbox(resultCard.dataset.resultList, Number(resultCard.dataset.resultIndex));
+        return;
+      }
       if (e.target.closest('[data-close-lightbox]')) { closeLightbox(); return; }
       if (e.target.closest('[data-close-command]')) { closeCommand(); return; }
       const cmd = e.target.closest('[data-command-index]');
