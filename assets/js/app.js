@@ -544,7 +544,7 @@
             <div class="hero-stats">
               <div class="stat"><div class="stat-value">${totals.species}<span class="unit">种</span></div><div class="stat-label">物种覆盖</div></div>
               <div class="stat"><div class="stat-value">${compact(totals.atlas_cells)}<span class="unit">cells</span></div><div class="stat-label">单细胞图谱</div></div>
-              <div class="stat"><div class="stat-value">${compact(totals.bulk_samples)}<span class="unit">bulk</span></div><div class="stat-label">干旱/对照样本</div></div>
+              <div class="stat"><div class="stat-value">${compact(L.bulk.total_samples)}<span class="unit">bulk</span></div><div class="stat-label">bulk 样本（全量）</div></div>
               <div class="stat"><div class="stat-value">${compact(totals.figures)}<span class="unit">figures</span></div><div class="stat-label">${S.site.mode === 'static' ? '图件索引' : '图件与源表索引'}</div></div>
             </div>
             ${S.site.mode !== 'static' ? `<div class="hero-note">数据生成时间 ${esc(formatDate(S.site.generated_at))} · 图件通过软链接读取，源目录保持不变</div>` : ''}
@@ -561,7 +561,7 @@
             <a class="btn tiny ghost" href="#/data">进入数据层 ${ICONS.arrow}</a>
           </div>
           <div class="data-entry-grid">
-            ${moduleCard('bulk', '批量转录组', '正常/干旱 bulk RNA-seq，覆盖 21 物种；提供全部物种汇总与单物种结果。', `${fmtInt(L.bulk.model_samples)} 样本`, '#/bulk', ICONS.layers)}
+            ${moduleCard('bulk', '批量转录组', '全量正常/干旱 bulk RNA-seq；结果图覆盖 21 物种，提供全部物种汇总与单物种结果。', `${fmtInt(L.bulk.total_samples)} 样本`, '#/bulk', ICONS.layers)}
             ${moduleCard('single', '单细胞转录组', '21 物种正常单细胞图谱；提供全部物种、单物种与单器官结果。', `${compact(L.normal_sc.cells)} cells`, '#/single-cell', ICONS.cell)}
           </div>
         </section>
@@ -656,9 +656,9 @@
           </div>
         </div>
         <div class="stat-grid six">
-          ${statBox(L.bulk.species, '物种')}
-          ${statBox(fmtInt(L.bulk.control_samples), '正常 bulk 样本')}
-          ${statBox(fmtInt(L.bulk.drought_samples), '干旱 bulk 样本')}
+          ${statBox(fmtInt(L.bulk.total_samples), 'bulk 总样本')}
+          ${statBox(fmtInt(L.bulk.total_control_samples), '正常 bulk')}
+          ${statBox(fmtInt(L.bulk.total_drought_samples), '干旱 bulk')}
           ${statBox(compact(L.normal_sc.cells), '正常 scRNA 细胞')}
           ${statBox(L.normal_sc.modules, '分析模块')}
           ${statBox(fmtInt(L.normal_sc.figures), '分析图件')}
@@ -669,14 +669,14 @@
             <div><div class="section-kicker">Two tracks</div><h2 class="section-title">两部分，两个入口</h2><p class="section-desc">批量转录组看全物种与单物种的 bulk 结果；单细胞转录组看全物种、单物种与单器官的单细胞结果。</p></div>
           </div>
           <div class="data-entry-grid">
-            ${moduleCard('bulk', '批量转录组', '正常/干旱 bulk RNA-seq，覆盖 21 物种；提供全部物种汇总与单物种结果。', `${fmtInt(L.bulk.model_samples)} 样本`, '#/bulk', ICONS.layers)}
+            ${moduleCard('bulk', '批量转录组', '全量正常/干旱 bulk RNA-seq；结果图覆盖 21 物种，提供全部物种汇总与单物种结果。', `${fmtInt(L.bulk.total_samples)} 样本`, '#/bulk', ICONS.layers)}
             ${moduleCard('single', '单细胞转录组', '21 物种正常单细胞图谱；提供全部物种、单物种与单器官结果。', `${compact(L.normal_sc.cells)} cells`, '#/single-cell', ICONS.cell)}
           </div>
         </section>
 
         <section class="section">
           <div class="callout info">
-            <strong>数值口径：</strong>模型输入 bulk 样本 ${fmtInt(L.bulk.model_samples)} 个（正常 ${fmtInt(L.bulk.control_samples)} / 干旱 ${fmtInt(L.bulk.drought_samples)}）；网站总索引 ${fmtInt(L.bulk.site_total_samples)} 个 bulk 样本。正常单细胞图谱 ${compact(L.normal_sc.cells)} 个细胞、${L.normal_sc.modules} 个分析模块。
+            <strong>数值口径：</strong>全量 bulk 样本 ${fmtInt(L.bulk.total_samples)} 个（正常 ${fmtInt(L.bulk.total_control_samples)} / 干旱 ${fmtInt(L.bulk.total_drought_samples)}）。其中 21 物种可用清单 ${fmtInt(L.bulk.all_species_samples)} 个（正常 ${fmtInt(L.bulk.all_species_control)} / 干旱 ${fmtInt(L.bulk.all_species_drought)}）；虚拟细胞建模输入 ${fmtInt(L.bulk.model_samples)} 个（正常 ${fmtInt(L.bulk.control_samples)} / 干旱 ${fmtInt(L.bulk.drought_samples)}）。正常单细胞图谱 ${compact(L.normal_sc.cells)} 个细胞、${L.normal_sc.modules} 个分析模块。
           </div>
         </section>
       </div>`;
@@ -710,7 +710,7 @@
           <div>
             <div class="eyebrow">Bulk transcriptome · normal vs drought</div>
             <h1 class="page-title">批量<em>转录组</em></h1>
-            <p class="page-lead">正常与干旱 bulk 的 21 物种结果。上半部分是全部物种合并结果，下半部分按物种查看单物种结果；图片为本次更新后的结果汇总。</p>
+            <p class="page-lead">全量 ${fmtInt(L.bulk.total_samples)} 个 bulk 样本（正常 ${fmtInt(L.bulk.total_control_samples)} / 干旱 ${fmtInt(L.bulk.total_drought_samples)}）；结果图覆盖 21 物种。上半部分是全部物种合并结果，下半部分按物种查看单物种结果。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/data">返回数据层</a>
@@ -718,12 +718,15 @@
           </div>
         </div>
         <div class="stat-grid six">
-          ${statBox(fmtInt(L.bulk.control_samples), '正常 bulk 样本')}
-          ${statBox(fmtInt(L.bulk.drought_samples), '干旱 bulk 样本')}
+          ${statBox(fmtInt(L.bulk.total_samples), 'bulk 总样本')}
+          ${statBox(fmtInt(L.bulk.total_control_samples), '正常 bulk')}
+          ${statBox(fmtInt(L.bulk.total_drought_samples), '干旱 bulk')}
+          ${statBox(fmtInt(L.bulk.model_samples), '模型输入')}
           ${statBox(L.bulk.species, '物种')}
-          ${statBox(R.all.length, '全物种结果')}
           ${statBox(fmtInt(R.species.length), '单物种结果')}
-          ${statBox(L.bulk.projects, 'bulk 项目')}
+        </div>
+        <div class="callout info" style="margin-top:18px">
+          <strong>样本口径：</strong>全量清洗清单 ${fmtInt(L.bulk.total_samples)}（正常 ${fmtInt(L.bulk.total_control_samples)} / 干旱 ${fmtInt(L.bulk.total_drought_samples)}）；21 物种可用清单 ${fmtInt(L.bulk.all_species_samples)}（正常 ${fmtInt(L.bulk.all_species_control)} / 干旱 ${fmtInt(L.bulk.all_species_drought)}）；虚拟细胞建模输入 ${fmtInt(L.bulk.model_samples)}（正常 ${fmtInt(L.bulk.control_samples)} / 干旱 ${fmtInt(L.bulk.drought_samples)}）。
         </div>
 
         <section class="section">

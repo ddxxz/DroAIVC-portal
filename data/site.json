@@ -1,5 +1,6 @@
 {
-  "generated_at": "2026-10-23T21:51:34+08:00",
+  "generated_at": "2026-10-23T21:48:41+08:00",
+  "source_root": "/home/win/4T/GeneDL/data_output/DroAIVC",
   "species": [
     {
       "key": "alfalfa",
@@ -679,7 +680,7 @@
     "species": 21,
     "atlas_cells": 5427550,
     "model_cells": 5579934,
-    "bulk_samples": 12455,
+    "bulk_samples": 14557,
     "grn_edges": 6232084,
     "figures": 1850,
     "atlas_figures": 1698,
@@ -748,8 +749,5 @@
     "model_eval": "v8 模型的外部验证仍有限；模型输出为计算预测，不作为实验证据。",
     "communication": "细胞通讯结果为基于表达的推断，细胞不是独立生物学重复。",
     "perturbation": "基因扰动为模型内模拟，不是实验验证。"
-  },
-  "mode": "static",
-  "site_url": "https://ddxxz.github.io/DroAIVC-portal/",
-  "repo_url": "https://github.com/ddxxz/DroAIVC-portal"
+  }
 }
