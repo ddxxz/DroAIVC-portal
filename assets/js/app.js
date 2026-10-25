@@ -762,13 +762,17 @@
     const species = (R.species_keys || []).slice();
     const defaultSp = species.includes(S.species) ? S.species : (species.includes('rice') ? 'rice' : species[0]);
     const organOptions = R.organs || [];
+    const latest = R.latest || [];
+    const allItems = R.all.concat(latest.filter((x) => !x.species));
+    const speciesItems = R.species.concat(latest.filter((x) => x.species).map((x) => ({ ...x, scope: 'species' })));
+    const organItems = R.organ.concat(latest.filter((x) => x.species && x.organ).map((x) => ({ ...x, scope: 'organ' })));
     view.innerHTML = `
       <div class="page">
         <div class="page-head">
           <div>
             <div class="eyebrow">Single-cell transcriptome · 21 species</div>
             <h1 class="page-title">单细胞<em>转录组</em></h1>
-            <p class="page-lead">正常单细胞图谱的新版结果汇总：全部物种、单物种、单器官三层视图。14 个分析模块的完整交互结果仍可从单细胞图谱进入。</p>
+            <p class="page-lead">正常单细胞图谱的新版结果汇总：全部物种、单物种、单器官三层视图，并已并入 2026-10-25 新增的 Cell2Fate / WOT / CellRank 结果。14 个分析模块的完整交互结果仍可从单细胞图谱进入。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/data">返回数据层</a>
@@ -779,14 +783,14 @@
           ${statBox(L.normal_sc.species, '物种')}
           ${statBox(compact(L.normal_sc.cells), '正常 scRNA 细胞')}
           ${statBox(stages.length, '分析阶段')}
-          ${statBox(R.all.length, '全物种汇总图')}
-          ${statBox(fmtInt(R.species.length), '单物种结果')}
-          ${statBox(R.organ.length, '单器官结果')}
+          ${statBox(allItems.length, '全物种汇总图')}
+          ${statBox(fmtInt(speciesItems.length), '单物种结果')}
+          ${statBox(organItems.length, '单器官结果')}
         </div>
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">每个分析阶段的跨物种概览；可按阶段筛选。</p></div>
+            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">每个分析阶段的跨物种概览，含最新新增结果；可按阶段筛选。</p></div>
           </div>
           <div class="filter-bar">
             <div class="filter-row">
@@ -795,12 +799,12 @@
               </label>
             </div>
           </div>
-          <div id="single-all-grid" style="margin-top:18px">${resultGrid(R.all)}</div>
+          <div id="single-all-grid" style="margin-top:18px">${resultGrid(allItems)}</div>
         </section>
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">Single species</div><h2 class="section-title">单个物种结果</h2><p class="section-desc">按物种筛选；每个阶段展示该物种的汇总图。</p></div>
+            <div><div class="section-kicker">Single species</div><h2 class="section-title">单个物种结果</h2><p class="section-desc">按物种筛选；每个阶段展示该物种的汇总图，并含最新拟时序补充图。</p></div>
           </div>
           <div class="filter-bar">
             <div class="filter-row">
@@ -809,12 +813,12 @@
               </label>
             </div>
           </div>
-          <div id="single-species-grid" style="margin-top:18px">${resultGrid(R.species.filter((x) => x.species === defaultSp))}</div>
+          <div id="single-species-grid" style="margin-top:18px">${resultGrid(speciesItems.filter((x) => x.species === defaultSp))}</div>
         </section>
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">Single organ</div><h2 class="section-title">单个器官结果</h2><p class="section-desc">按器官筛选；单器官视图当前覆盖 UMAP 器官图（58 个物种-器官组合）。</p></div>
+            <div><div class="section-kicker">Single organ</div><h2 class="section-title">单个器官结果</h2><p class="section-desc">按器官筛选；覆盖 UMAP 器官图与最新 CellRank 器官结果。</p></div>
           </div>
           <div class="filter-bar">
             <div class="filter-row">
@@ -823,23 +827,23 @@
               </label>
             </div>
           </div>
-          <div id="single-organ-grid" style="margin-top:18px">${resultGrid(R.organ)}</div>
+          <div id="single-organ-grid" style="margin-top:18px">${resultGrid(organItems)}</div>
         </section>
       </div>`;
     const stageSel = $('#single-stage-filter');
     if (stageSel) stageSel.addEventListener('change', () => {
       const grid = $('#single-all-grid');
-      if (grid) grid.innerHTML = resultGrid(stageSel.value === 'all' ? R.all : R.all.filter((x) => x.stage === stageSel.value));
+      if (grid) grid.innerHTML = resultGrid(stageSel.value === 'all' ? allItems : allItems.filter((x) => x.stage === stageSel.value));
     });
     const spSel = $('#single-species-select');
     if (spSel) spSel.addEventListener('change', () => {
       const grid = $('#single-species-grid');
-      if (grid) grid.innerHTML = resultGrid(R.species.filter((x) => x.species === spSel.value));
+      if (grid) grid.innerHTML = resultGrid(speciesItems.filter((x) => x.species === spSel.value));
     });
     const orgSel = $('#single-organ-select');
     if (orgSel) orgSel.addEventListener('change', () => {
       const grid = $('#single-organ-grid');
-      if (grid) grid.innerHTML = resultGrid(orgSel.value === 'all' ? R.organ : R.organ.filter((x) => x.organ === orgSel.value));
+      if (grid) grid.innerHTML = resultGrid(orgSel.value === 'all' ? organItems : organItems.filter((x) => x.organ === orgSel.value));
     });
   }
 
