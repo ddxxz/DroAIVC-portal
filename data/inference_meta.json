@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T03:15:08.937433+00:00",
+  "generated_at": "2026-10-30T03:26:34.547635+00:00",
   "api_base": "https://ca1a90489d6973.lhr.life",
   "model": "DroAIVC v10 M2 + D3 final",
   "species": [
@@ -465,5 +465,9 @@
   },
   "bulk_format": "TSV/CSV：gene, control_mean_cpm, drought_mean_cpm（或 control_mean_cpm + log2FC）",
   "h5ad_format": "AnnData；X 或 layers['counts'] 为原始整数计数；var_names 为模型基因 ID；可选 obs['cell_type']、obs['sample_id']",
-  "disclaimer": "模型输出为计算预测，不是实验证据；请勿上传敏感数据。"
+  "disclaimer": "模型输出为计算预测，不是实验证据；请勿上传敏感数据。",
+  "retention": {
+    "uploads": "任务结束后立即删除",
+    "results": "结果最多保留 1 小时，之后自动清理"
+  }
 }

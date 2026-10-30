@@ -2072,7 +2072,7 @@
               <button class="btn primary" id="inf-submit" type="submit">开始推理 ${ICONS.spark}</button>
               <a class="btn tiny ghost" href="${esc(bulkExample)}" download>下载示例 bulk</a>
               <a class="btn tiny ghost" href="${esc(h5adExample)}" download>下载示例 h5ad</a>
-              <span class="inference-hint">公开 GPU 服务，单任务排队；请勿上传敏感数据。模型输出为计算预测，不是实验证据。</span>
+              <span class="inference-hint">公开 GPU 服务，单任务排队；上传文件仅用于本次推理，任务结束即删除，结果最多保留 1 小时。请勿上传敏感数据；模型输出为计算预测，不是实验证据。</span>
             </div>
           </form>
           <div class="inference-job" id="inf-job" hidden>
@@ -2131,7 +2131,10 @@
     host.innerHTML = `
       <div class="result-head">
         <div><h3>干旱单细胞生成完成</h3><p>${esc(speciesName(summary.species))} · ${esc(organName(summary.organ))} · τ = ${esc(String(summary.tau))} · ${esc(summary.cell_source === 'custom_h5ad' ? '自定义正常细胞' : '内置正常图谱')}</p></div>
-        <a class="btn primary" href="${esc(apiBase)}/api/v1/jobs/${esc(jobId)}/result">下载结果 zip ${ICONS.arrow}</a>
+        <div class="result-actions">
+          <a class="btn primary" href="${esc(apiBase)}/api/v1/jobs/${esc(jobId)}/result">下载结果 zip ${ICONS.arrow}</a>
+          <button class="btn tiny ghost" data-action="inf-delete" data-value="${esc(jobId)}">删除服务器结果</button>
+        </div>
       </div>
       <div class="stat-grid six">
         ${statBox(fmtInt(summary.n_cells), '细胞数')}
@@ -2147,8 +2150,27 @@
         ${inferenceTopTable(summary.top_down, '预测下调 Top 20')}
       </div>
       <div class="callout info" style="margin-top:14px">
-        <strong>结果文件：</strong>zip 内含 h5ad（X=预测干旱计数，layers['control']=正常计数，obsm 含 TF 活性）、summary.json、predicted_logFC.tsv、context_used.tsv。模型输出为计算预测，需要实验验证。
+        <strong>结果文件：</strong>zip 内含 h5ad（X=预测干旱计数，layers['control']=正常计数，obsm 含 TF 活性）、summary.json、predicted_logFC.tsv、context_used.tsv。上传文件已在任务结束时从服务器删除；结果最多保留 1 小时，也可点“删除服务器结果”立即清理。模型输出为计算预测，需要实验验证。
       </div>`;
+  }
+
+  async function deleteInferenceJob(jobId) {
+    const base = String(S.inferenceMeta?.api_base || '').replace(/\/$/, '');
+    if (!base || !jobId) return;
+    if (!window.confirm('确定删除服务器上的任务结果？删除后无法再次下载。')) return;
+    try {
+      const r = await fetch(`${base}/api/v1/jobs/${jobId}`, { method: 'DELETE' });
+      if (!r.ok) throw new Error(`删除失败（${r.status}）`);
+      const host = $('#inf-result');
+      if (host) { host.hidden = true; host.innerHTML = ''; }
+      const jobBox = $('#inf-job');
+      if (jobBox) jobBox.hidden = true;
+      localStorage.removeItem('droaivc.inference.job');
+      S.inference.jobId = '';
+      toast('已删除服务器结果');
+    } catch (err) {
+      toast(err.message || '删除失败');
+    }
   }
 
   async function fetchInferenceSummary(jobId, apiBase) {
@@ -3714,6 +3736,9 @@
       case 'eval-context':
         S.evalContext = value;
         renderRoute();
+        break;
+      case 'inf-delete':
+        deleteInferenceJob(value);
         break;
       case 'reg-download':
         downloadRegulatorySummary();

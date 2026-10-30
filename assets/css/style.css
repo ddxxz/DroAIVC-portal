@@ -1709,3 +1709,4 @@ body::after {
 @media (max-width: 900px) {
   .inference-row, .inference-upload-grid, .result-tables { grid-template-columns: 1fr; }
 }
+.result-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
