@@ -36,6 +36,7 @@
     species: localStorage.getItem('droaivc.species') || 'all',
     speciesQuery: '',
     route: { name: 'home', module: null, tab: null },
+    pendingScroll: null,
     atlasModule: null,
     atlasCategory: 'all',
     atlasQuery: '',
@@ -77,6 +78,51 @@
     grid: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="6.4" height="6.4" rx="1.2" stroke="currentColor" stroke-width="1.4"/><rect x="13.6" y="4" width="6.4" height="6.4" rx="1.2" stroke="currentColor" stroke-width="1.4"/><rect x="4" y="13.6" width="6.4" height="6.4" rx="1.2" stroke="currentColor" stroke-width="1.4"/><rect x="13.6" y="13.6" width="6.4" height="6.4" rx="1.2" stroke="currentColor" stroke-width="1.4"/></svg>',
     flask: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 3h6M10 3v5.2L5.7 17a2.2 2.2 0 0 0 2 3.2h8.6a2.2 2.2 0 0 0 2-3.2L14 8.2V3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.2 15h9.6" stroke="currentColor" stroke-width="1.3" opacity=".7"/></svg>',
   };
+
+  const FRAMEWORK_FIGS = [
+    {
+      id: 'fw_overall', module: 'virtual', tab: 'framework', species: 'multi', category: '模型框架',
+      title: 'DroAIVC 模型总体框架',
+      caption: '正常单细胞 → 模块一正常状态编码 → 模块二干旱轨迹 · ODE → 模块三干旱单细胞生成；下方为虚拟基因扰动层（NetPerturber）。',
+      method: '模块一（M2）把每个正常细胞编码为 TF 活性 a 与 4 维自由变量 f；模块二（D3）从 a(0) 出发，按 TF → TF 先验边积分干旱 ODE，并把解码权重随 τ 重连；模块三在每个细胞自身真实计数上施加 log 倍数 r(τ) 后重采样；扰动层通过模块一的 TF → 基因权重把任意基因 KO / OE 映射为 TF 活性入口，再沿模块二轨迹传播。',
+      result: '正式模型为模块一 M2 + 模块二 D3 final；21 物种共享 TF → TF 调控，其余基因层网络按物种各自先验。模型输出为计算预测，不是实验证据。',
+      png: 'assets/framework/overall.jpg', thumb: 'assets/framework/thumbs/overall.jpg', formats: ['jpg'], ar: 1.777,
+    },
+    {
+      id: 'fw_module1', module: 'virtual', tab: 'framework', species: 'multi', category: '模块一 · 正常状态',
+      title: '模块一 · 正常状态编码（M2）',
+      caption: 'TF 活性 a = c · e + p；物种特异输入层 + 跨物种共享编码器；解码器只在先验边上取值的 TF → 基因权重 Ŵ = W ⊙ M。',
+      method: '编码器第一层按物种，输入为该物种 4,000 个高变表达基因 + 全部 TF 基因；后续层跨物种共享，输出物种特异的翻译后修正 p 与 4 维自由变量 f。解码器为单层线性：logits = b + a · Ŵ + f · V̂，负二项似然。',
+      result: '21 物种验证集每基因负二项损失 0.2394；[a, f] 空间 15 近邻细胞类型准确率平均 0.742；拟南芥 ChIP / 文献边 AUROC 0.534。5 个物种（香蕉、大麦、西兰花、花生、小麦）网络很弱。',
+      png: 'assets/framework/module1_state.jpg', thumb: 'assets/framework/thumbs/module1_state.jpg', formats: ['jpg'], ar: 1.777,
+    },
+    {
+      id: 'fw_module2', module: 'virtual', tab: 'framework', species: 'multi', category: '模块二 · 干旱轨迹',
+      title: '模块二 · 干旱轨迹（D3）',
+      caption: 'TF 活性按调控 ODE 从正常状态走到干旱终点；解码权重随 τ 重连，并叠加类型偏离、组成变化与 bulk 不动点校准。',
+      method: '状态 z = [a, f]，dΔa/dτ = S + tanh(Δa · (K ⊙ M_tf)) − δ ⊙ Δa；K 只在 TF → TF 先验边上取值并跨物种共享。解码 Ŵ(τ) = W + τ · ΔW，叠加网络外类型偏离 R(h,k)、组成权重 γ(h,k) 与群体校准 A。',
+      result: '留出研究上每类 logFC r = 0.697，类型特异 r = 0.041；能量距离 0.539，组成 JS 相对值 0.776。类型特异增益很小，与“各类型同样变化”基线接近。',
+      png: 'assets/framework/module2_dynamics.jpg', thumb: 'assets/framework/thumbs/module2_dynamics.jpg', formats: ['jpg'], ar: 1.777,
+    },
+    {
+      id: 'fw_module3', module: 'virtual', tab: 'framework', species: 'multi', category: '模块三 · 生成',
+      title: '模块三 · 干旱单细胞生成',
+      caption: '在每个细胞自己的真实计数 X0 上施加干旱 log 倍数 r(τ)，再按二项稀疏 / 泊松补充重采样，保留原始细胞差异与测序噪声。',
+      method: '按原组成从匹配物种与器官的正常单细胞中抽取不超过 5,000 个细胞；模型给出每个细胞每个基因的 log 倍数 r(τ)，期望计数为 X0 ⊙ exp(r(τ))；下调走二项稀疏、上调走泊松补充；非表达基因按 s(τ) × bulk logFC 处理。',
+      result: '输出为带原始计数尺度与细胞组成的干旱单细胞 h5ad；τ = 0.25–1 可调。生成结果由真实 bulk 与留出干旱单细胞评价，不是实验验证。',
+      png: 'assets/framework/module3_generation.jpg', thumb: 'assets/framework/thumbs/module3_generation.jpg', formats: ['jpg'], ar: 1.777,
+    },
+    {
+      id: 'fw_perturbation', module: 'virtual', tab: 'framework', species: 'multi', category: '扰动层',
+      title: '扰动层 · NetPerturber',
+      caption: '任意表达基因 KO / OE → TF 活性改变 → TF 间级联 3 步 → 扰动后的正常细胞 → 沿模块二轨迹得到扰动后的干旱细胞。',
+      method: 'TF 直接干预：KO 令 Δa_t = −a_t，OE 令表达 F 倍；非 TF 基因通过一步共表达映射到 TF；随后在模块一的 TF → TF 权重上做 3 步级联。交付预测器另含 T（方向 / 幅度）、g（通用响应分数）与 N（候选靶基因排序）。',
+      result: '正常状态扰动按批次预注册检验；干旱扰动为探索性预测。扰动验证见图 3.2.9（哪些基因会变、变化方向与幅度）。',
+      png: 'assets/framework/perturbation.jpg', thumb: 'assets/framework/thumbs/perturbation.jpg', formats: ['jpg'], ar: 1.777,
+    },
+  ];
+  const FRAMEWORK_OVERALL = FRAMEWORK_FIGS[0];
+  const FRAMEWORK_MODULES = FRAMEWORK_FIGS.slice(1);
 
   /* ---------------- utilities ---------------- */
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -310,7 +356,7 @@
   function figureGrid(records, listKey, opts = {}) {
     S.figureLists[listKey] = records;
     if (!records.length) return `<div class="empty"><strong>暂无匹配图件</strong><span>尝试切换物种、分析模块或清空检索词。</span></div>`;
-    return `<div class="fig-grid">${records.map((r, i) => figureCard(r, listKey, i)).join('')}</div>`;
+    return `<div class="fig-grid ${opts.className || ''}">${records.map((r, i) => figureCard(r, listKey, i)).join('')}</div>`;
   }
 
   /* ---------------- topbar ---------------- */
@@ -541,6 +587,17 @@
       if ($('#prediction-bar-chart')) renderPredictionChart();
       if ($('#pattern-bar-chart')) renderPatternChart();
     });
+    if (S.pendingScroll) {
+      const targetId = S.pendingScroll;
+      S.pendingScroll = null;
+      const align = () => {
+        const target = document.getElementById(targetId);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      requestAnimationFrame(align);
+      setTimeout(align, 700);
+      setTimeout(align, 1800);
+    }
   }
 
   function pageTitle(route) {
@@ -561,9 +618,17 @@
 
   /* ---------------- home ---------------- */
   async function renderHome() {
-    await ensureLandscape();
+    const [L, MP] = await Promise.all([
+      ensureLandscape(),
+      ensureModelPerformance().catch(() => null),
+    ]);
     const totals = S.site.totals;
-    const L = S.landscape;
+    const perfFigs = MP?.figures || [];
+    const perfPick = [
+      perfFigs.find((f) => f.module_key === '326_baselines'),
+      perfFigs.find((f) => f.module_key === '327_ablations'),
+    ].filter(Boolean);
+    const perfThumbs = perfPick.map((f) => thumbUrl(f, 640)).filter(Boolean);
     view.innerHTML = `
       <div class="page">
         <section class="hero">
@@ -607,9 +672,40 @@
           </div>
         </section>
 
+        <section class="section" id="home-model">
+          <div class="section-head">
+            <div><div class="section-kicker">02 · Model</div><h2 class="section-title">模型框架与性能</h2><p class="section-desc">正式模型 = 模块一 M2 + 模块二 D3 final：从正常单细胞编码到干旱轨迹与单细胞生成，再加扰动层；性能评价覆盖基线、消融、留出研究、网络证据与扰动验证。</p></div>
+            <a class="btn tiny ghost" href="#/data">进入模型部分 ${ICONS.arrow}</a>
+          </div>
+          <div class="home-model-grid">
+            <a class="home-model-card" href="#/data" data-scroll-target="model-framework">
+              <div class="hmc-media"><img src="assets/framework/thumbs/overall.jpg" alt="DroAIVC 模型总体框架" loading="lazy"></div>
+              <div class="hmc-body">
+                <div class="hmc-kicker">Model framework</div>
+                <h3>模型框架</h3>
+                <p>正常状态编码 → 干旱轨迹 ODE → 干旱单细胞生成；扰动层支持任意基因 KO / OE，并沿轨迹传播到干旱状态。</p>
+                <div class="hmc-tags"><span>模块一 M2</span><span>模块二 D3</span><span>模块三生成</span><span>NetPerturber</span></div>
+              </div>
+            </a>
+            <a class="home-model-card" href="#/data" data-scroll-target="model-performance">
+              <div class="hmc-media hmc-media-pair">
+                ${perfThumbs.length
+                  ? perfThumbs.map((src, i) => `<img src="${esc(src)}" alt="${esc(perfPick[i]?.title || '模型性能图')}" loading="lazy">`).join('')
+                  : '<div class="hmc-placeholder">性能图暂未载入</div>'}
+              </div>
+              <div class="hmc-body">
+                <div class="hmc-kicker">Model performance</div>
+                <h3>模型性能</h3>
+                <p>5 项留出研究上的基线方法比较与关键模块消融，并覆盖网络证据、组成/解卷积、种子稳定性、适用范围与扰动验证。</p>
+                <div class="hmc-tags"><span>基线</span><span>消融</span><span>留出研究</span><span>扰动验证</span></div>
+              </div>
+            </a>
+          </div>
+        </section>
+
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">02 · Virtual cell</div><h2 class="section-title">抗旱虚拟细胞：预测、扰动与设计</h2><p class="section-desc">输入正常/干旱 bulk 与正常单细胞，输出干旱单细胞、扰动效应和耐旱状态候选。</p></div>
+            <div><div class="section-kicker">03 · Virtual cell</div><h2 class="section-title">抗旱虚拟细胞：预测、扰动与设计</h2><p class="section-desc">输入正常/干旱 bulk 与正常单细胞，输出干旱单细胞、扰动效应和耐旱状态候选。</p></div>
             <a class="btn tiny ghost" href="#/virtual">进入虚拟细胞 ${ICONS.arrow}</a>
           </div>
           <div class="virtual-grid">
@@ -636,7 +732,7 @@
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">03 · Drought cell patterns</div><h2 class="section-title">干旱细胞规律</h2><p class="section-desc">把正常图谱的分析逻辑迁移到干旱 scRNA：QC → HVG → PCA → Harmony → 聚类 → 注释 → DEG → 拟时序 → GRN → 通讯 → 状态 → 反卷积。</p></div>
+            <div><div class="section-kicker">04 · Drought cell patterns</div><h2 class="section-title">干旱细胞规律</h2><p class="section-desc">把正常图谱的分析逻辑迁移到干旱 scRNA：QC → HVG → PCA → Harmony → 聚类 → 注释 → DEG → 拟时序 → GRN → 通讯 → 状态 → 反卷积。</p></div>
             <a class="btn tiny ghost" href="#/drought">进入干旱细胞规律 ${ICONS.arrow}</a>
           </div>
           <div class="drought-band">
@@ -691,7 +787,6 @@
     const regTotals = reg?.totals || { raw_edges: 0, filtered_edges: S.site.totals.grn_edges };
     const fw = (V?.figures || []).filter((f) => f.tab === 'framework');
     const pipeline = fw.find((f) => f.title.includes('三阶段')) || fw[0];
-    const framework = fw.find((f) => f.title.includes('基线模型')) || fw[1];
     const perf = MP || { stats: {}, modules: [], key_tables: [], figures: [], summary: '' };
     const perfFigs = perf.figures || [];
     const baselineFigs = perfFigs.filter((f) => f.module_key === '326_baselines' || f.module_key === '327_ablations');
@@ -703,7 +798,7 @@
           <div>
             <div class="eyebrow">Data layer · bulk + single-cell + regulation</div>
             <h1 class="page-title">数据层：批量、单细胞与<em>调控关系</em></h1>
-            <p class="page-lead">数据底座包含三条主线：批量转录组（正常/干旱）、单细胞转录组（正常图谱）与初始调控关系（已知 TF–靶基因）。批量与单细胞均含全部物种与单物种结果；调控关系展示 21 物种的先验边、TF 匹配与单物种、全物种汇总。</p>
+            <p class="page-lead">数据底座包含三条主线：批量转录组（正常/干旱）、单细胞转录组（正常图谱）与初始调控关系（已知 TF–靶基因）。批量与单细胞均含全部物种与单物种结果；调控关系展示 21 物种的先验边、TF 匹配与单物种、全物种汇总。页面后部给出正式模型（模块一 M2 + 模块二 D3 final）的框架与性能：基线、消融、留出研究、网络证据与扰动验证。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/methods">数据来源与方法</a>
@@ -740,25 +835,33 @@
             <div><div class="section-kicker">Model framework</div><h2 class="section-title">模型框架</h2><p class="section-desc">从多物种正常单细胞与 bulk 情境，到跨物种共享的 TF → 基因调控、干旱轨迹与单细胞生成，再到预测、轨迹、GRN 与扰动输出。正式模型为模块一 M2 + 模块二 D3 final。</p></div>
             <a class="btn tiny ghost" href="#/virtual/framework">完整框架 ${ICONS.arrow}</a>
           </div>
-          ${pipeline ? bigFigureHTML(pipeline, 'data-framework-pipeline') : ''}
+          ${bigFigureHTML(FRAMEWORK_OVERALL, 'data-framework-overall')}
           <div class="framework-steps" style="margin-top:18px">
-            <div class="fw-step"><div class="n">01 · INPUT</div><h4>多物种单细胞 + bulk</h4><p>21 物种正常单细胞图谱、细胞类型注释、bulk 干旱/对照样本与 GRN 先验。</p></div>
-            <div class="fw-step"><div class="n">02 · ALIGN</div><h4>直系同源群与潜空间</h4><p>跨物种共同基因、同源组映射、潜空间对齐与信号质量评估。</p></div>
-            <div class="fw-step"><div class="n">03 · GENERATE</div><h4>干旱上下文生成</h4><p>状态编码 + 跨物种共享的 TF → 基因动力学 + 神经 ODE 干旱轨迹。</p></div>
-            <div class="fw-step"><div class="n">04 · READOUT</div><h4>预测 / 轨迹 / 扰动</h4><p>干旱单细胞、类型轨迹、TF 活性、GRN 时间序列与 KO/OE 扰动模拟。</p></div>
+            <div class="fw-step"><div class="n">01 · INPUT</div><h4>多物种单细胞 + bulk</h4><p>21 物种正常单细胞图谱、细胞类型注释、bulk 干旱/对照样本、bulk 时间序列与 GRN 先验。</p></div>
+            <div class="fw-step"><div class="n">02 · STATE</div><h4>正常状态编码</h4><p>模块一 M2：TF 活性 a = c·e + p，加 4 维自由变量 f；只在先验边上学习 TF → 基因权重。</p></div>
+            <div class="fw-step"><div class="n">03 · TRAJECTORY</div><h4>干旱轨迹与生成</h4><p>模块二 D3：TF 动力学 ODE 从正常走到干旱；模块三在每个细胞自身计数上生成干旱单细胞。</p></div>
+            <div class="fw-step"><div class="n">04 · READOUT</div><h4>预测 / 轨迹 / 扰动</h4><p>干旱单细胞、类型轨迹、TF 活性、GRN 时间序列与任意基因 KO/OE 扰动模拟。</p></div>
           </div>
-          <div class="split" style="grid-template-columns:minmax(0,1fr) 360px;margin-top:22px">
-            <div>${framework ? bigFigureHTML(framework, 'data-framework-model') : '<div class="callout">模型框架图暂未加载。</div>'}</div>
-            <div class="detail-panel">
-              <div class="detail-head"><div><h3>正式模型</h3><p>模块一 M2 + 模块二 D3 final</p></div><span class="tag teal">v10</span></div>
-              <div class="drought-module-list">
-                <div class="drought-module"><span>模块一 M2</span><span>正常状态编码：TF 活性 a = c·e + p</span></div>
-                <div class="drought-module"><span>模块二 D3</span><span>跨物种共享 TF → 基因权重；神经 ODE 干旱轨迹</span></div>
-                <div class="drought-module"><span>生成层</span><span>按细胞自身计数生成干旱单细胞；支持 τ = 0.25–1</span></div>
-                <div class="drought-module"><span>扰动层</span><span>模型 TF 入口 + 共表达网络；KO/OE 与组合扰动</span></div>
-              </div>
-              <div class="callout info" style="margin-top:12px">模块一不使用细胞类型标签；模块二在 21 物种间共享 TF → TF 调控。模型输出是计算预测，不是实验证据。</div>
+
+          <div class="subgroup" style="margin-top:26px">
+            <div class="subgroup-head"><h3>分模块结构</h3><span class="count">模块一 M2 · 模块二 D3 · 模块三生成 · 扰动层 NetPerturber</span></div>
+            ${figureGrid(FRAMEWORK_MODULES, 'data-framework-modules', { className: 'fw-module-grid' })}
+          </div>
+
+          <div class="detail-panel fw-model-panel" style="margin-top:26px">
+            <div class="detail-head"><div><h3>正式模型</h3><p>模块一 M2 + 模块二 D3 final · v10</p></div><span class="tag teal">v10</span></div>
+            <div class="model-facts">
+              <div class="model-fact"><b>模块一 · M2</b><p>正常状态编码：TF 活性 a = c·e + p；物种特异解码器只在三层先验边上学习 Ŵ。</p></div>
+              <div class="model-fact"><b>模块二 · D3</b><p>TF 动力学 ODE；跨物种共享 TF → TF 权重；解码权重随 τ 重连，叠加类型偏离、组成变化与 bulk 校准。</p></div>
+              <div class="model-fact"><b>模块三 · 生成</b><p>在细胞自身真实计数上施加 log 倍数 r(τ)，再按二项稀疏 / 泊松补充生成干旱单细胞；τ = 0.25–1。</p></div>
+              <div class="model-fact"><b>扰动层 · NetPerturber</b><p>任意表达基因 KO/OE → TF 活性入口 → TF 级联 3 步 → 扰动后正常细胞 → 沿模块二轨迹得到扰动后干旱细胞。</p></div>
             </div>
+            <div class="callout info" style="margin-top:14px">模块一不使用细胞类型标签；模块二在 21 物种间共享 TF → TF 调控。模型输出是计算预测，不是实验证据。</div>
+          </div>
+
+          <div class="subgroup" style="margin-top:26px">
+            <div class="subgroup-head"><h3>三阶段数据流</h3><span class="count">单细胞图谱 → bulk 定干旱箭头 → 轨迹 × GRN 走路径</span></div>
+            ${pipeline ? bigFigureHTML(pipeline, 'data-framework-pipeline') : '<div class="callout">数据流图暂未载入。</div>'}
           </div>
         </section>
 
@@ -2257,45 +2360,45 @@
     if (key === 'trajectory') return `${(c.trajectory_species || []).length} 个物种深度轨迹`;
     if (key === 'grn') return `${(c.grn_species || []).length} 个物种深度 GRN`;
     if (key === 'perturbation') return `${(c.perturbation_species || []).length} 个物种 · ${(c.celloracle_datasets || []).length} 个 CellOracle 数据集`;
-    if (key === 'evaluation') return 'v8 · 3 seeds';
+    if (key === 'evaluation') return 'v10 · 5 项留出研究';
     if (key === 'pattern') return '跨物种 · 条件 · bulk';
     return '21 species';
   }
 
   async function virtualFramework() {
-    const figs = S.virtual.figures.filter((f) => f.tab === 'framework');
-    const pipeline = figs.find((f) => f.title.includes('三阶段')) || figs[0];
-    const framework = figs.find((f) => f.title.includes('基线模型')) || figs[1];
-    const internal = (S.stats.v8?.internal || []);
+    const figs = S.virtual?.figures || [];
+    const pipeline = figs.find((f) => f.tab === 'framework' && f.title.includes('三阶段')) || figs[0];
     return `
       <section class="section" style="margin-top:22px">
-        ${pipeline ? bigFigureHTML(pipeline, 'framework-pipeline') : ''}
+        ${bigFigureHTML(FRAMEWORK_OVERALL, 'framework-overall')}
       </section>
       <section class="section">
-        <div class="section-head"><div><div class="section-kicker">Model</div><h2 class="section-title">模型框架与阶段</h2><p class="section-desc">数据层、跨物种对齐层、虚拟细胞模型层与输出层。具体模型版本与评估边界见“模型评估与边界”。</p></div></div>
+        <div class="section-head"><div><div class="section-kicker">Model</div><h2 class="section-title">模型框架与阶段</h2><p class="section-desc">正式模型为模块一 M2（正常状态）+ 模块二 D3 final（干旱轨迹）+ 模块三（干旱单细胞生成），再加扰动层 NetPerturber。模型在 21 物种间共享 TF → TF 调控。</p></div></div>
         <div class="framework-steps">
-          <div class="fw-step"><div class="n">01 · INPUT</div><h4>多物种单细胞 + bulk</h4><p>21 物种表达矩阵、细胞类型注释、bulk 干旱/对照样本与 GRN 先验。</p></div>
-          <div class="fw-step"><div class="n">02 · ALIGN</div><h4>直系同源群与潜空间</h4><p>跨物种共同基因、正交群映射、潜空间对齐与信号质量评估。</p></div>
-          <div class="fw-step"><div class="n">03 · GENERATE</div><h4>干旱上下文生成</h4><p>Transformer 编码 + 神经 ODE 轨迹；在正常状态上施加干旱上下文。</p></div>
-          <div class="fw-step"><div class="n">04 · READOUT</div><h4>预测 / 轨迹 / 扰动</h4><p>干旱单细胞、状态轨迹、GRN 时间序列与基因敲低/过表达模拟。</p></div>
+          <div class="fw-step"><div class="n">01 · INPUT</div><h4>多物种单细胞 + bulk</h4><p>21 物种正常单细胞图谱、细胞类型注释、bulk 干旱/对照样本、bulk 时间序列与 GRN 先验。</p></div>
+          <div class="fw-step"><div class="n">02 · STATE</div><h4>正常状态编码</h4><p>模块一 M2：TF 活性 a = c·e + p，加 4 维自由变量 f；只在先验边上学习 TF → 基因权重。</p></div>
+          <div class="fw-step"><div class="n">03 · TRAJECTORY</div><h4>干旱轨迹与生成</h4><p>模块二 D3：TF 动力学 ODE 从正常走到干旱；模块三在细胞自身计数上生成干旱单细胞。</p></div>
+          <div class="fw-step"><div class="n">04 · READOUT</div><h4>预测 / 轨迹 / 扰动</h4><p>干旱单细胞、状态轨迹、TF 活性、GRN 时间序列与任意基因 KO/OE 扰动模拟。</p></div>
         </div>
       </section>
       <section class="section">
-        <div class="split" style="grid-template-columns:minmax(0,1fr) 360px">
-          <div>${framework ? bigFigureHTML(framework, 'framework-model') : ''}</div>
-          <div class="detail-panel">
-            <div class="detail-head"><div><h3>模型版本 v8</h3><p>内部留出与外部验证</p></div></div>
-            ${internal.length ? tableHTML(internal, [
-              { key: 'variant', label: '变体', cls: 'gene' },
-              { key: 'type_r', label: '类型 logFC 相关', cls: 'num', fmt: (v) => fixed(v, 3) },
-              { key: 'spec_r', label: '类型特异部分相关', cls: 'num', fmt: (v) => fixed(v, 3) },
-              { key: 'comp_r', label: '组成变化相关', cls: 'num', fmt: (v) => fixed(v, 3) },
-            ]) : '<div class="callout">暂无内部评估表。</div>'}
-            <div class="callout info" style="margin-top:12px">内部留出（GSE290214 第 4/8 天）表现较好；外部验证仍有限。这里是模型输出，不是实验证据。</div>
+        <div class="subgroup-head"><h3>分模块结构</h3><span class="count">模块一 M2 · 模块二 D3 · 模块三生成 · 扰动层 NetPerturber</span></div>
+        ${figureGrid(FRAMEWORK_MODULES, 'framework-modules', { className: 'fw-module-grid' })}
+      </section>
+      <section class="section">
+        <div class="detail-panel fw-model-panel">
+          <div class="detail-head"><div><h3>正式模型</h3><p>模块一 M2 + 模块二 D3 final · v10</p></div><span class="tag teal">v10</span></div>
+          <div class="model-facts">
+            <div class="model-fact"><b>模块一 · M2</b><p>正常状态编码：TF 活性 a = c·e + p；物种特异解码器只在三层先验边上学习 Ŵ。</p></div>
+            <div class="model-fact"><b>模块二 · D3</b><p>TF 动力学 ODE；跨物种共享 TF → TF 权重；解码权重随 τ 重连，叠加类型偏离、组成变化与 bulk 校准。</p></div>
+            <div class="model-fact"><b>模块三 · 生成</b><p>在细胞自身真实计数上施加 log 倍数 r(τ)，再按二项稀疏 / 泊松补充生成干旱单细胞；τ = 0.25–1。</p></div>
+            <div class="model-fact"><b>扰动层 · NetPerturber</b><p>任意表达基因 KO/OE → TF 活性入口 → TF 级联 3 步 → 扰动后正常细胞 → 沿模块二轨迹得到扰动后干旱细胞。</p></div>
           </div>
+          <div class="callout info" style="margin-top:14px">模块一不使用细胞类型标签；模块二在 21 物种间共享 TF → TF 调控。模型输出是计算预测，不是实验证据。性能与边界见 <a href="#/data">数据层 · 模型性能</a>。</div>
         </div>
       </section>
-      ${pipeline ? `<section class="section"><div class="callout"><strong>如何阅读：</strong>本网站把“原始结果图”和“模型交互”分开呈现。图件来自源目录；交互轨迹/网络数据由源 CSV/JSON 抽取，只写入网站目录，不改动源结果。</div></section>` : ''}`;
+      ${pipeline ? `<section class="section"><div class="subgroup-head"><h3>三阶段数据流</h3><span class="count">单细胞图谱 → bulk 定干旱箭头 → 轨迹 × GRN 走路径</span></div>${bigFigureHTML(pipeline, 'framework-pipeline')}</section>` : ''}
+      <section class="section"><div class="callout"><strong>如何阅读：</strong>本网站把“原始结果图”和“模型交互”分开呈现。图件来自源目录；交互轨迹/网络数据由源 CSV/JSON 抽取，只写入网站目录，不改动源结果。</div></section>`;
   }
 
   function inferenceOrganOptions(meta, species, custom, selected) {
@@ -3700,60 +3803,50 @@
 
   /* ---------------- model evaluation ---------------- */
   async function virtualEvaluation() {
-    await ensureVirtual();
-    const v8 = S.stats.v8 || { summary: [], internal: [] };
-    const internal = v8.internal || [];
-    const external = (v8.summary || []).filter((r) => r.context === 'oracle' || r.context === 'nobulk');
-    const shownExternal = S.evalContext === 'all' ? external : external.filter((r) => r.context === S.evalContext);
-    const phases = S.virtual.figures.filter((f) => f.tab === 'evaluation');
+    const MP = await ensureModelPerformance();
+    const figs = MP.figures || [];
+    const modules = MP.modules || [];
+    const tables = MP.key_tables || [];
+    const stats = MP.stats || {};
+    const baselineFigs = figs.filter((f) => f.module_key === '326_baselines' || f.module_key === '327_ablations');
+    const grouped = modules.map((m) => ({
+      ...m,
+      figures: figs.filter((f) => f.module_key === m.key && f.module_key !== '326_baselines' && f.module_key !== '327_ablations'),
+    })).filter((m) => m.figures.length);
     return `
       <section class="section" style="margin-top:22px">
-        <div class="split" style="grid-template-columns:minmax(0,1fr) 340px">
-          <div>
-            <div class="subgroup-head"><h3>内部留出（GSE290214 第 4/8 天）</h3><span class="count">3 seeds · 均值</span></div>
-            ${internal.length ? tableHTML(internal, [
-              { key: 'variant', label: '变体', cls: 'gene' },
-              { key: 'type_r', label: '类型 logFC 相关', cls: 'num', fmt: (v) => heatValue(v, 3), html: true },
-              { key: 'spec_r', label: '类型特异部分相关', cls: 'num', fmt: (v) => heatValue(v, 3), html: true },
-              { key: 'comp_r', label: '组成变化相关', cls: 'num', fmt: (v) => heatValue(v, 3), html: true },
-            ]) : '<div class="empty"><strong>暂无内部评估</strong></div>'}
-          </div>
-          <div class="detail-panel">
-            <div class="detail-head"><div><h3>关键结论</h3><p>来自 8_checkpoints_multispecies/v8/RESULTS_20261023.md</p></div></div>
-            <ul class="note-list">
-              <li>阶段一达标：未见文库上的细胞类型 kNN 准确率 0.776，随机初始化 0.470。</li>
-              <li>同一研究内部留出：sc_only / full 的类型特异部分相关约 0.53。</li>
-              <li>迁移到其他研究时，类型特异相关接近 0，外部泛化仍有限。</li>
-              <li>bulk 与单细胞干旱响应本身一致性较低（约 0.24）。</li>
-            </ul>
-            <div class="callout warn" style="margin-top:12px">因此：网站展示的预测与扰动均属于计算探索，不应作为实验结论。</div>
-          </div>
+        <div class="stat-grid six">
+          ${statBox(stats.modules || modules.length || 9, '评价模块')}
+          ${statBox(stats.figures || figs.length, '图件')}
+          ${statBox(stats.heldout_studies || 5, '留出研究')}
+          ${statBox(stats.ablations || 5, '消融版本')}
+          ${statBox(stats.seeds || 3, '随机种子')}
+          ${statBox(stats.tables || tables.length, '结果表')}
         </div>
+        <div class="callout info" style="margin-top:18px"><strong>总体结论：</strong>${esc(MP.summary || '')}</div>
       </section>
+
       <section class="section">
-        <div class="section-head">
-          <div><div class="section-kicker">External</div><h2 class="section-title">外部验证指标</h2><p class="section-desc">情境 = 该研究自己的 pseudobulk logFC；“oracle”为给定 bulk 上下文，“nobulk”为由对照状态预测。</p></div>
-          <div class="chart-controls">
-            <button class="chip-btn ${S.evalContext === 'all' ? 'active' : ''}" data-action="eval-context" data-value="all">全部</button>
-            <button class="chip-btn ${S.evalContext === 'oracle' ? 'active' : ''}" data-action="eval-context" data-value="oracle">oracle</button>
-            <button class="chip-btn ${S.evalContext === 'nobulk' ? 'active' : ''}" data-action="eval-context" data-value="nobulk">nobulk</button>
-          </div>
-        </div>
-        ${tableHTML(shownExternal, [
-          { key: 'set', label: '验证集', cls: 'gene' },
-          { key: 'context', label: '情境' },
-          { key: 'variant', label: '变体', cls: 'gene' },
-          { key: 'type_r', label: '类型 logFC 相关', cls: 'num', fmt: (v) => heatValue(v, 3), html: true },
-          { key: 'spec_r', label: '类型特异部分相关', cls: 'num', fmt: (v) => heatValue(v, 3), html: true },
-          { key: 'comp_r', label: '组成变化相关', cls: 'num', fmt: (v) => heatValue(v, 3), html: true },
-          { key: 'shift', label: '位移恢复', cls: 'num', fmt: (v) => sci(v) },
-        ])}
+        <div class="section-head"><div><div class="section-kicker">Baselines · ablations</div><h2 class="section-title">基线对比与消融</h2><p class="section-desc">正式模型与统一变化、v9、线性、BayesPrism、CPA、biolord、scGen、scSemiProfiler、Bulk2Space 等方法在同一单元上比较；关键模块逐项消融。</p></div></div>
+        ${baselineFigs.length ? figureGrid(baselineFigs, 'eval-baseline') : '<div class="callout">基线 / 消融图暂未载入。</div>'}
       </section>
+
       <section class="section">
-        <div class="section-head"><div><div class="section-kicker">History</div><h2 class="section-title">历史阶段分析图件</h2><p class="section-desc">阶段一至阶段三的模型比较与评估过程；最新版本为 v8。</p></div></div>
-        ${figureGrid(phases, 'eval-figs')}
+        <div class="section-head"><div><div class="section-kicker">Modules</div><h2 class="section-title">分模块评估</h2><p class="section-desc">5 项留出研究、中间时间点、网络证据、组成 / 解卷积、种子稳定性、21 物种适用范围与扰动验证。</p></div></div>
+        ${grouped.map((m) => `
+          <div class="subgroup">
+            <div class="subgroup-head"><h3>${esc(m.code)} · ${esc(m.name)}</h3><span class="count">${fmtInt(m.figures.length)} 图 · ${fmtInt(m.table_count || 0)} 表</span></div>
+            <p class="section-desc" style="margin:-4px 0 12px">${esc(m.desc || '')}</p>
+            ${figureGrid(m.figures, `eval-${m.key}`)}
+          </div>`).join('')}
       </section>
-      <div class="callout warn"><strong>模型边界（完整表述）：</strong>内部留出表现好主要来自同一研究；外部验证的类型特异相关接近 0。bulk 与单细胞响应一致性低、训练研究单一，是当前主要限制。网站保留这些边界，避免把模型预测误读为已验证结论。</div>`;
+
+      <section class="section">
+        <div class="section-head"><div><div class="section-kicker">Tables</div><h2 class="section-title">关键结果表</h2><p class="section-desc">基线、消融、留出研究、适用范围与扰动验证的数值结果；完整表见源目录。</p></div></div>
+        <div class="ia-table-grid">${tables.map(iaKeyTable).join('')}</div>
+      </section>
+
+      <div class="callout warn"><strong>模型边界（完整表述）：</strong>细胞类型 logFC 与“各类型同样变化”基线持平；相对现有 bulk–单细胞与扰动响应方法有明显优势，但类型特异信号的增益很小。5 个物种（香蕉、大麦、西兰花、花生、小麦）网络很弱，依赖网络的结论不适用。所有结果均为模型评估，不是实验验证。</div>`;
   }
 
   function heatValue(v, digits = 3) {
@@ -4564,6 +4657,15 @@
 
   function wireGlobalEvents() {
     document.addEventListener('click', (e) => {
+      const scrollLink = e.target.closest('[data-scroll-target]');
+      if (scrollLink) {
+        e.preventDefault();
+        S.pendingScroll = scrollLink.dataset.scrollTarget;
+        const h = hashFor('data');
+        if (location.hash === h) renderRoute();
+        else location.hash = h;
+        return;
+      }
       const resultCard = e.target.closest('.result-card');
       if (resultCard) {
         e.preventDefault();

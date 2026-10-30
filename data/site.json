@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T17:54:30+08:00",
+  "generated_at": "2026-10-31T00:20:03+08:00",
   "species": [
     {
       "key": "alfalfa",
@@ -624,7 +624,7 @@
       "icon": "framework",
       "order": 0,
       "desc": "从 21 物种单细胞图谱与 bulk 干旱数据，到跨物种虚拟细胞预测的三阶段框架。",
-      "figure_count": 2
+      "figure_count": 6
     },
     {
       "key": "prediction",
@@ -671,8 +671,8 @@
       "name": "模型评估与边界",
       "icon": "evaluation",
       "order": 6,
-      "desc": "模型版本、内部留出与外部验证指标；计算预测不作为实验证据。",
-      "figure_count": 14
+      "desc": "v10 正式模型在 5 项留出研究上的评价：基线、消融、留出预测、网络证据、组成、种子、适用范围与扰动验证。",
+      "figure_count": 17
     }
   ],
   "totals": {
@@ -681,9 +681,9 @@
     "model_cells": 5579934,
     "bulk_samples": 14557,
     "grn_edges": 6232084,
-    "figures": 1850,
+    "figures": 1854,
     "atlas_figures": 1698,
-    "virtual_figures": 211,
+    "virtual_figures": 215,
     "atlas_modules": 14
   },
   "coverage": {

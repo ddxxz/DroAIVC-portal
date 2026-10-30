@@ -470,9 +470,9 @@
     "model_cells": 5579934,
     "bulk_samples": 14557,
     "grn_edges": 6232084,
-    "figures": 1850,
+    "figures": 1854,
     "atlas_figures": 1698,
-    "virtual_figures": 211,
+    "virtual_figures": 215,
     "atlas_modules": 14
   },
   "top_tfs": {
