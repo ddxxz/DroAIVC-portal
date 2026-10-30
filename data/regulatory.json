@@ -1,0 +1,1065 @@
+{
+  "generated_at": "2026-10-30T09:39:57+08:00",
+  "totals": {
+    "species": 21,
+    "raw_edges": 14646525,
+    "filtered_edges": 6232084,
+    "tf_total": 7983,
+    "tf_matched": 5954,
+    "tf_match_rate": 74.6,
+    "common_genes": 685304,
+    "species_with_grn_figures": 20
+  },
+  "species": [
+    {
+      "key": "alfalfa",
+      "name": "紫花苜蓿",
+      "latin": "Medicago sativa",
+      "code": "Mt",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Mtr.txt",
+      "raw_edges": 464879,
+      "filtered_edges": 201010,
+      "common_genes": 25549,
+      "tf_total": 309,
+      "tf_matched": 263,
+      "tf_match_rate": 85.1,
+      "gene_match_rate": 47.2,
+      "grn_figures": 5,
+      "top_tfs": [
+        {
+          "tf": "Medtr8g033250",
+          "targets": 14840
+        },
+        {
+          "tf": "Medtr7g080460",
+          "targets": 14115
+        },
+        {
+          "tf": "Medtr3g065980",
+          "targets": 8517
+        },
+        {
+          "tf": "Medtr1g023660",
+          "targets": 8275
+        },
+        {
+          "tf": "Medtr4g022370",
+          "targets": 7689
+        },
+        {
+          "tf": "Medtr8g079060",
+          "targets": 6614
+        },
+        {
+          "tf": "Medtr1g017080",
+          "targets": 6488
+        },
+        {
+          "tf": "Medtr8g015840",
+          "targets": 6288
+        }
+      ]
+    },
+    {
+      "key": "arabidopsis",
+      "name": "拟南芥",
+      "latin": "Arabidopsis thaliana",
+      "code": "At",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Ath.txt",
+      "raw_edges": 687661,
+      "filtered_edges": 528005,
+      "common_genes": 24068,
+      "tf_total": 765,
+      "tf_matched": 715,
+      "tf_match_rate": 93.5,
+      "gene_match_rate": 80.2,
+      "grn_figures": 35,
+      "top_tfs": [
+        {
+          "tf": "AT2G45660",
+          "targets": 12747
+        },
+        {
+          "tf": "AT5G17430",
+          "targets": 11343
+        },
+        {
+          "tf": "AT2G01570",
+          "targets": 8754
+        },
+        {
+          "tf": "AT2G01930",
+          "targets": 8743
+        },
+        {
+          "tf": "AT1G49480",
+          "targets": 7749
+        },
+        {
+          "tf": "AT4G38910",
+          "targets": 7371
+        },
+        {
+          "tf": "AT5G42520",
+          "targets": 7334
+        },
+        {
+          "tf": "AT1G72050",
+          "targets": 7113
+        }
+      ]
+    },
+    {
+      "key": "banana",
+      "name": "香蕉",
+      "latin": "Musa acuminata",
+      "code": "Ma",
+      "clade": "monocot",
+      "reg_file": "regulation_merged_Mac.txt",
+      "raw_edges": 386380,
+      "filtered_edges": 229807,
+      "common_genes": 27964,
+      "tf_total": 264,
+      "tf_matched": 201,
+      "tf_match_rate": 76.1,
+      "gene_match_rate": 70.2,
+      "grn_figures": 8,
+      "top_tfs": [
+        {
+          "tf": "GSMUA_Achr5G10250_001",
+          "targets": 13555
+        },
+        {
+          "tf": "GSMUA_Achr8G07460_001",
+          "targets": 13129
+        },
+        {
+          "tf": "GSMUA_Achr7G27540_001",
+          "targets": 12871
+        },
+        {
+          "tf": "GSMUA_Achr3G21460_001",
+          "targets": 12729
+        },
+        {
+          "tf": "GSMUA_Achr11G09440_001",
+          "targets": 11769
+        },
+        {
+          "tf": "GSMUA_Achr4G24910_001",
+          "targets": 9255
+        },
+        {
+          "tf": "GSMUA_Achr2G20760_001",
+          "targets": 8945
+        },
+        {
+          "tf": "GSMUA_Achr6G32780_001",
+          "targets": 8836
+        }
+      ]
+    },
+    {
+      "key": "barley",
+      "name": "大麦",
+      "latin": "Hordeum vulgare",
+      "code": "Hv",
+      "clade": "monocot",
+      "reg_file": "regulation_merged_Hvu.txt",
+      "raw_edges": 141649,
+      "filtered_edges": 39318,
+      "common_genes": 18142,
+      "tf_total": 191,
+      "tf_matched": 115,
+      "tf_match_rate": 60.2,
+      "gene_match_rate": 38.9,
+      "grn_figures": 2,
+      "top_tfs": [
+        {
+          "tf": "MLOC_70754",
+          "targets": 4812
+        },
+        {
+          "tf": "MLOC_58641",
+          "targets": 4712
+        },
+        {
+          "tf": "MLOC_73522",
+          "targets": 4449
+        },
+        {
+          "tf": "MLOC_55144",
+          "targets": 4306
+        },
+        {
+          "tf": "MLOC_69987",
+          "targets": 4160
+        },
+        {
+          "tf": "MLOC_17236",
+          "targets": 4112
+        },
+        {
+          "tf": "MLOC_3855",
+          "targets": 4111
+        },
+        {
+          "tf": "MLOC_77405",
+          "targets": 4067
+        }
+      ]
+    },
+    {
+      "key": "broccoli",
+      "name": "西兰花",
+      "latin": "Brassica oleracea var. italica",
+      "code": "Bo",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Bol.txt",
+      "raw_edges": 996363,
+      "filtered_edges": 331047,
+      "common_genes": 30040,
+      "tf_total": 545,
+      "tf_matched": 379,
+      "tf_match_rate": 69.5,
+      "gene_match_rate": 46.8,
+      "grn_figures": 5,
+      "top_tfs": [
+        {
+          "tf": "LOC106336934",
+          "targets": 19876
+        },
+        {
+          "tf": "LOC106316671",
+          "targets": 18165
+        },
+        {
+          "tf": "LOC106306406",
+          "targets": 13650
+        },
+        {
+          "tf": "LOC106343376",
+          "targets": 13481
+        },
+        {
+          "tf": "LOC106296335",
+          "targets": 12171
+        },
+        {
+          "tf": "LOC106306096",
+          "targets": 11890
+        },
+        {
+          "tf": "LOC106298049",
+          "targets": 11671
+        },
+        {
+          "tf": "LOC106298384",
+          "targets": 11592
+        }
+      ]
+    },
+    {
+      "key": "cabbage",
+      "name": "甘蓝",
+      "latin": "Brassica oleracea",
+      "code": "Br",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Bra.txt",
+      "raw_edges": 965846,
+      "filtered_edges": 402658,
+      "common_genes": 27396,
+      "tf_total": 561,
+      "tf_matched": 418,
+      "tf_match_rate": 74.5,
+      "gene_match_rate": 50.9,
+      "grn_figures": 19,
+      "top_tfs": [
+        {
+          "tf": "LOC103858179",
+          "targets": 17565
+        },
+        {
+          "tf": "LOC103833171",
+          "targets": 16052
+        },
+        {
+          "tf": "LOC103827572",
+          "targets": 12448
+        },
+        {
+          "tf": "LOC103868650",
+          "targets": 11745
+        },
+        {
+          "tf": "LOC103830249",
+          "targets": 11290
+        },
+        {
+          "tf": "LOC103861339",
+          "targets": 10985
+        },
+        {
+          "tf": "LOC103830815",
+          "targets": 10726
+        },
+        {
+          "tf": "LOC103856245",
+          "targets": 9978
+        }
+      ]
+    },
+    {
+      "key": "cassava",
+      "name": "木薯",
+      "latin": "Manihot esculenta",
+      "code": "Me",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Mes.txt",
+      "raw_edges": 434047,
+      "filtered_edges": 273923,
+      "common_genes": 25621,
+      "tf_total": 338,
+      "tf_matched": 279,
+      "tf_match_rate": 82.5,
+      "gene_match_rate": 67.9,
+      "grn_figures": 10,
+      "top_tfs": [
+        {
+          "tf": "Manes.05G041900",
+          "targets": 12910
+        },
+        {
+          "tf": "Manes.13G001800",
+          "targets": 11710
+        },
+        {
+          "tf": "Manes.17G089900",
+          "targets": 10285
+        },
+        {
+          "tf": "Manes.05G184900",
+          "targets": 9947
+        },
+        {
+          "tf": "Manes.02G195200",
+          "targets": 9512
+        },
+        {
+          "tf": "Manes.15G130800",
+          "targets": 9150
+        },
+        {
+          "tf": "Manes.05G151500",
+          "targets": 8037
+        },
+        {
+          "tf": "Manes.07G115400",
+          "targets": 7505
+        }
+      ]
+    },
+    {
+      "key": "cotton",
+      "name": "棉花",
+      "latin": "Gossypium hirsutum",
+      "code": "Gh",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Gra.txt",
+      "raw_edges": 461423,
+      "filtered_edges": 361984,
+      "common_genes": 33974,
+      "tf_total": 364,
+      "tf_matched": 352,
+      "tf_match_rate": 96.7,
+      "gene_match_rate": 79.3,
+      "grn_figures": 9,
+      "top_tfs": [
+        {
+          "tf": "Gorai.008G115200",
+          "targets": 11579
+        },
+        {
+          "tf": "Gorai.004G263900",
+          "targets": 10208
+        },
+        {
+          "tf": "Gorai.009G319300",
+          "targets": 7794
+        },
+        {
+          "tf": "Gorai.002G171200",
+          "targets": 7527
+        },
+        {
+          "tf": "Gorai.009G128000",
+          "targets": 7480
+        },
+        {
+          "tf": "Gorai.003G021000",
+          "targets": 7192
+        },
+        {
+          "tf": "Gorai.002G177000",
+          "targets": 6966
+        },
+        {
+          "tf": "Gorai.010G029000",
+          "targets": 6864
+        }
+      ]
+    },
+    {
+      "key": "grape",
+      "name": "葡萄",
+      "latin": "Vitis vinifera",
+      "code": "Vv",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Vvi.txt",
+      "raw_edges": 247992,
+      "filtered_edges": 42578,
+      "common_genes": 21493,
+      "tf_total": 269,
+      "tf_matched": 125,
+      "tf_match_rate": 46.5,
+      "gene_match_rate": 31.7,
+      "grn_figures": 4,
+      "top_tfs": [
+        {
+          "tf": "GSVIVG01027579001",
+          "targets": 10323
+        },
+        {
+          "tf": "GSVIVG01019049001",
+          "targets": 9679
+        },
+        {
+          "tf": "GSVIVG01011589001",
+          "targets": 7411
+        },
+        {
+          "tf": "GSVIVG01034189001",
+          "targets": 7082
+        },
+        {
+          "tf": "GSVIVG01025855001",
+          "targets": 6728
+        },
+        {
+          "tf": "GSVIVG01011710001",
+          "targets": 6537
+        },
+        {
+          "tf": "GSVIVG01009273001",
+          "targets": 5809
+        },
+        {
+          "tf": "GSVIVG01009845001",
+          "targets": 5654
+        }
+      ]
+    },
+    {
+      "key": "kiwifruit",
+      "name": "猕猴桃",
+      "latin": "Actinidia chinensis",
+      "code": "Ac",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Ach.txt",
+      "raw_edges": 388809,
+      "filtered_edges": 193936,
+      "common_genes": 26811,
+      "tf_total": 271,
+      "tf_matched": 214,
+      "tf_match_rate": 79.0,
+      "gene_match_rate": 65.1,
+      "grn_figures": 4,
+      "top_tfs": [
+        {
+          "tf": "Achn366731",
+          "targets": 15063
+        },
+        {
+          "tf": "Achn015881",
+          "targets": 15018
+        },
+        {
+          "tf": "Achn230461",
+          "targets": 14420
+        },
+        {
+          "tf": "Achn284751",
+          "targets": 12737
+        },
+        {
+          "tf": "Achn088031",
+          "targets": 11871
+        },
+        {
+          "tf": "Achn270801",
+          "targets": 9961
+        },
+        {
+          "tf": "Achn037111",
+          "targets": 7103
+        },
+        {
+          "tf": "Achn065561",
+          "targets": 7086
+        }
+      ]
+    },
+    {
+      "key": "maize",
+      "name": "玉米",
+      "latin": "Zea mays",
+      "code": "Zm",
+      "clade": "monocot",
+      "reg_file": "regulation_merged_Zma.txt",
+      "raw_edges": 304982,
+      "filtered_edges": 159724,
+      "common_genes": 32412,
+      "tf_total": 228,
+      "tf_matched": 191,
+      "tf_match_rate": 83.8,
+      "gene_match_rate": 60.1,
+      "grn_figures": 4,
+      "top_tfs": [
+        {
+          "tf": "GRMZM2G017087",
+          "targets": 9259
+        },
+        {
+          "tf": "GRMZM2G171365",
+          "targets": 9052
+        },
+        {
+          "tf": "GRMZM2G142179",
+          "targets": 7669
+        },
+        {
+          "tf": "GRMZM2G310368",
+          "targets": 7103
+        },
+        {
+          "tf": "GRMZM2G050939",
+          "targets": 7098
+        },
+        {
+          "tf": "GRMZM2G023708",
+          "targets": 7073
+        },
+        {
+          "tf": "GRMZM2G057386",
+          "targets": 6969
+        },
+        {
+          "tf": "GRMZM2G021790",
+          "targets": 6949
+        }
+      ]
+    },
+    {
+      "key": "peanut",
+      "name": "花生",
+      "latin": "Arachis hypogaea",
+      "code": "Ah",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Adu.txt",
+      "raw_edges": 341320,
+      "filtered_edges": 111014,
+      "common_genes": 43777,
+      "tf_total": 260,
+      "tf_matched": 174,
+      "tf_match_rate": 66.9,
+      "gene_match_rate": 48.3,
+      "grn_figures": 4,
+      "top_tfs": [
+        {
+          "tf": "Aradu.C0RFP",
+          "targets": 12747
+        },
+        {
+          "tf": "Aradu.M2I8I",
+          "targets": 11456
+        },
+        {
+          "tf": "Aradu.898CQ",
+          "targets": 10387
+        },
+        {
+          "tf": "Aradu.0K64L",
+          "targets": 10205
+        },
+        {
+          "tf": "Aradu.RQF3U",
+          "targets": 8956
+        },
+        {
+          "tf": "Aradu.25STL",
+          "targets": 7846
+        },
+        {
+          "tf": "Aradu.9SR9S",
+          "targets": 7069
+        },
+        {
+          "tf": "Aradu.C87QH",
+          "targets": 6676
+        }
+      ]
+    },
+    {
+      "key": "potato",
+      "name": "马铃薯",
+      "latin": "Solanum tuberosum",
+      "code": "St",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Stu.txt",
+      "raw_edges": 287978,
+      "filtered_edges": 210324,
+      "common_genes": 28663,
+      "tf_total": 284,
+      "tf_matched": 270,
+      "tf_match_rate": 95.1,
+      "gene_match_rate": 74.8,
+      "grn_figures": 5,
+      "top_tfs": [
+        {
+          "tf": "PGSC0003DMG400000008",
+          "targets": 8949
+        },
+        {
+          "tf": "PGSC0003DMG400007202",
+          "targets": 6424
+        },
+        {
+          "tf": "PGSC0003DMG400023426",
+          "targets": 5931
+        },
+        {
+          "tf": "PGSC0003DMG402029444",
+          "targets": 5859
+        },
+        {
+          "tf": "PGSC0003DMG400008914",
+          "targets": 5545
+        },
+        {
+          "tf": "PGSC0003DMG400010075",
+          "targets": 5240
+        },
+        {
+          "tf": "PGSC0003DMG400015692",
+          "targets": 5235
+        },
+        {
+          "tf": "PGSC0003DMG400002507",
+          "targets": 4670
+        }
+      ]
+    },
+    {
+      "key": "rape",
+      "name": "油菜",
+      "latin": "Brassica napus",
+      "code": "Bn",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Bna.txt",
+      "raw_edges": 2190578,
+      "filtered_edges": 1148228,
+      "common_genes": 63493,
+      "tf_total": 581,
+      "tf_matched": 473,
+      "tf_match_rate": 81.4,
+      "gene_match_rate": 61.6,
+      "grn_figures": 10,
+      "top_tfs": [
+        {
+          "tf": "BnaA03g56880D",
+          "targets": 39169
+        },
+        {
+          "tf": "BnaA02g03590D",
+          "targets": 35274
+        },
+        {
+          "tf": "BnaC07g20900D",
+          "targets": 27768
+        },
+        {
+          "tf": "BnaA07g23270D",
+          "targets": 26187
+        },
+        {
+          "tf": "BnaA08g02650D",
+          "targets": 25563
+        },
+        {
+          "tf": "BnaC06g42740D",
+          "targets": 25154
+        },
+        {
+          "tf": "BnaC07g47530D",
+          "targets": 24875
+        },
+        {
+          "tf": "BnaC01g01040D",
+          "targets": 22190
+        }
+      ]
+    },
+    {
+      "key": "rice",
+      "name": "水稻",
+      "latin": "Oryza sativa",
+      "code": "Os",
+      "clade": "monocot",
+      "reg_file": "japonica_regulation_merged_Osj.txt",
+      "raw_edges": 769318,
+      "filtered_edges": 303344,
+      "common_genes": 33887,
+      "tf_total": 246,
+      "tf_matched": 233,
+      "tf_match_rate": 94.7,
+      "gene_match_rate": 38.0,
+      "grn_figures": 11,
+      "top_tfs": [
+        {
+          "tf": "LOC_Os01g12440",
+          "targets": 18217
+        },
+        {
+          "tf": "LOC_Os01g46870",
+          "targets": 18217
+        },
+        {
+          "tf": "LOC_Os11g13840",
+          "targets": 17745
+        },
+        {
+          "tf": "LOC_Os04g32790",
+          "targets": 17545
+        },
+        {
+          "tf": "LOC_Os02g43820",
+          "targets": 17433
+        },
+        {
+          "tf": "LOC_Os04g46240",
+          "targets": 17433
+        },
+        {
+          "tf": "LOC_Os05g03020",
+          "targets": 17258
+        },
+        {
+          "tf": "LOC_Os01g07480",
+          "targets": 16948
+        }
+      ]
+    },
+    {
+      "key": "sorghum",
+      "name": "高粱",
+      "latin": "Sorghum bicolor",
+      "code": "Sb",
+      "clade": "monocot",
+      "reg_file": "regulation_merged_Sbi.txt",
+      "raw_edges": 382962,
+      "filtered_edges": 271168,
+      "common_genes": 27024,
+      "tf_total": 236,
+      "tf_matched": 220,
+      "tf_match_rate": 93.2,
+      "gene_match_rate": 78.6,
+      "grn_figures": 5,
+      "top_tfs": [
+        {
+          "tf": "Sobic.001G526800",
+          "targets": 9302
+        },
+        {
+          "tf": "Sobic.001G106200",
+          "targets": 9008
+        },
+        {
+          "tf": "Sobic.003G012800",
+          "targets": 8587
+        },
+        {
+          "tf": "Sobic.006G059800",
+          "targets": 8274
+        },
+        {
+          "tf": "Sobic.006G167800",
+          "targets": 8177
+        },
+        {
+          "tf": "Sobic.009G233100",
+          "targets": 8149
+        },
+        {
+          "tf": "Sobic.006G168000",
+          "targets": 8148
+        },
+        {
+          "tf": "Sobic.005G087600",
+          "targets": 7846
+        }
+      ]
+    },
+    {
+      "key": "soybean",
+      "name": "大豆",
+      "latin": "Glycine max",
+      "code": "Gm",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Gma.txt",
+      "raw_edges": 717644,
+      "filtered_edges": 455262,
+      "common_genes": 40046,
+      "tf_total": 360,
+      "tf_matched": 308,
+      "tf_match_rate": 85.6,
+      "gene_match_rate": 71.4,
+      "grn_figures": 10,
+      "top_tfs": [
+        {
+          "tf": "Glyma.18G224500",
+          "targets": 18455
+        },
+        {
+          "tf": "Glyma.09G248200",
+          "targets": 17268
+        },
+        {
+          "tf": "Glyma.05G137100",
+          "targets": 14762
+        },
+        {
+          "tf": "Glyma.02G293300",
+          "targets": 12536
+        },
+        {
+          "tf": "Glyma.14G091200",
+          "targets": 12222
+        },
+        {
+          "tf": "Glyma.04G026300",
+          "targets": 11596
+        },
+        {
+          "tf": "Glyma.12G063800",
+          "targets": 11008
+        },
+        {
+          "tf": "Glyma.02G062700",
+          "targets": 9267
+        }
+      ]
+    },
+    {
+      "key": "tea",
+      "name": "茶",
+      "latin": "Camellia sinensis",
+      "code": "Cs",
+      "clade": "dicot",
+      "reg_file": "regulation_TF_Target.txt",
+      "raw_edges": 2715595,
+      "filtered_edges": 371793,
+      "common_genes": 25221,
+      "tf_total": 1004,
+      "tf_matched": 384,
+      "tf_match_rate": 38.2,
+      "gene_match_rate": 37.0,
+      "grn_figures": 0,
+      "top_tfs": [
+        {
+          "tf": "CSS0040871.g",
+          "targets": 25657
+        },
+        {
+          "tf": "CSS0030557.g",
+          "targets": 25657
+        },
+        {
+          "tf": "CSS0048616.g",
+          "targets": 25657
+        },
+        {
+          "tf": "CSS0039005.g",
+          "targets": 25657
+        },
+        {
+          "tf": "CSS0004951.g",
+          "targets": 25657
+        },
+        {
+          "tf": "CSS0038562.g",
+          "targets": 25657
+        },
+        {
+          "tf": "CSS0012691.g",
+          "targets": 25657
+        },
+        {
+          "tf": "CSS0004360.g",
+          "targets": 25657
+        }
+      ]
+    },
+    {
+      "key": "tobacco",
+      "name": "烟草",
+      "latin": "Nicotiana tabacum",
+      "code": "Nt",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Nta.txt",
+      "raw_edges": 718066,
+      "filtered_edges": 219853,
+      "common_genes": 38293,
+      "tf_total": 357,
+      "tf_matched": 223,
+      "tf_match_rate": 62.5,
+      "gene_match_rate": 49.5,
+      "grn_figures": 17,
+      "top_tfs": [
+        {
+          "tf": "LOC107776514",
+          "targets": 21558
+        },
+        {
+          "tf": "LOC107777142",
+          "targets": 19925
+        },
+        {
+          "tf": "LOC107770058",
+          "targets": 15240
+        },
+        {
+          "tf": "LOC107792698",
+          "targets": 14695
+        },
+        {
+          "tf": "LOC107777199",
+          "targets": 13463
+        },
+        {
+          "tf": "LOC107777976",
+          "targets": 13333
+        },
+        {
+          "tf": "LOC107765238",
+          "targets": 13317
+        },
+        {
+          "tf": "LOC107809033",
+          "targets": 12156
+        }
+      ]
+    },
+    {
+      "key": "tomato",
+      "name": "番茄",
+      "latin": "Solanum lycopersicum",
+      "code": "Sl",
+      "clade": "dicot",
+      "reg_file": "regulation_merged_Sly.txt",
+      "raw_edges": 325592,
+      "filtered_edges": 198238,
+      "common_genes": 24708,
+      "tf_total": 306,
+      "tf_matched": 279,
+      "tf_match_rate": 91.2,
+      "gene_match_rate": 63.3,
+      "grn_figures": 9,
+      "top_tfs": [
+        {
+          "tf": "Solyc11g008560.1",
+          "targets": 8584
+        },
+        {
+          "tf": "Solyc10g077110.1",
+          "targets": 7399
+        },
+        {
+          "tf": "Solyc04g008380.2",
+          "targets": 6445
+        },
+        {
+          "tf": "Solyc06g076030.2",
+          "targets": 5936
+        },
+        {
+          "tf": "Solyc11g011260.1",
+          "targets": 5725
+        },
+        {
+          "tf": "Solyc04g077210.2",
+          "targets": 5474
+        },
+        {
+          "tf": "Solyc02g090220.2",
+          "targets": 5339
+        },
+        {
+          "tf": "Solyc06g062520.1",
+          "targets": 4792
+        }
+      ]
+    },
+    {
+      "key": "wheat",
+      "name": "小麦",
+      "latin": "Triticum aestivum",
+      "code": "Ta",
+      "clade": "monocot",
+      "reg_file": "regulation_merged_Tae.txt",
+      "raw_edges": 717441,
+      "filtered_edges": 178870,
+      "common_genes": 66722,
+      "tf_total": 244,
+      "tf_matched": 138,
+      "tf_match_rate": 56.6,
+      "gene_match_rate": 40.0,
+      "grn_figures": 6,
+      "top_tfs": [
+        {
+          "tf": "Traes_1AL_6B108514B",
+          "targets": 20061
+        },
+        {
+          "tf": "Traes_2BL_EBA73F94F",
+          "targets": 18637
+        },
+        {
+          "tf": "TRAES3BF017100030CFD_g",
+          "targets": 17802
+        },
+        {
+          "tf": "Traes_6DS_2B2F9C290",
+          "targets": 17203
+        },
+        {
+          "tf": "Traes_2BL_9CD6E043A",
+          "targets": 17109
+        },
+        {
+          "tf": "Traes_2AL_F24D031AA",
+          "targets": 16997
+        },
+        {
+          "tf": "Traes_2AL_E5A9615E2",
+          "targets": 16457
+        },
+        {
+          "tf": "Traes_2AL_FC6DD1383",
+          "targets": 16457
+        }
+      ]
+    }
+  ]
+}

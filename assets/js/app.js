@@ -17,6 +17,7 @@
     atlas: null,
     virtual: null,
     interactive: null,
+    regulatory: null,
     allFigures: null,
     speciesByKey: new Map(),
     statsBySpecies: new Map(),
@@ -199,6 +200,7 @@
   async function ensureVirtual() { if (!S.virtual) S.virtual = await loadJSON('virtual.json'); return S.virtual; }
   async function ensureLandscape() { if (!S.landscape) S.landscape = await loadJSON('landscape.json'); return S.landscape; }
   async function ensureResults() { if (!S.results) S.results = await loadJSON('results.json'); return S.results; }
+  async function ensureRegulatory() { if (!S.regulatory) S.regulatory = await loadJSON('regulatory.json'); return S.regulatory; }
   async function ensureInteractive() { if (!S.interactive) S.interactive = await loadJSON('interactive.json'); return S.interactive; }
   async function ensureAllFigures() {
     if (S.allFigures) return S.allFigures;
@@ -411,7 +413,7 @@
       const k = a.dataset.nav;
       const active = k === name
         || (name === 'species' && k === 'data')
-        || (['atlas','bulk','single'].includes(name) && k === 'data')
+        || (['atlas','bulk','single','regulatory'].includes(name) && k === 'data')
         || (name === 'design' && k === 'virtual')
         || (name === 'gallery' && k === 'gallery');
       a.classList.toggle('active', !!active);
@@ -447,6 +449,8 @@
       route = { name: 'bulk', module: null, tab: null };
     } else if (parts[0] === 'single-cell') {
       route = { name: 'single', module: null, tab: null };
+    } else if (parts[0] === 'regulatory') {
+      route = { name: 'regulatory', module: null, tab: null };
     } else if (parts[0] === 'virtual') {
       route = { name: 'virtual', module: null, tab: parts[1] || null };
       if (parts[1]) S.tab = parts[1];
@@ -480,6 +484,7 @@
       else if (route.name === 'data') await renderData();
       else if (route.name === 'bulk') await renderBulk();
       else if (route.name === 'single') await renderSingle();
+      else if (route.name === 'regulatory') await renderRegulatory();
       else if (route.name === 'atlas') await (route.module ? renderAtlasModule(route.module) : renderAtlasOverview());
       else if (route.name === 'virtual') await (route.tab ? renderVirtualTab(route.tab) : renderVirtualOverview());
       else if (route.name === 'gallery') await renderGallery();
@@ -511,6 +516,7 @@
     if (route.name === 'data') return `数据层 · ${base}`;
     if (route.name === 'bulk') return `批量转录组 · ${base}`;
     if (route.name === 'single') return `单细胞转录组 · ${base}`;
+    if (route.name === 'regulatory') return `调控关系 · ${base}`;
     if (route.name === 'atlas') return `${route.module ? (S.moduleByKey.get(route.module)?.name || '图谱') + ' · ' : ''}单细胞图谱 · ${base}`;
     if (route.name === 'virtual') return `${route.tab ? (S.tabByKey.get(route.tab)?.name || '虚拟细胞') + ' · ' : ''}虚拟细胞 · ${base}`;
     if (route.name === 'gallery') return `全图库 · ${base}`;
@@ -536,7 +542,7 @@
               <span class="line2">从单细胞图谱，到干旱响应预测</span>
             </h1>
             <p class="hero-lead">
-              汇集 21 个物种的单细胞转录组图谱与干旱/对照 bulk 数据，把质控、注释、轨迹、基因调控网络、细胞通讯与虚拟细胞模型放在同一个可交互门户中。
+              汇集 21 个物种的单细胞转录组图谱、干旱/对照 bulk 数据与先验调控关系，把质控、注释、轨迹、基因调控网络、细胞通讯与虚拟细胞模型放在同一个可交互门户中。
             </p>
             <div class="hero-actions">
               <a class="btn primary" href="#/atlas">进入单细胞图谱 ${ICONS.arrow}</a>
@@ -559,12 +565,13 @@
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">01 · Data</div><h2 class="section-title">数据底座：批量与单细胞转录组</h2><p class="section-desc">只保留两部分入口：批量转录组（正常/干旱）与单细胞转录组（全物种、单物种、单器官结果）。</p></div>
+            <div><div class="section-kicker">01 · Data</div><h2 class="section-title">数据底座：批量、单细胞与调控关系</h2><p class="section-desc">三条主线入口：批量转录组（正常/干旱）、单细胞转录组（全物种、单物种、单器官）与初始 TF–靶基因调控关系。</p></div>
             <a class="btn tiny ghost" href="#/data">进入数据层 ${ICONS.arrow}</a>
           </div>
           <div class="data-entry-grid">
             ${moduleCard('bulk', '批量转录组', '全量正常/干旱 bulk RNA-seq；结果图覆盖 21 物种，提供全部物种汇总与单物种结果。', `${fmtInt(L.bulk.total_samples)} 样本`, '#/bulk', ICONS.layers)}
             ${moduleCard('single', '单细胞转录组', '21 物种正常单细胞图谱；提供全部物种、单物种与单器官结果。', `${compact(L.normal_sc.cells)} cells`, '#/single-cell', ICONS.cell)}
+            ${moduleCard('regulatory', '调控关系', '21 物种已知 TF–靶基因先验关系；展示原始/过滤边、TF 匹配与单物种、全物种汇总。', `${compact(S.site.totals.grn_edges)} 边`, '#/regulatory', ICONS.network)}
           </div>
         </section>
 
@@ -645,13 +652,15 @@
   async function renderData() {
     await ensureLandscape();
     const L = S.landscape;
+    const reg = await ensureRegulatory().catch(() => null);
+    const regTotals = reg?.totals || { raw_edges: 0, filtered_edges: S.site.totals.grn_edges };
     view.innerHTML = `
       <div class="page">
         <div class="page-head">
           <div>
-            <div class="eyebrow">Data layer · bulk + single-cell</div>
-            <h1 class="page-title">数据层：批量与<em>单细胞转录组</em></h1>
-            <p class="page-lead">数据底座只保留两条主线：批量转录组（正常/干旱）与单细胞转录组（正常图谱）。每条主线都包含全部物种汇总、单物种结果；单细胞还包括单器官结果。</p>
+            <div class="eyebrow">Data layer · bulk + single-cell + regulation</div>
+            <h1 class="page-title">数据层：批量、单细胞与<em>调控关系</em></h1>
+            <p class="page-lead">数据底座包含三条主线：批量转录组（正常/干旱）、单细胞转录组（正常图谱）与初始调控关系（已知 TF–靶基因）。批量与单细胞均含全部物种与单物种结果；调控关系展示 21 物种的先验边、TF 匹配与单物种、全物种汇总。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/methods">数据来源与方法</a>
@@ -663,22 +672,23 @@
           ${statBox(fmtInt(L.bulk.total_drought_samples), '干旱 bulk')}
           ${statBox(compact(L.normal_sc.cells), '正常 scRNA 细胞')}
           ${statBox(L.normal_sc.modules, '分析模块')}
-          ${statBox(fmtInt(L.normal_sc.figures), '分析图件')}
+          ${statBox(compact(regTotals.filtered_edges), '先验调控边')}
         </div>
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">Two tracks</div><h2 class="section-title">两部分，两个入口</h2><p class="section-desc">批量转录组看全物种与单物种的 bulk 结果；单细胞转录组看全物种、单物种与单器官的单细胞结果。</p></div>
+            <div><div class="section-kicker">Three tracks</div><h2 class="section-title">三部分，三个入口</h2><p class="section-desc">批量转录组看全物种与单物种的 bulk 结果；单细胞转录组看全物种、单物种与单器官结果；调控关系看先验 TF–靶基因边与匹配统计。</p></div>
           </div>
           <div class="data-entry-grid">
             ${moduleCard('bulk', '批量转录组', '全量正常/干旱 bulk RNA-seq；结果图覆盖 21 物种，提供全部物种汇总与单物种结果。', `${fmtInt(L.bulk.total_samples)} 样本`, '#/bulk', ICONS.layers)}
             ${moduleCard('single', '单细胞转录组', '21 物种正常单细胞图谱；提供全部物种、单物种与单器官结果。', `${compact(L.normal_sc.cells)} cells`, '#/single-cell', ICONS.cell)}
+            ${moduleCard('regulatory', '调控关系', '21 物种已知 TF–靶基因先验关系；展示原始/过滤边、TF 匹配与单物种、全物种汇总。', `${compact(regTotals.filtered_edges)} 边`, '#/regulatory', ICONS.network)}
           </div>
         </section>
 
         <section class="section">
           <div class="callout info">
-            <strong>数值口径：</strong>全量 bulk 样本 ${fmtInt(L.bulk.total_samples)} 个（正常 ${fmtInt(L.bulk.total_control_samples)} / 干旱 ${fmtInt(L.bulk.total_drought_samples)}）。其中 21 物种可用清单 ${fmtInt(L.bulk.all_species_samples)} 个（正常 ${fmtInt(L.bulk.all_species_control)} / 干旱 ${fmtInt(L.bulk.all_species_drought)}）；虚拟细胞建模输入 ${fmtInt(L.bulk.model_samples)} 个（正常 ${fmtInt(L.bulk.control_samples)} / 干旱 ${fmtInt(L.bulk.drought_samples)}）。正常单细胞图谱 ${compact(L.normal_sc.cells)} 个细胞、${L.normal_sc.modules} 个分析模块。
+            <strong>数值口径：</strong>全量 bulk 样本 ${fmtInt(L.bulk.total_samples)} 个（正常 ${fmtInt(L.bulk.total_control_samples)} / 干旱 ${fmtInt(L.bulk.total_drought_samples)}）。其中 21 物种可用清单 ${fmtInt(L.bulk.all_species_samples)} 个（正常 ${fmtInt(L.bulk.all_species_control)} / 干旱 ${fmtInt(L.bulk.all_species_drought)}）；虚拟细胞建模输入 ${fmtInt(L.bulk.model_samples)} 个（正常 ${fmtInt(L.bulk.control_samples)} / 干旱 ${fmtInt(L.bulk.drought_samples)}）。正常单细胞图谱 ${compact(L.normal_sc.cells)} 个细胞、${L.normal_sc.modules} 个分析模块。初始调控关系覆盖 ${regTotals.species || S.site.totals.species} 个物种，原始 ${compact(regTotals.raw_edges)} 条边、匹配后 ${compact(regTotals.filtered_edges)} 条边。
           </div>
         </section>
       </div>`;
@@ -866,6 +876,132 @@
     if (orgSel) orgSel.addEventListener('change', () => {
       const grid = $('#single-organ-grid');
       if (grid) grid.innerHTML = resultGrid(orgSel.value === 'all' ? organItems : organItems.filter((x) => x.organ === orgSel.value), 'single-organ');
+    });
+  }
+
+  function regulatorySpeciesDetail(sp) {
+    if (!sp) return `<div class="empty"><strong>暂无该物种调控关系</strong><span>请切换其他物种。</span></div>`;
+    const top = sp.top_tfs || [];
+    return `
+      <div class="stat-grid six">
+        ${statBox(fmtInt(sp.raw_edges), '原始调控边')}
+        ${statBox(fmtInt(sp.filtered_edges), '过滤后调控边')}
+        ${statBox(fmtInt(sp.common_genes), '共同基因')}
+        ${statBox(`${fmtInt(sp.tf_matched)} / ${fmtInt(sp.tf_total)}`, 'TF 匹配')}
+        ${statBox(`${Number(sp.tf_match_rate).toFixed(1)}%`, 'TF 匹配率')}
+        ${statBox(`${Number(sp.gene_match_rate).toFixed(1)}%`, '基因匹配率')}
+      </div>
+      <div class="subgroup-head" style="margin-top:22px">
+        <h3>出度最高的 TF</h3>
+        <span class="count">按原始调控关系中的靶基因条数</span>
+      </div>
+      ${top.length ? tableHTML(top, [
+        { key: 'tf', label: 'TF', cls: 'gene' },
+        { key: 'targets', label: '靶基因条数', cls: 'num', fmt: (v) => fmtInt(v) },
+      ]) : `<div class="empty"><strong>暂无调控关系明细</strong><span>源文件未找到或为空。</span></div>`}
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px">
+        <span style="font-size:12.5px;color:var(--muted)">源文件 <code>${esc(sp.reg_file)}</code> · 原始 ${fmtInt(sp.raw_edges)} 条 → 匹配后 ${fmtInt(sp.filtered_edges)} 条</span>
+        ${sp.grn_figures
+          ? `<button class="btn tiny ghost" data-action="open-atlas-species" data-species="${esc(sp.key)}" data-module="11_gene_regulatory_network">查看该物种 GRN 图件 (${sp.grn_figures}) ${ICONS.arrow}</button>`
+          : `<span class="tag">该物种暂无 GRN 图件</span>`}
+      </div>`;
+  }
+
+  function downloadRegulatorySummary() {
+    const R = S.regulatory;
+    if (!R || !R.species) return;
+    const header = ['species', 'name', 'code', 'reg_file', 'raw_edges', 'filtered_edges', 'common_genes', 'tf_total', 'tf_matched', 'tf_match_rate', 'gene_match_rate', 'grn_figures', 'top_tfs'];
+    const lines = [header.join('\t')];
+    for (const sp of R.species) {
+      const top = (sp.top_tfs || []).map((t) => `${t.tf}(${t.targets})`).join(';');
+      lines.push([sp.key, sp.name, sp.code, sp.reg_file, sp.raw_edges, sp.filtered_edges, sp.common_genes, sp.tf_total, sp.tf_matched, sp.tf_match_rate, sp.gene_match_rate, sp.grn_figures, top].join('\t'));
+    }
+    const blob = new Blob([`\ufeff${lines.join('\n')}\n`], { type: 'text/tab-separated-values;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'DroAIVC_regulatory_summary.tsv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast('已下载调控关系摘要');
+  }
+
+  async function renderRegulatory() {
+    const R = await ensureRegulatory();
+    const species = R.species || [];
+    const totals = R.totals || {};
+    if (!species.length) {
+      view.innerHTML = `<div class="empty"><strong>暂无可展示的调控关系</strong><span>未找到 21 物种的先验调控边统计。</span><p style="margin-top:14px"><a class="btn" href="#/data">返回数据层</a></p></div>`;
+      return;
+    }
+    const defaultSp = species.some((x) => x.key === S.species) ? S.species : (species.some((x) => x.key === 'rice') ? 'rice' : species[0].key);
+    const selected = species.find((x) => x.key === defaultSp) || species[0];
+    const rows = species.slice().sort((a, b) => b.filtered_edges - a.filtered_edges);
+    const max = Math.max(...rows.map((x) => x.filtered_edges), 1);
+    view.innerHTML = `
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <div class="eyebrow">Regulatory relationships · prior TF–target</div>
+            <h1 class="page-title">初始<em>调控关系</em></h1>
+            <p class="page-lead">21 物种已知 TF–靶基因调控关系：原始 ${fmtInt(totals.raw_edges)} 条边，匹配到物种基因后保留 ${fmtInt(totals.filtered_edges)} 条；先按物种查看单物种调控关系，页面底部为全部物种汇总。</p>
+          </div>
+          <div class="page-actions">
+            <a class="btn ghost" href="#/data">返回数据层</a>
+            <a class="btn ghost" href="#/atlas/11_gene_regulatory_network">打开 GRN 模块 ${ICONS.arrow}</a>
+          </div>
+        </div>
+        <div class="stat-grid six">
+          ${statBox(totals.species, '物种')}
+          ${statBox(compact(totals.raw_edges), '原始调控边')}
+          ${statBox(compact(totals.filtered_edges), '过滤后调控边')}
+          ${statBox(`${fmtInt(totals.tf_matched)} / ${fmtInt(totals.tf_total)}`, 'TF 匹配')}
+          ${statBox(`${Number(totals.tf_match_rate || 0).toFixed(1)}%`, 'TF 匹配率')}
+          ${statBox(`${totals.species_with_grn_figures} / ${totals.species}`, '有 GRN 图件')}
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">Single species</div><h2 class="section-title">单个物种调控关系</h2><p class="section-desc">选择物种查看先验边数量、TF/基因匹配情况与出度最高的 TF；可进入该物种的 GRN 图件。</p></div>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-row">
+              <label class="field"><span>物种</span>
+                <select class="select" id="reg-species-select">${species.map((sp) => `<option value="${esc(sp.key)}" ${sp.key === selected.key ? 'selected' : ''}>${esc(sp.name)}</option>`).join('')}</select>
+              </label>
+            </div>
+          </div>
+          <div id="reg-species-detail" style="margin-top:18px">${regulatorySpeciesDetail(selected)}</div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">21 物种匹配后调控边规模对比；点击条形进入该物种的 GRN 图件。</p></div>
+            <button class="btn tiny ghost" data-action="reg-download">下载摘要 TSV</button>
+          </div>
+          <div class="bar-chart">${rows.map((sp) => `
+            <button class="bar-row" ${sp.grn_figures ? `data-action="open-atlas-species" data-species="${esc(sp.key)}" data-module="11_gene_regulatory_network"` : `data-action="go-species" data-value="${esc(sp.key)}"`} data-tip="${esc(`${sp.name} · 过滤后 ${fmtInt(sp.filtered_edges)} 条 / 原始 ${fmtInt(sp.raw_edges)} 条`)}">
+              <span class="bar-label">${esc(sp.name)}</span>
+              <span class="bar-track"><span class="bar-fill" data-w="${Math.max(1.2, sp.filtered_edges / max * 100).toFixed(2)}"></span></span>
+              <span class="bar-value">${esc(compact(sp.filtered_edges))}</span>
+            </button>`).join('')}</div>
+          <div class="callout info" style="margin-top:18px">
+            <strong>汇总口径：</strong>原始调控边为各物种 regulation 文件中的 TF–靶基因关系条数；过滤后调控边为该关系匹配到本物种共同基因与 TF 列表后、用于建模的边。21 物种合计原始 ${fmtInt(totals.raw_edges)} 条、过滤后 ${fmtInt(totals.filtered_edges)} 条；TF 匹配 ${fmtInt(totals.tf_matched)} / ${fmtInt(totals.tf_total)}（${Number(totals.tf_match_rate || 0).toFixed(1)}%）。
+          </div>
+        </section>
+      </div>`;
+    const sel = $('#reg-species-select');
+    if (sel) sel.addEventListener('change', () => {
+      const sp = species.find((x) => x.key === sel.value);
+      const host = $('#reg-species-detail');
+      if (host) host.innerHTML = regulatorySpeciesDetail(sp);
+      if (sp) {
+        S.species = sp.key;
+        localStorage.setItem('droaivc.species', sp.key);
+        updateSpeciesTrigger();
+      }
     });
   }
 
@@ -2861,9 +2997,10 @@
     const entries = [];
     const pages = [
       ['首页', '', 'DroAIVC 总览'],
-      ['数据层', 'data', '批量转录组与单细胞转录组'],
+      ['数据层', 'data', '批量、单细胞与调控关系'],
       ['批量转录组', 'bulk', '全物种与单物种 bulk 结果'],
       ['单细胞转录组', 'single-cell', '全物种、单物种与单器官结果'],
+      ['调控关系', 'regulatory', '初始 TF–靶基因调控关系与匹配统计'],
       ['单细胞图谱', 'atlas', '21 物种单细胞分析'],
       ['虚拟细胞', 'virtual', '干旱预测、轨迹、GRN、扰动'],
       ['全图库', 'gallery', '检索全部图件'],
@@ -3071,6 +3208,9 @@
       case 'eval-context':
         S.evalContext = value;
         renderRoute();
+        break;
+      case 'reg-download':
+        downloadRegulatorySummary();
         break;
       case 'open-atlas-species':
         { const spKey = el.dataset.species || value;
