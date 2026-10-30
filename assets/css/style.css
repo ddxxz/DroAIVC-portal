@@ -1764,3 +1764,33 @@ body::after {
   .inference-row, .inference-upload-grid, .result-tables { grid-template-columns: 1fr; }
 }
 .result-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+/* ---------- drought inference analysis ---------- */
+.ia-module-card {
+  text-align: left;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  min-height: 190px;
+  padding: 18px;
+}
+.ia-module-card .ia-code { font-family: var(--mono); font-size: 11px; color: var(--teal); letter-spacing: .05em; }
+.ia-module-card h3 { margin-top: 10px; font-size: 16px; }
+.ia-module-card p { font-size: 12.5px; line-height: 1.7; }
+.ia-module-card .module-meta { margin-top: 14px; }
+.ia-table-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.ia-table-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  background: rgba(7, 24, 19, .4);
+  min-width: 0;
+}
+.ia-table-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 10px; }
+.ia-table-head h3 { font-size: 16px; }
+.ia-table-head p { margin-top: 5px; font-size: 12px; line-height: 1.65; color: var(--muted); }
+.ia-table-source { margin-top: 9px; font-family: var(--mono); font-size: 10.5px; color: var(--dim); word-break: break-all; }
+@media (max-width: 900px) {
+  .ia-table-grid { grid-template-columns: 1fr; }
+}

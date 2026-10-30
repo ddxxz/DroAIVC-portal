@@ -19,6 +19,11 @@
     interactive: null,
     regulatory: null,
     inferenceMeta: null,
+    inferenceAnalysis: null,
+    iaSpecies: null,
+    iaOrgan: 'all',
+    iaSection: 'all',
+    iaModule: 'all',
     inference: { jobId: localStorage.getItem('droaivc.inference.job') || '', timer: null, started: 0 },
     perturb: { jobId: localStorage.getItem('droaivc.perturb.job') || '', timer: null, started: 0, polling: false, searchTimer: null },
     perturbCount: 1,
@@ -166,6 +171,7 @@
   function scopeName(rec) {
     if (rec.module === 'bulk') return '批量转录组';
     if (rec.module === 'single-cell') return '单细胞转录组';
+    if (rec.module === 'drought') return '干旱细胞规律';
     if (rec.scope === 'virtual' || rec.module === 'virtual') {
       const tab = S.tabByKey.get(rec.tab);
       return `虚拟细胞 · ${tab?.name || rec.tab || ''}`;
@@ -212,6 +218,10 @@
       S.inferenceMeta = await r.json();
     }
     return S.inferenceMeta;
+  }
+  async function ensureInferenceAnalysis() {
+    if (!S.inferenceAnalysis) S.inferenceAnalysis = await loadJSON('inference_analysis.json');
+    return S.inferenceAnalysis;
   }
   async function ensureInteractive() { if (!S.interactive) S.interactive = await loadJSON('interactive.json'); return S.interactive; }
   async function ensureAllFigures() {
@@ -1754,88 +1764,290 @@
       </div>`;
   }
 
-  /* ---------------- drought scRNA ---------------- */
+  /* ---------------- drought inference analysis ---------------- */
+  function iaCards(IA, species, organ) {
+    return (IA?.cards || []).filter((c) => (species === 'all' || c.species === species)
+      && (organ === 'all' || c.organ === organ));
+  }
+
+  function iaSingleFigures(IA, species, organ) {
+    return (IA?.figures || []).filter((f) => f.scope === 'species'
+      && (species === 'all' || f.species === species)
+      && (organ === 'all' || !f.organ || f.organ === organ));
+  }
+
+  function iaMultiFigures(IA, section, module) {
+    return (IA?.figures || []).filter((f) => f.scope === 'multi'
+      && (section === 'all' || f.section === section)
+      && (module === 'all' || f.module_key === module));
+  }
+
+  function iaOrganKeys(IA, species) {
+    return [...new Set((IA?.cards || [])
+      .filter((c) => species === 'all' || c.species === species)
+      .map((c) => c.organ))].sort((a, b) => organName(a).localeCompare(organName(b), 'zh'));
+  }
+
+  function iaContextTable(cards) {
+    const rows = cards.map((c) => ({
+      context: c.context || '—',
+      species: c.species,
+      organ: c.organ,
+      tier: c.tier || '—',
+      intensity: c.intensity,
+      n_cells: c.summary?.n_cells,
+      n_types: c.summary?.n_types,
+      core: `${c.summary?.n_core_up ?? '—'} / ${c.summary?.n_core_dn ?? '—'}`,
+      score: `${c.summary?.score_up_t1 ?? '—'} / ${c.summary?.score_dn_t1 ?? '—'}`,
+      marker: c.summary?.top_marker || '—',
+      tf: c.summary?.top_tf || '—',
+    }));
+    return tableHTML(rows, [
+      { key: 'context', label: '情境', cls: 'gene' },
+      { key: 'species', label: '物种', fmt: (v) => speciesName(v) },
+      { key: 'organ', label: '器官', fmt: (v) => organName(v) },
+      { key: 'tier', label: '层级' },
+      { key: 'intensity', label: '干旱强度', cls: 'num', fmt: (v) => (v == null ? '—' : Number(v).toFixed(2)) },
+      { key: 'n_cells', label: '细胞', cls: 'num', fmt: (v) => fmtInt(v) },
+      { key: 'n_types', label: '类型', cls: 'num' },
+      { key: 'core', label: '核心上/下调', cls: 'num' },
+      { key: 'score', label: '得分上/下', cls: 'num' },
+      { key: 'marker', label: '最大标志基因', cls: 'gene' },
+      { key: 'tf', label: '最大 TF', cls: 'gene' },
+    ]);
+  }
+
+  function iaModuleCard(m) {
+    const inner = `
+      <span class="ia-code">${esc(m.code || '')} · ${esc(m.section || '')}</span>
+      <h3>${esc(m.name)}</h3>
+      <p>${esc(m.desc || '')}</p>
+      <div class="module-meta"><span class="count">${fmtInt(m.figure_count || 0)} 图 · ${fmtInt(m.table_count || 0)} 表</span><span class="arrow">→</span></div>`;
+    if (m.href) return `<a class="module-card ia-module-card" href="${esc(m.href)}">${inner}</a>`;
+    return `<button type="button" class="module-card ia-module-card" data-action="ia-module" data-value="${esc(m.key)}">${inner}</button>`;
+  }
+
+  function iaKeyTable(t) {
+    return `<div class="ia-table-card">
+      <div class="ia-table-head"><div><h3>${esc(t.title)}</h3><p>${esc(t.desc || '')}</p></div><span class="tag teal">${esc(t.code || '')}</span></div>
+      ${tableHTML(t.rows || [], t.columns || [])}
+      <div class="ia-table-source">源表：<code>${esc(t.source || '')}</code></div>
+    </div>`;
+  }
+
+  function iaUpdateOrganOptions(selected = 'all') {
+    const sel = $('#ia-organ');
+    if (!sel) return;
+    const species = $('#ia-species')?.value || 'all';
+    const organs = iaOrganKeys(S.inferenceAnalysis, species);
+    const keep = organs.includes(selected) ? selected : 'all';
+    sel.innerHTML = '<option value="all">全部器官</option>' + organs.map((o) =>
+      `<option value="${esc(o)}" ${o === keep ? 'selected' : ''}>${esc(organName(o))}</option>`).join('');
+    S.iaOrgan = keep;
+  }
+
+  function iaUpdateSingle() {
+    const IA = S.inferenceAnalysis;
+    if (!IA) return;
+    const species = $('#ia-species')?.value || 'all';
+    const organ = $('#ia-organ')?.value || 'all';
+    S.iaSpecies = species;
+    S.iaOrgan = organ;
+    const cards = iaCards(IA, species, organ);
+    const grid = $('#ia-context-grid');
+    if (grid) grid.innerHTML = cards.length ? figureGrid(cards, 'ia-cards') : '<div class="empty"><strong>没有匹配的情境卡片</strong></div>';
+    const table = $('#ia-context-table');
+    if (table) table.innerHTML = iaContextTable(cards);
+    const figs = iaSingleFigures(IA, species, organ);
+    const host = $('#ia-single-figures');
+    if (host) host.innerHTML = figs.length ? figureGrid(figs, 'ia-single')
+      : '<div class="callout">该物种/器官的模块图件以跨物种汇总为主；请在下方“全部物种合并结果”查看对应模块。</div>';
+    const count = $('#ia-single-count');
+    if (count) count.textContent = `${cards.length} 个情境 · ${figs.length} 张单物种图`;
+  }
+
+  function iaUpdateModuleOptions(preserve = 'all') {
+    const IA = S.inferenceAnalysis;
+    const sel = $('#ia-module');
+    if (!sel) return;
+    const section = $('#ia-section')?.value || 'all';
+    const mods = (IA?.modules || []).filter((m) => section === 'all' || m.section === section);
+    const keep = preserve !== 'all' && mods.some((m) => m.key === preserve) ? preserve : 'all';
+    sel.innerHTML = '<option value="all">全部模块</option>' + mods.map((m) =>
+      `<option value="${esc(m.key)}" ${m.key === keep ? 'selected' : ''}>${esc(m.code)} ${esc(m.name)}</option>`).join('');
+    S.iaModule = keep;
+  }
+
+  function iaUpdateAll() {
+    const IA = S.inferenceAnalysis;
+    if (!IA) return;
+    const section = $('#ia-section')?.value || 'all';
+    const module = $('#ia-module')?.value || 'all';
+    S.iaSection = section;
+    S.iaModule = module;
+    const figs = iaMultiFigures(IA, section, module);
+    const host = $('#ia-all-grid');
+    if (host) host.innerHTML = figs.length ? figureGrid(figs, 'ia-all')
+      : '<div class="empty"><strong>该模块没有跨物种汇总图</strong><span>请选择其他模块，或查看上方单物种单器官结果。</span></div>';
+    const count = $('#ia-all-count');
+    if (count) count.textContent = `${figs.length} 图`;
+  }
+
+  function iaSelectModule(key) {
+    const IA = S.inferenceAnalysis;
+    if (!IA) return;
+    const m = (IA.modules || []).find((x) => x.key === key);
+    if (!m) return;
+    const sectionSel = $('#ia-section');
+    if (sectionSel) sectionSel.value = m.section;
+    S.iaSection = m.section;
+    iaUpdateModuleOptions(m.key);
+    const moduleSel = $('#ia-module');
+    if (moduleSel) moduleSel.value = m.key;
+    iaUpdateAll();
+    const target = $('#ia-all');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ---------------- drought inference analysis page ---------------- */
   async function renderDrought() {
-    await ensureLandscape();
-    const D = S.landscape.drought_sc;
-    const rows = D.dataset_rows.map((r) => `<tr>
-      <td>${esc(speciesName(r.species))}</td>
-      <td><code>${esc(r.study)}</code></td>
-      <td>${esc(r.tissue || '—')}</td>
-      <td class="num">${fmtInt(r.cells)}</td>
-      <td class="num">${fmtInt(r.control_cells)}</td>
-      <td class="num">${fmtInt(r.drought_cells)}</td>
-      <td class="num">${r.cell_types}</td>
-      <td class="num">${r.resolved_fraction != null ? (r.resolved_fraction * 100).toFixed(1) + '%' : '—'}</td>
-    </tr>`).join('');
+    const IA = await ensureInferenceAnalysis();
+    const L = await ensureLandscape().catch(() => null);
+    const cards = IA.cards || [];
+    const speciesKeys = [...new Set(cards.map((c) => c.species))]
+      .sort((a, b) => speciesName(a).localeCompare(speciesName(b), 'zh'));
+    const defaultSp = speciesKeys.includes(S.species) ? S.species : (speciesKeys.includes('arabidopsis') ? 'arabidopsis' : speciesKeys[0]);
+    if (!S.iaSpecies || (S.iaSpecies !== 'all' && !speciesKeys.includes(S.iaSpecies))) S.iaSpecies = defaultSp;
+    if (!S.iaSection) S.iaSection = 'all';
+    if (!S.iaModule) S.iaModule = 'all';
+    const sections = IA.sections || [];
+    const modules = IA.modules || [];
+    const stats = IA.stats || {};
+    const keyTables = IA.key_tables || [];
+    const species = S.iaSpecies;
+    const organs = iaOrganKeys(IA, species);
+    if (S.iaOrgan !== 'all' && !organs.includes(S.iaOrgan)) S.iaOrgan = 'all';
+    const organ = S.iaOrgan;
+    const shownCards = iaCards(IA, species, organ);
+    const singleFigs = iaSingleFigures(IA, species, organ);
+    const modsForSection = modules.filter((m) => S.iaSection === 'all' || m.section === S.iaSection);
+    const moduleKeys = new Set(modsForSection.map((m) => m.key));
+    const shownModule = S.iaModule !== 'all' && moduleKeys.has(S.iaModule) ? S.iaModule : 'all';
+    S.iaModule = shownModule;
+    const allFigs = iaMultiFigures(IA, S.iaSection, shownModule);
+    const D = L?.drought_sc;
     view.innerHTML = `
       <div class="page">
         <div class="page-head">
           <div>
-            <div class="eyebrow">Drought cell patterns · ${D.species}-species pilot</div>
+            <div class="eyebrow">Drought cell patterns · D3 final inference</div>
             <h1 class="page-title">干旱细胞<em>规律</em></h1>
-            <p class="page-lead">把正常单细胞图谱的分析逻辑迁移到干旱 scRNA：从 QC、降维、聚类、注释，到 DEG、拟时序、GRN、细胞通讯、细胞状态和 bulk 反卷积。首批接入 ${D.species} 个实测物种，其余物种通过虚拟细胞生成。</p>
+            <p class="page-lead">基于 D3 final 对 21 物种、50 个物种×器官代表情境的推理结果，系统展示经典干旱标志基因、细胞组成、类型特异 DEG、功能程序、叶根比较、跨物种保守、响应轨迹、TF 活性、调控网络与虚拟扰动。所有结果为模型推断。</p>
           </div>
           <div class="page-actions">
-            <a class="btn primary" href="#/atlas">查看正常图谱流程 ${ICONS.arrow}</a>
-            <a class="btn ghost" href="#/virtual/prediction">21 物种干旱预测</a>
+            <a class="btn primary" href="#/virtual/prediction">21 物种干旱预测 ${ICONS.arrow}</a>
+            <a class="btn ghost" href="#/virtual/perturbation">在线基因扰动</a>
           </div>
         </div>
         <div class="stat-grid six">
-          ${statBox(D.species, '实测干旱物种')}
-          ${statBox(compact(D.cells), '干旱 scRNA 细胞')}
-          ${statBox(D.datasets, '数据集')}
-          ${statBox(D.cell_types, '细胞类型')}
-          ${statBox(compact(D.control_cells), '对照细胞')}
-          ${statBox(compact(D.drought_cells), '干旱细胞')}
+          ${statBox(stats.species || speciesKeys.length, '物种')}
+          ${statBox(stats.contexts || cards.length, '物种×器官情境')}
+          ${statBox(stats.modules || modules.length, '分析模块')}
+          ${statBox(stats.figures || 0, '模块图件')}
+          ${statBox(stats.multi_figures || 0, '全物种合并图')}
+          ${statBox(stats.single_context_figures || 0, '单物种模块图')}
+        </div>
+        <div class="callout info" style="margin-top:18px">
+          <strong>数据边界：</strong>本页为 D3 final 模型推理结果，不是实验证据。模型在留出研究上的细胞类型特异预测能力有限（类型特异结论作为候选）；扰动效应与基因 × 干旱交互没有独立单细胞验证。${D ? `实测干旱 scRNA 首批覆盖 ${D.species} 个物种、${compact(D.cells)} 个细胞，其余物种由虚拟细胞预测。` : ''}
         </div>
 
-        <section class="section">
-          <div class="callout info">
-            <strong>数据范围：</strong>当前实测干旱 scRNA 覆盖拟南芥、水稻、大豆 3 个物种；正常单细胞图谱覆盖 21 个物种。其余 18 个物种的干旱单细胞来自虚拟细胞预测，并非实测数据。
-            <div style="margin-top:10px"><a class="btn tiny ghost" href="#/virtual/prediction">查看预测数据 ${ICONS.arrow}</a></div>
+        <section class="section" id="ia-single">
+          <div class="section-head">
+            <div><div class="section-kicker">Single species / organ</div><h2 class="section-title">单物种单器官推理结果</h2><p class="section-desc">按物种和器官筛选；每张卡片是一个代表情境的完整结果（细胞类型、RNA 组成、干旱位移、响应得分与最大变化 TF），下方为情境指标。</p></div>
+            <span class="tag" id="ia-single-count">${shownCards.length} 个情境 · ${singleFigs.length} 张单物种图</span>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-row">
+              <label class="field"><span>物种</span>
+                <select class="select" id="ia-species"><option value="all" ${species === 'all' ? 'selected' : ''}>全部物种</option>${speciesKeys.map((k) => `<option value="${esc(k)}" ${k === species ? 'selected' : ''}>${esc(speciesName(k))}</option>`).join('')}</select>
+              </label>
+              <label class="field"><span>器官</span>
+                <select class="select" id="ia-organ"><option value="all" ${organ === 'all' ? 'selected' : ''}>全部器官</option>${organs.map((o) => `<option value="${esc(o)}" ${o === organ ? 'selected' : ''}>${esc(organName(o))}</option>`).join('')}</select>
+              </label>
+            </div>
+          </div>
+          <div id="ia-context-grid" style="margin-top:18px">${shownCards.length ? figureGrid(shownCards, 'ia-cards') : '<div class="empty"><strong>没有匹配的情境卡片</strong></div>'}</div>
+          <div style="margin-top:22px">
+            <div class="subgroup-head"><h3>情境指标</h3><span class="count">核心上/下调 = 核心共有干旱 DEG 数；得分 = 逐细胞响应得分均值</span></div>
+            <div id="ia-context-table">${iaContextTable(shownCards)}</div>
+          </div>
+          <div style="margin-top:24px">
+            <div class="subgroup-head"><h3>该物种的模块图件</h3><span class="count">拟南芥与小麦有单物种专属图；其他物种以卡片和全物种汇总为主</span></div>
+            <div id="ia-single-figures">${singleFigs.length ? figureGrid(singleFigs, 'ia-single') : '<div class="callout">该物种/器官的模块图件以跨物种汇总为主；请在下方“全部物种合并结果”查看对应模块。</div>'}</div>
           </div>
         </section>
 
-        <section class="section">
+        <section class="section" id="ia-all">
           <div class="section-head">
-            <div><div class="section-kicker">Pipeline mirror</div><h2 class="section-title">14 个分析模块已对齐</h2><p class="section-desc">分析逻辑与正常图谱一致；QC 和细胞组成已接入，其余模块按同一流程迁移运行。</p></div>
-            <a class="btn tiny ghost" href="#/atlas">正常图谱模块 ${ICONS.arrow}</a>
+            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种合并结果</h2><p class="section-desc">跨物种整合的模块图件；可按 3.3 细胞类型响应、3.4 动态过程与调控、3.5 虚拟扰动与候选筛选。</p></div>
+            <span class="tag teal" id="ia-all-count">${allFigs.length} 图</span>
           </div>
-          <div class="drought-module-list">
-            ${D.modules.map((m) => `<div class="drought-module">
-              <span>${esc(m.name)}</span>
-              <span class="tag ${m.status === '已接入' ? 'teal' : 'gold'}">${esc(m.status)}</span>
-              <a href="#/atlas/${encode(m.key)}">正常流程</a>
-            </div>`).join('')}
+          <div class="filter-bar">
+            <div class="filter-row">
+              <label class="field"><span>分析部分</span>
+                <select class="select" id="ia-section"><option value="all" ${S.iaSection === 'all' ? 'selected' : ''}>全部 3.3–3.5</option>${sections.map((s) => `<option value="${esc(s.key)}" ${s.key === S.iaSection ? 'selected' : ''}>${esc(s.key)} ${esc(s.name)}</option>`).join('')}</select>
+              </label>
+              <label class="field"><span>模块</span>
+                <select class="select" id="ia-module"><option value="all" ${shownModule === 'all' ? 'selected' : ''}>全部模块</option>${modsForSection.map((m) => `<option value="${esc(m.key)}" ${m.key === shownModule ? 'selected' : ''}>${esc(m.code)} ${esc(m.name)}</option>`).join('')}</select>
+              </label>
+            </div>
           </div>
+          <div id="ia-all-grid" style="margin-top:18px">${allFigs.length ? figureGrid(allFigs, 'ia-all') : '<div class="empty"><strong>该模块没有跨物种汇总图</strong><span>请选择其他模块，或查看上方单物种单器官结果。</span></div>'}</div>
         </section>
 
-        <section class="section">
+        <section class="section" id="ia-modules">
           <div class="section-head">
-            <div><div class="section-kicker">Datasets</div><h2 class="section-title">首批实测数据</h2><p class="section-desc">细胞数、正常/干旱条件与细胞类型解析情况；点击数据集可查看原始研究编号。</p></div>
+            <div><div class="section-kicker">Modules</div><h2 class="section-title">分析模块</h2><p class="section-desc">3.3–3.5 共 ${modules.length} 个模块（含 1 个公用扰动数据表）；点击模块筛选上方“全部物种合并结果”。</p></div>
+            <span class="tag">${modules.length} 模块</span>
           </div>
-          <div class="table-wrap">
-            <table class="data-table">
-              <thead><tr><th>物种</th><th>数据集</th><th>组织</th><th class="num">细胞</th><th class="num">对照</th><th class="num">干旱</th><th class="num">细胞类型</th><th class="num">解析率</th></tr></thead>
-              <tbody>${rows}</tbody>
-            </table>
-          </div>
+          ${sections.map((sec) => {
+            const mods = modules.filter((m) => m.section === sec.key);
+            if (!mods.length) return '';
+            return `<div class="subgroup"><div class="subgroup-head"><h3>${esc(sec.key)} ${esc(sec.name)}</h3><span class="count">${mods.length} 模块</span></div><div class="module-grid">${mods.map(iaModuleCard).join('')}</div></div>`;
+          }).join('')}
         </section>
 
-        <section class="section">
+        <section class="section" id="ia-tables">
           <div class="section-head">
-            <div><div class="section-kicker">Next</div><h2 class="section-title">从数据到规律</h2><p class="section-desc">下一步在干旱 scRNA 上依次生成 QC/降维/聚类/注释、条件 DEG、拟时序、GRN、通讯与细胞状态结果，并与正常图谱逐层对照。</p></div>
+            <div><div class="section-kicker">Key results</div><h2 class="section-title">关键结果表</h2><p class="section-desc">从模块表中抽取的代表性结果：核心 TF、保守模块、功能程序、叶根比较、TF 家族、候选排序、调控链与组合扰动。完整表保留在源目录。</p></div>
+            <span class="tag">${keyTables.length} 表</span>
           </div>
-          <div class="framework-steps">
-            <div class="fw-step"><div class="n">01 · QC</div><h4>质控与标准化</h4><p>细胞/基因过滤、文库大小与线粒体比例；与正常图谱统一阈值。</p></div>
-            <div class="fw-step"><div class="n">02 · ANNOTATE</div><h4>聚类与注释</h4><p>HVG、PCA、Harmony、近邻图、Leiden、marker 与细胞类型。</p></div>
-            <div class="fw-step"><div class="n">03 · COMPARE</div><h4>干旱 vs 正常</h4><p>细胞组成、细胞类型 DEG、通路富集与跨物种保守性。</p></div>
-            <div class="fw-step"><div class="n">04 · REGULATE</div><h4>调控与状态</h4><p>GRN、细胞通讯、拟时序与细胞状态；为虚拟细胞提供验证。</p></div>
-          </div>
+          <div class="ia-table-grid">${keyTables.map(iaKeyTable).join('')}</div>
         </section>
+
+        <div class="callout warn">
+          <strong>解释边界：</strong>这里的细胞类型响应、TF 活性、扰动与基因 × 干旱交互均为模型推断；类型特异部分和扰动效应尤其需要实验验证。所有图注、方法与结果见每张图的详情面板。
+        </div>
       </div>`;
+    const spSel = $('#ia-species');
+    if (spSel) spSel.addEventListener('change', () => {
+      S.iaSpecies = spSel.value;
+      S.iaOrgan = 'all';
+      iaUpdateOrganOptions('all');
+      iaUpdateSingle();
+    });
+    const orgSel = $('#ia-organ');
+    if (orgSel) orgSel.addEventListener('change', () => { S.iaOrgan = orgSel.value; iaUpdateSingle(); });
+    const secSel = $('#ia-section');
+    if (secSel) secSel.addEventListener('change', () => {
+      S.iaSection = secSel.value;
+      iaUpdateModuleOptions('all');
+      iaUpdateAll();
+    });
+    const modSel = $('#ia-module');
+    if (modSel) modSel.addEventListener('change', () => { S.iaModule = modSel.value; iaUpdateAll(); });
   }
+
 
   /* ---------------- drought-tolerant state design ---------------- */
   async function renderDesign() {
@@ -3804,6 +4016,15 @@
     const method = $('#lb-method');
     const result = $('#lb-result');
     if (!method || !result) return;
+    if (rec.method || rec.result) {
+      method.hidden = false;
+      result.hidden = false;
+      const mb = $('.lb-detail-body', method);
+      const rb = $('.lb-detail-body', result);
+      if (mb) mb.textContent = rec.method || '—';
+      if (rb) rb.textContent = rec.result || '—';
+      return;
+    }
     if (!FIGURE_METHODS) {
       method.hidden = false;
       result.hidden = true;
@@ -4196,6 +4417,9 @@
         break;
       case 'inf-delete':
         deleteInferenceJob(value);
+        break;
+      case 'ia-module':
+        iaSelectModule(value);
         break;
       case 'pert-fill': {
         const inputs = $$('#pert-gene-inputs input');
