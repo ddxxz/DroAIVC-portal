@@ -729,7 +729,7 @@
           <div>
             <div class="eyebrow">Bulk transcriptome · normal vs drought</div>
             <h1 class="page-title">批量<em>转录组</em></h1>
-            <p class="page-lead">全量 ${fmtInt(L.bulk.total_samples)} 个 bulk 样本（正常 ${fmtInt(L.bulk.total_control_samples)} / 干旱 ${fmtInt(L.bulk.total_drought_samples)}）；结果图覆盖 21 物种。上半部分是全部物种合并结果，下半部分按物种查看单物种结果。</p>
+            <p class="page-lead">全量 ${fmtInt(L.bulk.total_samples)} 个 bulk 样本（正常 ${fmtInt(L.bulk.total_control_samples)} / 干旱 ${fmtInt(L.bulk.total_drought_samples)}）；结果图覆盖 21 物种。先按物种查看单物种结果，页面底部为全部物种合并结果。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/data">返回数据层</a>
@@ -750,13 +750,6 @@
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">21 物种合并的批量分析结果：质控、DEG、富集、GSEA、WGCNA、TF、机器学习等。</p></div>
-          </div>
-          ${resultGrid(R.all, 'bulk-all')}
-        </section>
-
-        <section class="section">
-          <div class="section-head">
             <div><div class="section-kicker">Single species</div><h2 class="section-title">单个物种结果</h2><p class="section-desc">按物种筛选，查看该物种的 bulk 分析图。</p></div>
           </div>
           <div class="filter-bar">
@@ -767,6 +760,13 @@
             </div>
           </div>
           <div id="bulk-species-grid" style="margin-top:18px">${resultGrid(R.species.filter((x) => x.species === defaultSp), `bulk-species-${defaultSp}`)}</div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">21 物种合并的批量分析结果：质控、DEG、富集、GSEA、WGCNA、TF、机器学习等。</p></div>
+          </div>
+          ${resultGrid(R.all, 'bulk-all')}
         </section>
       </div>`;
     const sel = $('#bulk-species-select');
@@ -794,7 +794,7 @@
           <div>
             <div class="eyebrow">Single-cell transcriptome · 21 species</div>
             <h1 class="page-title">单细胞<em>转录组</em></h1>
-            <p class="page-lead">正常单细胞图谱的新版结果汇总：全部物种、单物种、单器官三层视图，并已并入 2026-10-25 新增的 Cell2Fate / WOT / CellRank 结果。14 个分析模块的完整交互结果仍可从单细胞图谱进入。</p>
+            <p class="page-lead">正常单细胞图谱的新版结果汇总：先看单物种、单器官结果，页面底部为全部物种汇总；并已并入 2026-10-25 新增的 Cell2Fate / WOT / CellRank 结果。14 个分析模块的完整交互结果仍可从单细胞图谱进入。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/data">返回数据层</a>
@@ -809,20 +809,6 @@
           ${statBox(fmtInt(speciesItems.length), '单物种结果')}
           ${statBox(organItems.length, '单器官结果')}
         </div>
-
-        <section class="section">
-          <div class="section-head">
-            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">每个分析阶段的跨物种概览，含最新新增结果；可按阶段筛选。</p></div>
-          </div>
-          <div class="filter-bar">
-            <div class="filter-row">
-              <label class="field"><span>分析阶段</span>
-                <select class="select" id="single-stage-filter"><option value="all">全部阶段</option>${stages.map((st) => `<option value="${esc(st.key)}">${esc(st.name)}</option>`).join('')}</select>
-              </label>
-            </div>
-          </div>
-          <div id="single-all-grid" style="margin-top:18px">${resultGrid(allItems, 'single-all')}</div>
-        </section>
 
         <section class="section">
           <div class="section-head">
@@ -850,6 +836,20 @@
             </div>
           </div>
           <div id="single-organ-grid" style="margin-top:18px">${resultGrid(organItems, 'single-organ')}</div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><div class="section-kicker">All species</div><h2 class="section-title">全部物种放在一起</h2><p class="section-desc">每个分析阶段的跨物种概览，含最新新增结果；可按阶段筛选。</p></div>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-row">
+              <label class="field"><span>分析阶段</span>
+                <select class="select" id="single-stage-filter"><option value="all">全部阶段</option>${stages.map((st) => `<option value="${esc(st.key)}">${esc(st.name)}</option>`).join('')}</select>
+              </label>
+            </div>
+          </div>
+          <div id="single-all-grid" style="margin-top:18px">${resultGrid(allItems, 'single-all')}</div>
         </section>
       </div>`;
     const stageSel = $('#single-stage-filter');
