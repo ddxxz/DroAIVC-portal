@@ -203,7 +203,14 @@
   async function ensureLandscape() { if (!S.landscape) S.landscape = await loadJSON('landscape.json'); return S.landscape; }
   async function ensureResults() { if (!S.results) S.results = await loadJSON('results.json'); return S.results; }
   async function ensureRegulatory() { if (!S.regulatory) S.regulatory = await loadJSON('regulatory.json'); return S.regulatory; }
-  async function ensureInferenceMeta() { if (!S.inferenceMeta) S.inferenceMeta = await loadJSON('inference_meta.json'); return S.inferenceMeta; }
+  async function ensureInferenceMeta() {
+    if (!S.inferenceMeta) {
+      const r = await fetch(`data/inference_meta.json?v=${Date.now()}`, { cache: 'no-store' });
+      if (!r.ok) throw new Error(`inference_meta.json: ${r.status}`);
+      S.inferenceMeta = await r.json();
+    }
+    return S.inferenceMeta;
+  }
   async function ensureInteractive() { if (!S.interactive) S.interactive = await loadJSON('interactive.json'); return S.interactive; }
   async function ensureAllFigures() {
     if (S.allFigures) return S.allFigures;
