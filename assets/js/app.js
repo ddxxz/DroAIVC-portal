@@ -20,6 +20,7 @@
     regulatory: null,
     inferenceMeta: null,
     inferenceAnalysis: null,
+    modelPerformance: null,
     iaSpecies: null,
     iaOrgan: 'all',
     iaSection: 'all',
@@ -172,6 +173,7 @@
     if (rec.module === 'bulk') return '批量转录组';
     if (rec.module === 'single-cell') return '单细胞转录组';
     if (rec.module === 'drought') return '干旱细胞规律';
+    if (rec.module === 'model') return '模型性能';
     if (rec.scope === 'virtual' || rec.module === 'virtual') {
       const tab = S.tabByKey.get(rec.tab);
       return `虚拟细胞 · ${tab?.name || rec.tab || ''}`;
@@ -222,6 +224,10 @@
   async function ensureInferenceAnalysis() {
     if (!S.inferenceAnalysis) S.inferenceAnalysis = await loadJSON('inference_analysis.json');
     return S.inferenceAnalysis;
+  }
+  async function ensureModelPerformance() {
+    if (!S.modelPerformance) S.modelPerformance = await loadJSON('model_performance.json');
+    return S.modelPerformance;
   }
   async function ensureInteractive() { if (!S.interactive) S.interactive = await loadJSON('interactive.json'); return S.interactive; }
   async function ensureAllFigures() {
@@ -676,10 +682,21 @@
   }
 
   async function renderData() {
-    await ensureLandscape();
-    const L = S.landscape;
-    const reg = await ensureRegulatory().catch(() => null);
+    const [L, reg, V, MP] = await Promise.all([
+      ensureLandscape(),
+      ensureRegulatory().catch(() => null),
+      ensureVirtual().catch(() => null),
+      ensureModelPerformance().catch(() => null),
+    ]);
     const regTotals = reg?.totals || { raw_edges: 0, filtered_edges: S.site.totals.grn_edges };
+    const fw = (V?.figures || []).filter((f) => f.tab === 'framework');
+    const pipeline = fw.find((f) => f.title.includes('三阶段')) || fw[0];
+    const framework = fw.find((f) => f.title.includes('基线模型')) || fw[1];
+    const perf = MP || { stats: {}, modules: [], key_tables: [], figures: [], summary: '' };
+    const perfFigs = perf.figures || [];
+    const baselineFigs = perfFigs.filter((f) => f.module_key === '326_baselines' || f.module_key === '327_ablations');
+    const otherFigs = perfFigs.filter((f) => !baselineFigs.includes(f));
+    const keyTables = perf.key_tables || [];
     view.innerHTML = `
       <div class="page">
         <div class="page-head">
@@ -717,8 +734,70 @@
             <strong>数值口径：</strong>全量 bulk 样本 ${fmtInt(L.bulk.total_samples)} 个（正常 ${fmtInt(L.bulk.total_control_samples)} / 干旱 ${fmtInt(L.bulk.total_drought_samples)}）。其中 21 物种可用清单 ${fmtInt(L.bulk.all_species_samples)} 个（正常 ${fmtInt(L.bulk.all_species_control)} / 干旱 ${fmtInt(L.bulk.all_species_drought)}）；虚拟细胞建模输入 ${fmtInt(L.bulk.model_samples)} 个（正常 ${fmtInt(L.bulk.control_samples)} / 干旱 ${fmtInt(L.bulk.drought_samples)}）。正常单细胞图谱 ${compact(L.normal_sc.cells)} 个细胞、${L.normal_sc.modules} 个分析模块。初始调控关系覆盖 ${regTotals.species || S.site.totals.species} 个物种，原始 ${compact(regTotals.raw_edges)} 条边、匹配后 ${compact(regTotals.filtered_edges)} 条边。
           </div>
         </section>
+
+        <section class="section" id="model-framework">
+          <div class="section-head">
+            <div><div class="section-kicker">Model framework</div><h2 class="section-title">模型框架</h2><p class="section-desc">从多物种正常单细胞与 bulk 情境，到跨物种共享的 TF → 基因调控、干旱轨迹与单细胞生成，再到预测、轨迹、GRN 与扰动输出。正式模型为模块一 M2 + 模块二 D3 final。</p></div>
+            <a class="btn tiny ghost" href="#/virtual/framework">完整框架 ${ICONS.arrow}</a>
+          </div>
+          ${pipeline ? bigFigureHTML(pipeline, 'data-framework-pipeline') : ''}
+          <div class="framework-steps" style="margin-top:18px">
+            <div class="fw-step"><div class="n">01 · INPUT</div><h4>多物种单细胞 + bulk</h4><p>21 物种正常单细胞图谱、细胞类型注释、bulk 干旱/对照样本与 GRN 先验。</p></div>
+            <div class="fw-step"><div class="n">02 · ALIGN</div><h4>直系同源群与潜空间</h4><p>跨物种共同基因、同源组映射、潜空间对齐与信号质量评估。</p></div>
+            <div class="fw-step"><div class="n">03 · GENERATE</div><h4>干旱上下文生成</h4><p>状态编码 + 跨物种共享的 TF → 基因动力学 + 神经 ODE 干旱轨迹。</p></div>
+            <div class="fw-step"><div class="n">04 · READOUT</div><h4>预测 / 轨迹 / 扰动</h4><p>干旱单细胞、类型轨迹、TF 活性、GRN 时间序列与 KO/OE 扰动模拟。</p></div>
+          </div>
+          <div class="split" style="grid-template-columns:minmax(0,1fr) 360px;margin-top:22px">
+            <div>${framework ? bigFigureHTML(framework, 'data-framework-model') : '<div class="callout">模型框架图暂未加载。</div>'}</div>
+            <div class="detail-panel">
+              <div class="detail-head"><div><h3>正式模型</h3><p>模块一 M2 + 模块二 D3 final</p></div><span class="tag teal">v10</span></div>
+              <div class="drought-module-list">
+                <div class="drought-module"><span>模块一 M2</span><span>正常状态编码：TF 活性 a = c·e + p</span></div>
+                <div class="drought-module"><span>模块二 D3</span><span>跨物种共享 TF → 基因权重；神经 ODE 干旱轨迹</span></div>
+                <div class="drought-module"><span>生成层</span><span>按细胞自身计数生成干旱单细胞；支持 τ = 0.25–1</span></div>
+                <div class="drought-module"><span>扰动层</span><span>模型 TF 入口 + 共表达网络；KO/OE 与组合扰动</span></div>
+              </div>
+              <div class="callout info" style="margin-top:12px">模块一不使用细胞类型标签；模块二在 21 物种间共享 TF → TF 调控。模型输出是计算预测，不是实验证据。</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="model-performance">
+          <div class="section-head">
+            <div><div class="section-kicker">Model performance</div><h2 class="section-title">模型性能</h2><p class="section-desc">正式模型在 5 项留出研究上的评价：基线方法比较、消融、留出预测、中间时间点、网络证据、组成/解卷积、种子稳定性、适用范围与扰动验证。</p></div>
+            <a class="btn tiny ghost" href="#/virtual/evaluation">完整评估 ${ICONS.arrow}</a>
+          </div>
+          <div class="stat-grid six">
+            ${statBox(perf.stats.modules || 9, '评价模块')}
+            ${statBox(perf.stats.figures || perfFigs.length, '图件')}
+            ${statBox(perf.stats.heldout_studies || 5, '留出研究')}
+            ${statBox(perf.stats.ablations || 5, '消融版本')}
+            ${statBox(perf.stats.seeds || 3, '随机种子')}
+            ${statBox(perf.stats.tables || 0, '结果表')}
+          </div>
+          <div class="callout info" style="margin-top:18px"><strong>总体结论：</strong>${esc(perf.summary || '')}</div>
+
+          <div class="subgroup" style="margin-top:24px">
+            <div class="subgroup-head"><h3>基线对比与消融</h3><span class="count">与统一变化、v9、外部方法比较；关键模块消融</span></div>
+            ${baselineFigs.length ? figureGrid(baselineFigs, 'mp-baseline') : '<div class="callout">基线/消融图暂未载入。</div>'}
+          </div>
+
+          <div class="subgroup" style="margin-top:26px">
+            <div class="subgroup-head"><h3>其他评估</h3><span class="count">留出研究、模块一、网络证据、组成、种子、适用范围与扰动验证</span></div>
+            ${otherFigs.length ? figureGrid(otherFigs, 'mp-other') : '<div class="callout">其他评估图暂未载入。</div>'}
+          </div>
+
+          <div style="margin-top:26px">
+            <div class="subgroup-head"><h3>关键结果表</h3><span class="count">${keyTables.length} 表 · 完整表见源目录</span></div>
+            <div class="ia-table-grid">${keyTables.map(iaKeyTable).join('')}</div>
+          </div>
+          <div class="callout warn" style="margin-top:18px">
+            <strong>解释边界：</strong>细胞类型 logFC 与“各类型同样变化”基线持平；相对现有 bulk–单细胞与扰动方法有明显优势，但类型特异信号的增益很小。5 个物种（香蕉、大麦、西兰花、花生、小麦）网络很弱，依赖网络的结论不适用。所有结果均为模型评估，不是实验验证。
+          </div>
+        </section>
       </div>`;
   }
+
 
   function resultCard(item, listKey, index) {
     const sub = item.scope === 'all'
