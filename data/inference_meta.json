@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-30T07:38:51.603121+00:00",
-  "api_base": "https://f5b6e393016c48.lhr.life",
+  "generated_at": "2026-10-30T07:59:04.597274+00:00",
+  "api_base": "https://02ab93d1924bfe.lhr.life",
   "model": "DroAIVC v10 M2 + D3 final",
   "species": [
     {
@@ -1136,6 +1136,1518 @@
         }
       ]
     }
+  },
+  "perturb": {
+    "max_genes": 4,
+    "modes": [
+      "KO",
+      "OE"
+    ],
+    "default_fold": 10,
+    "max_fold": 100,
+    "default_cells": 3000,
+    "max_cells": 3000,
+    "cell_source": "builtin_atlas"
+  },
+  "perturb_genes": {
+    "alfalfa": [
+      {
+        "gene": "MTR_5g083340",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "MTR_4g085910",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "MTR_2g080010",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "MTR_3g088110",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "MTR_7g085220",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "MTR_7g100650",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "MTR_6g012180",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "MTR_4g123040",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "MTR_6g466000",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "MTR_2g070460",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "arabidopsis": [
+      {
+        "gene": "AT5G05410",
+        "name": "DREB2A",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "AT4G25480",
+        "name": "DREB1A/CBF3",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "AT1G45249",
+        "name": "AREB1/ABF2",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "AT4G34000",
+        "name": "ABF3",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Yoshida et al. 2010 Plant J"
+      },
+      {
+        "gene": "AT4G27410",
+        "name": "RD26/ANAC072",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Fujita et al. 2004 Plant J"
+      },
+      {
+        "gene": "AT1G52890",
+        "name": "ANAC019",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Tran et al. 2004 Plant Cell"
+      },
+      {
+        "gene": "AT5G62470",
+        "name": "MYB96",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "AT2G47190",
+        "name": "MYB2",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "AT2G38880",
+        "name": "NF-YB1",
+        "family": "NF-Y",
+        "model_tf": true,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "AT3G14440",
+        "name": "NCED3",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "banana": [
+      {
+        "gene": "Ma10_g01410",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "Ma09_g27730",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "Ma06_g33990",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "Ma06_g20050",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "Ma08_g15970",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "Ma02_g00280",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "Ma04_g29720",
+        "name": "OST1/SnRK2.6 ortholog",
+        "family": "SnRK2 kinase (non-TF)",
+        "model_tf": false,
+        "ref": "Mustilli et al. 2002 Plant Cell"
+      },
+      {
+        "gene": "Ma09_g26450",
+        "name": "DST ortholog",
+        "family": "C2H2 zinc finger",
+        "model_tf": false,
+        "ref": "Huang et al. 2009 Genes Dev"
+      }
+    ],
+    "barley": [
+      {
+        "gene": "HORVU.MOREX.r3.1HG0062390",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "HORVU.MOREX.r3.6HG0619650",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": false,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "HORVU.MOREX.r3.5HG0524540",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "HORVU.MOREX.r3.3HG0307040",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "HORVU.MOREX.r3.5HG0463450",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "HORVU.MOREX.r3.1HG0072890",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "HORVU.MOREX.r3.2HG0122400",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "HORVU.MOREX.r3.4HG0359060",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "HORVU.MOREX.r3.5HG0508150",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      },
+      {
+        "gene": "HORVU.MOREX.r3.5HG0512820",
+        "name": "OST1/SnRK2.6 ortholog",
+        "family": "SnRK2 kinase (non-TF)",
+        "model_tf": false,
+        "ref": "Mustilli et al. 2002 Plant Cell"
+      }
+    ],
+    "broccoli": [
+      {
+        "gene": "Bo2g006960",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "Bo6g018480",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "Bo1g128420",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "Bo5g001100",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "Bo1g152220",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "Bo4g026870",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": true,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "Bo2g146540",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "Bo5g130280",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      },
+      {
+        "gene": "Bo6g116760",
+        "name": "HDG11 ortholog",
+        "family": "HD-ZIP IV",
+        "model_tf": true,
+        "ref": "Yu et al. 2008 Plant Cell"
+      },
+      {
+        "gene": "Bo7g116520",
+        "name": "OST1/SnRK2.6 ortholog",
+        "family": "SnRK2 kinase (non-TF)",
+        "model_tf": false,
+        "ref": "Mustilli et al. 2002 Plant Cell"
+      }
+    ],
+    "cabbage": [
+      {
+        "gene": "Bra034159",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "Bra011485",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "Bra018998",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "Bra033239",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "Bra040152",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "Bra005074",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": true,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "Bra029258",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "Bra040274",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "Bra028290",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "Bra021558",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "cassava": [
+      {
+        "gene": "Manes.07G135300",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "Manes.18G037900",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "Manes.15G084800",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "Manes.18G079600",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "Manes.09G144100",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "Manes.10G041500",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "Manes.06G092600",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "Manes.15G003000",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "Manes.06G143102",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "Manes.15G102000",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "cotton": [
+      {
+        "gene": "B456_011G235900",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "B456_008G024700",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "B456_002G073800",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "B456_010G051900",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "B456_007G267900",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "B456_009G315600",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "B456_008G192900",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "B456_011G203900",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "B456_007G010100",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "B456_013G177100",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "grape": [
+      {
+        "gene": "Vitis13g00137",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "Vitis18g00870",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": false,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "Vitis19g00346",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "Vitis18g00274",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "Vitis08g01885",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "Vitis06g00424",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "Vitis14g02407",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "Vitis05g00195",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "Vitis16g01165",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": false,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "Vitis19g01299",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "kiwifruit": [
+      {
+        "gene": "CEY00_Acc01538",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "CEY00_Acc11788",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "CEY00_Acc13705",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "CEY00_Acc05057",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "CEY00_Acc03144",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "CEY00_Acc18265",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "CEY00_Acc27100",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "CEY00_Acc28015",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "CEY00_Acc21754",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      },
+      {
+        "gene": "CEY00_Acc31028",
+        "name": "OST1/SnRK2.6 ortholog",
+        "family": "SnRK2 kinase (non-TF)",
+        "model_tf": false,
+        "ref": "Mustilli et al. 2002 Plant Cell"
+      }
+    ],
+    "maize": [
+      {
+        "gene": "Zm00001eb405590",
+        "name": "ZmNAC111",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Mao et al. 2015 Nat Commun (GRMZM2G127379)"
+      },
+      {
+        "gene": "Zm00001eb387010",
+        "name": "ZmVPP1",
+        "family": "H+-PPase (non-TF)",
+        "model_tf": false,
+        "ref": "Wang et al. 2016 Nat Genet (GRMZM2G170927)"
+      },
+      {
+        "gene": "Zm00001eb347600",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "Zm00001eb373300",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "Zm00001eb062170",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "Zm00001eb145580",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "Zm00001eb148850",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "Zm00001eb312600",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "Zm00001eb165000",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "Zm00001eb073550",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      }
+    ],
+    "peanut": [
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah07g085600",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah08g045900",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah08g256400",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah08g330500",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah13g556000",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah06g181200",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah10g337700",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah01g346700",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah15g528700",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": false,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "arahy.Tifrunner.gnm2.ann2.Ah07g301800",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "potato": [
+      {
+        "gene": "PGSC0003DMG400027117",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "PGSC0003DMG400008011",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "PGSC0003DMG400015342",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "PGSC0003DMG400017567",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "PGSC0003DMG400002824",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "PGSC0003DMG400001733",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "PGSC0003DMG400019535",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "PGSC0003DMG400008761",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "PGSC0003DMG400014309",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "PGSC0003DMG400027633",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "rape": [
+      {
+        "gene": "GSBRNA2T00106944001",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "GSBRNA2T00099955001",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "GSBRNA2T00154660001",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "GSBRNA2T00085330001",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "GSBRNA2T00071983001",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "GSBRNA2T00152863001",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "GSBRNA2T00094650001",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "GSBRNA2T00053960001",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      },
+      {
+        "gene": "GSBRNA2T00102644001",
+        "name": "HDG11 ortholog",
+        "family": "HD-ZIP IV",
+        "model_tf": true,
+        "ref": "Yu et al. 2008 Plant Cell"
+      },
+      {
+        "gene": "GSBRNA2T00040358001",
+        "name": "OST1/SnRK2.6 ortholog",
+        "family": "SnRK2 kinase (non-TF)",
+        "model_tf": false,
+        "ref": "Mustilli et al. 2002 Plant Cell"
+      }
+    ],
+    "rice": [
+      {
+        "gene": "Os03g0815100",
+        "name": "SNAC1/OsNAC9",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "Os01g0884300",
+        "name": "OsNAC6/SNAC2",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "Os11g0126900",
+        "name": "OsNAC10",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Jeong et al. 2010 Plant Physiol"
+      },
+      {
+        "gene": "Os11g0184900",
+        "name": "OsNAC5",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Jeong et al. 2013 Plant Biotechnol J"
+      },
+      {
+        "gene": "Os02g0766700",
+        "name": "OsbZIP23",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Xiang et al. 2008 Plant Physiol"
+      },
+      {
+        "gene": "Os06g0211200",
+        "name": "OsbZIP46/ABL1",
+        "family": "bZIP ABF",
+        "model_tf": false,
+        "ref": "Tang et al. 2012 Plant Physiol"
+      },
+      {
+        "gene": "Os01g0165000",
+        "name": "OsDREB2A",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Oryzabase trait gene (drought)"
+      },
+      {
+        "gene": "Os05g0346200",
+        "name": "OsDREB2B",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Matsukura et al. 2010 Mol Genet Genomics"
+      },
+      {
+        "gene": "Os03g0786400",
+        "name": "DST",
+        "family": "C2H2 zinc finger",
+        "model_tf": false,
+        "ref": "Huang et al. 2009 Genes Dev"
+      },
+      {
+        "gene": "Os01g0797600",
+        "name": "OsAP37/OsERF3",
+        "family": "AP2/ERF",
+        "model_tf": false,
+        "ref": "Oh et al. 2009 Plant Physiol"
+      }
+    ],
+    "sorghum": [
+      {
+        "gene": "SORBI_3003G058200",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "SORBI_3007G155900",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "SORBI_3001G040200",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "SORBI_3003G379700",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "SORBI_3008G021800",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "SORBI_3009G166200",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "SORBI_3002G201000",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "SORBI_3001G391500",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "SORBI_3002G037400",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      },
+      {
+        "gene": "SORBI_3004G313900",
+        "name": "HDG11 ortholog",
+        "family": "HD-ZIP IV",
+        "model_tf": true,
+        "ref": "Yu et al. 2008 Plant Cell"
+      }
+    ],
+    "soybean": [
+      {
+        "gene": "GLYMA_02G261700",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "GLYMA_04G039300",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "GLYMA_13G279900",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "GLYMA_13G030900",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "GLYMA_02G109800",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "GLYMA_03G177700",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "GLYMA_19G022100",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "GLYMA_17G037500",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "GLYMA_09G147200",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "GLYMA_08G176300",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "tea": [
+      {
+        "gene": "LOC114315765",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "LOC114299244",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": false,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "LOC114280399",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "LOC114292311",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "LOC114322166",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "LOC114302627",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "LOC114306933",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "LOC114282038",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "LOC114306556",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": false,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "LOC114282858",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      }
+    ],
+    "tobacco": [
+      {
+        "gene": "LOC107816670",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "LOC107824387",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "LOC107765862",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "LOC107802761",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "LOC107781532",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "LOC107765476",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "LOC107777016",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "LOC107808010",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      },
+      {
+        "gene": "LOC107827644",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      },
+      {
+        "gene": "LOC107824451",
+        "name": "OST1/SnRK2.6 ortholog",
+        "family": "SnRK2 kinase (non-TF)",
+        "model_tf": false,
+        "ref": "Mustilli et al. 2002 Plant Cell"
+      }
+    ],
+    "tomato": [
+      {
+        "gene": "Solyc04g078840",
+        "name": "SlAREB1",
+        "family": "bZIP ABF",
+        "model_tf": true,
+        "ref": "Orellana et al. 2010 Plant Cell Environ"
+      },
+      {
+        "gene": "Solyc12g013620",
+        "name": "JA2",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Du et al. 2014 Plant Cell"
+      },
+      {
+        "gene": "Solyc07g056570",
+        "name": "SlNCED1",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Thompson et al. 2007 Plant Physiol"
+      },
+      {
+        "gene": "Solyc05g052410",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": false,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "Solyc06g060230",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "Solyc04g005610",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "Solyc09g007290",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "Solyc03g116100",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "Solyc05g053330",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": true,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "Solyc03g026270",
+        "name": "DREB1A/CBF3 ortholog",
+        "family": "AP2/ERF DREB1",
+        "model_tf": true,
+        "ref": "Kasuga et al. 1999 Nat Biotechnol"
+      }
+    ],
+    "wheat": [
+      {
+        "gene": "TraesCS1A02G221900",
+        "name": "DREB2A ortholog",
+        "family": "AP2/ERF DREB2",
+        "model_tf": true,
+        "ref": "Sakuma et al. 2006 Plant Cell"
+      },
+      {
+        "gene": "TraesCS6B02G364000",
+        "name": "AREB1/ABF2 ortholog",
+        "family": "bZIP ABF",
+        "model_tf": false,
+        "ref": "Fujita et al. 2005 Plant Cell"
+      },
+      {
+        "gene": "TraesCS5A02G468300",
+        "name": "RD26/SNAC1 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Fujita et al. 2004 Plant J; Hu et al. 2006 PNAS"
+      },
+      {
+        "gene": "TraesCS4A02G219700",
+        "name": "ATAF1/SNAC2 ortholog",
+        "family": "NAC",
+        "model_tf": false,
+        "ref": "Wu et al. 2009 Plant J; Nakashima et al. 2007 Plant J"
+      },
+      {
+        "gene": "TraesCS5B02G142100",
+        "name": "NAP/OsNAC10 ortholog",
+        "family": "NAC",
+        "model_tf": true,
+        "ref": "Jeong et al. 2010 Plant Physiol; Mao et al. 2015 Nat Commun"
+      },
+      {
+        "gene": "TraesCS1B02G297900",
+        "name": "NF-YB1 ortholog",
+        "family": "NF-Y",
+        "model_tf": false,
+        "ref": "Nelson et al. 2007 PNAS"
+      },
+      {
+        "gene": "TraesCS2D02G163700",
+        "name": "MYB96 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Seo et al. 2009 Plant Physiol"
+      },
+      {
+        "gene": "TraesCS2A02G097200",
+        "name": "MYB2 ortholog",
+        "family": "R2R3-MYB",
+        "model_tf": false,
+        "ref": "Abe et al. 2003 Plant Cell"
+      },
+      {
+        "gene": "TraesCS5B02G375900",
+        "name": "NCED3 ortholog",
+        "family": "ABA biosynthesis (non-TF)",
+        "model_tf": false,
+        "ref": "Iuchi et al. 2001 Plant J"
+      },
+      {
+        "gene": "TraesCS2B02G189600",
+        "name": "OST1/SnRK2.6 ortholog",
+        "family": "SnRK2 kinase (non-TF)",
+        "model_tf": false,
+        "ref": "Mustilli et al. 2002 Plant Cell"
+      }
+    ]
   },
   "bulk_format": "TSV/CSV：gene, control_mean_cpm, drought_mean_cpm（或 control_mean_cpm + log2FC）",
   "h5ad_format": "AnnData；X 或 layers['counts'] 为原始整数计数；var_names 为模型基因 ID；可选 obs['cell_type']、obs['sample_id']",
