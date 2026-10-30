@@ -779,12 +779,12 @@
 
           <div class="subgroup" style="margin-top:24px">
             <div class="subgroup-head"><h3>基线对比与消融</h3><span class="count">与统一变化、v9、外部方法比较；关键模块消融</span></div>
-            ${baselineFigs.length ? figureGrid(baselineFigs, 'mp-baseline') : '<div class="callout">基线/消融图暂未载入。</div>'}
+            <div id="mp-baseline-grid">${baselineFigs.length ? figureGrid(baselineFigs, 'mp-baseline') : '<div class="callout">基线/消融图暂未载入。</div>'}</div>
           </div>
 
           <div class="subgroup" style="margin-top:26px">
             <div class="subgroup-head"><h3>其他评估</h3><span class="count">留出研究、模块一、网络证据、组成、种子、适用范围与扰动验证</span></div>
-            ${otherFigs.length ? figureGrid(otherFigs, 'mp-other') : '<div class="callout">其他评估图暂未载入。</div>'}
+            <div id="mp-other-grid">${otherFigs.length ? figureGrid(otherFigs, 'mp-other') : '<div class="callout">其他评估图暂未载入。</div>'}</div>
           </div>
 
           <div style="margin-top:26px">
