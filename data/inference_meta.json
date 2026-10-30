@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T06:38:54.814063+00:00",
+  "generated_at": "2026-10-30T06:53:48.019348+00:00",
   "api_base": "https://749819de56965e.lhr.life",
   "model": "DroAIVC v10 M2 + D3 final",
   "species": [
@@ -462,6 +462,680 @@
     "bulk": "/api/v1/examples/rice_leaf_context.tsv",
     "h5ad": "/api/v1/examples/rice_leaf_normal_200.h5ad",
     "description": "水稻叶片 bulk 情境（PRJDB36834）+ 200 个正常叶片细胞"
+  },
+  "gene_examples": {
+    "alfalfa": {
+      "context": "PRJNA1513480",
+      "organ": "leaf",
+      "project": "PRJNA1513480",
+      "genes": [
+        {
+          "gene": "MTR_1g004990",
+          "control_mean_cpm": 0.0926,
+          "drought_mean_cpm": 0.1356
+        },
+        {
+          "gene": "MTR_1g006490",
+          "control_mean_cpm": 8.0395,
+          "drought_mean_cpm": 3.7018
+        },
+        {
+          "gene": "MTR_1g006600",
+          "control_mean_cpm": 5.1242,
+          "drought_mean_cpm": 50.0617
+        },
+        {
+          "gene": "MTR_1g006660",
+          "control_mean_cpm": 0.3264,
+          "drought_mean_cpm": 0.5206
+        },
+        {
+          "gene": "MTR_1g006690",
+          "control_mean_cpm": 0.0799,
+          "drought_mean_cpm": 0.0414
+        }
+      ]
+    },
+    "arabidopsis": {
+      "context": "PRJEB15161",
+      "organ": "leaf",
+      "project": "PRJEB15161",
+      "genes": [
+        {
+          "gene": "AT1G01010",
+          "control_mean_cpm": 9.0926,
+          "drought_mean_cpm": 8.9907
+        },
+        {
+          "gene": "AT1G01020",
+          "control_mean_cpm": 9.1241,
+          "drought_mean_cpm": 8.8577
+        },
+        {
+          "gene": "AT1G01030",
+          "control_mean_cpm": 0.9781,
+          "drought_mean_cpm": 1.1418
+        },
+        {
+          "gene": "AT1G01040",
+          "control_mean_cpm": 71.1321,
+          "drought_mean_cpm": 67.9229
+        },
+        {
+          "gene": "AT1G01050",
+          "control_mean_cpm": 44.6954,
+          "drought_mean_cpm": 45.2616
+        }
+      ]
+    },
+    "banana": {
+      "context": "PRJNA305241",
+      "organ": "root",
+      "project": "PRJNA305241",
+      "genes": [
+        {
+          "gene": "Ma00_g00010",
+          "control_mean_cpm": 41.5519,
+          "drought_mean_cpm": 44.0188
+        },
+        {
+          "gene": "Ma00_g00020",
+          "control_mean_cpm": 18.2999,
+          "drought_mean_cpm": 17.4682
+        },
+        {
+          "gene": "Ma00_g00070",
+          "control_mean_cpm": 91.0186,
+          "drought_mean_cpm": 83.1135
+        },
+        {
+          "gene": "Ma00_g00080",
+          "control_mean_cpm": 55.9721,
+          "drought_mean_cpm": 48.3217
+        },
+        {
+          "gene": "Ma00_g00120",
+          "control_mean_cpm": 28.6455,
+          "drought_mean_cpm": 29.1631
+        }
+      ]
+    },
+    "barley": {
+      "context": "PRJEB58055",
+      "organ": "leaf",
+      "project": "PRJEB58055",
+      "genes": [
+        {
+          "gene": "HORVU.MOREX.r3.1HG0000040",
+          "control_mean_cpm": 136.2749,
+          "drought_mean_cpm": 187.0771
+        },
+        {
+          "gene": "HORVU.MOREX.r3.1HG0000050",
+          "control_mean_cpm": 24.3928,
+          "drought_mean_cpm": 27.126
+        },
+        {
+          "gene": "HORVU.MOREX.r3.1HG0000060",
+          "control_mean_cpm": 26.8002,
+          "drought_mean_cpm": 18.8373
+        },
+        {
+          "gene": "HORVU.MOREX.r3.1HG0000070",
+          "control_mean_cpm": 105.1351,
+          "drought_mean_cpm": 141.535
+        },
+        {
+          "gene": "HORVU.MOREX.r3.1HG0000080",
+          "control_mean_cpm": 16.5863,
+          "drought_mean_cpm": 14.4664
+        }
+      ]
+    },
+    "broccoli": {
+      "context": "PRJNA1051351",
+      "organ": "leaf",
+      "project": "PRJNA1051351",
+      "genes": [
+        {
+          "gene": "Bo00285s120",
+          "control_mean_cpm": 0.016,
+          "drought_mean_cpm": 0.0262
+        },
+        {
+          "gene": "Bo00285s160",
+          "control_mean_cpm": 58.0658,
+          "drought_mean_cpm": 56.5486
+        },
+        {
+          "gene": "Bo00285s240",
+          "control_mean_cpm": 12.6742,
+          "drought_mean_cpm": 10.3856
+        },
+        {
+          "gene": "Bo00285s250",
+          "control_mean_cpm": 10.0456,
+          "drought_mean_cpm": 11.0172
+        },
+        {
+          "gene": "Bo00285s310",
+          "control_mean_cpm": 6.7592,
+          "drought_mean_cpm": 5.8163
+        }
+      ]
+    },
+    "cabbage": {
+      "context": "PRJNA356124",
+      "organ": "leaf",
+      "project": "PRJNA356124",
+      "genes": [
+        {
+          "gene": "Bra000003",
+          "control_mean_cpm": 19.1981,
+          "drought_mean_cpm": 19.9151
+        },
+        {
+          "gene": "Bra000004",
+          "control_mean_cpm": 3.4262,
+          "drought_mean_cpm": 3.4518
+        },
+        {
+          "gene": "Bra000005",
+          "control_mean_cpm": 50.2447,
+          "drought_mean_cpm": 51.1402
+        },
+        {
+          "gene": "Bra000006",
+          "control_mean_cpm": 121.4411,
+          "drought_mean_cpm": 99.0485
+        },
+        {
+          "gene": "Bra000007",
+          "control_mean_cpm": 7.8063,
+          "drought_mean_cpm": 10.8206
+        }
+      ]
+    },
+    "cassava": {
+      "context": "PRJNA359998__leaf",
+      "organ": "leaf",
+      "project": "PRJNA359998",
+      "genes": [
+        {
+          "gene": "Manes.01G000031",
+          "control_mean_cpm": 139.0324,
+          "drought_mean_cpm": 146.8405
+        },
+        {
+          "gene": "Manes.01G000124",
+          "control_mean_cpm": 10.3042,
+          "drought_mean_cpm": 10.9239
+        },
+        {
+          "gene": "Manes.01G000155",
+          "control_mean_cpm": 34.6279,
+          "drought_mean_cpm": 41.5962
+        },
+        {
+          "gene": "Manes.01G000186",
+          "control_mean_cpm": 1.8658,
+          "drought_mean_cpm": 2.5732
+        },
+        {
+          "gene": "Manes.01G000248",
+          "control_mean_cpm": 34.3113,
+          "drought_mean_cpm": 34.9065
+        }
+      ]
+    },
+    "cotton": {
+      "context": "PRJNA1338341",
+      "organ": "leaf",
+      "project": "PRJNA1338341",
+      "genes": [
+        {
+          "gene": "B456_001G000200",
+          "control_mean_cpm": 0.9101,
+          "drought_mean_cpm": 1.4588
+        },
+        {
+          "gene": "B456_001G0003002",
+          "control_mean_cpm": 1.3967,
+          "drought_mean_cpm": 2.1369
+        },
+        {
+          "gene": "B456_001G000400",
+          "control_mean_cpm": 0.4208,
+          "drought_mean_cpm": 0.7506
+        },
+        {
+          "gene": "B456_001G000500",
+          "control_mean_cpm": 3.5228,
+          "drought_mean_cpm": 4.7042
+        },
+        {
+          "gene": "B456_001G000800",
+          "control_mean_cpm": 15.9174,
+          "drought_mean_cpm": 39.7444
+        }
+      ]
+    },
+    "grape": {
+      "context": "PRJNA662522",
+      "organ": "leaf",
+      "project": "PRJNA662522",
+      "genes": [
+        {
+          "gene": "Vitis01g00003",
+          "control_mean_cpm": 25.5249,
+          "drought_mean_cpm": 26.5527
+        },
+        {
+          "gene": "Vitis01g00005",
+          "control_mean_cpm": 49.492,
+          "drought_mean_cpm": 46.2823
+        },
+        {
+          "gene": "Vitis01g00009",
+          "control_mean_cpm": 9.1558,
+          "drought_mean_cpm": 8.4513
+        },
+        {
+          "gene": "Vitis01g00010",
+          "control_mean_cpm": 5.0749,
+          "drought_mean_cpm": 7.1158
+        },
+        {
+          "gene": "Vitis01g00013",
+          "control_mean_cpm": 22.8518,
+          "drought_mean_cpm": 15.7736
+        }
+      ]
+    },
+    "kiwifruit": {
+      "context": "PRJNA1076811",
+      "organ": "leaf",
+      "project": "PRJNA1076811",
+      "genes": [
+        {
+          "gene": "CEY00_Acc00001",
+          "control_mean_cpm": 35.6107,
+          "drought_mean_cpm": 45.8469
+        },
+        {
+          "gene": "CEY00_Acc00010",
+          "control_mean_cpm": 10.3086,
+          "drought_mean_cpm": 11.7774
+        },
+        {
+          "gene": "CEY00_Acc00011",
+          "control_mean_cpm": 123.8624,
+          "drought_mean_cpm": 350.8502
+        },
+        {
+          "gene": "CEY00_Acc00013",
+          "control_mean_cpm": 2.9342,
+          "drought_mean_cpm": 3.7273
+        },
+        {
+          "gene": "CEY00_Acc00015",
+          "control_mean_cpm": 138.4976,
+          "drought_mean_cpm": 53.2123
+        }
+      ]
+    },
+    "maize": {
+      "context": "PRJNA291919__leaf",
+      "organ": "leaf",
+      "project": "PRJNA291919",
+      "genes": [
+        {
+          "gene": "Zm00001eb000010",
+          "control_mean_cpm": 54.168,
+          "drought_mean_cpm": 86.195
+        },
+        {
+          "gene": "Zm00001eb000020",
+          "control_mean_cpm": 0.9886,
+          "drought_mean_cpm": 1.1983
+        },
+        {
+          "gene": "Zm00001eb000060",
+          "control_mean_cpm": 20.8719,
+          "drought_mean_cpm": 22.9646
+        },
+        {
+          "gene": "Zm00001eb000070",
+          "control_mean_cpm": 0.8448,
+          "drought_mean_cpm": 1.1376
+        },
+        {
+          "gene": "Zm00001eb000080",
+          "control_mean_cpm": 35.4756,
+          "drought_mean_cpm": 42.4887
+        }
+      ]
+    },
+    "peanut": {
+      "context": "PRJNA629665",
+      "organ": "leaf",
+      "project": "PRJNA629665",
+      "genes": [
+        {
+          "gene": "arahy.Tifrunner.gnm2.ann2.Ah01g000200",
+          "control_mean_cpm": 13.2847,
+          "drought_mean_cpm": 14.5205
+        },
+        {
+          "gene": "arahy.Tifrunner.gnm2.ann2.Ah01g000500",
+          "control_mean_cpm": 1.6273,
+          "drought_mean_cpm": 1.6186
+        },
+        {
+          "gene": "arahy.Tifrunner.gnm2.ann2.Ah01g000700",
+          "control_mean_cpm": 11.2716,
+          "drought_mean_cpm": 9.0796
+        },
+        {
+          "gene": "arahy.Tifrunner.gnm2.ann2.Ah01g000800",
+          "control_mean_cpm": 3.8388,
+          "drought_mean_cpm": 5.1353
+        },
+        {
+          "gene": "arahy.Tifrunner.gnm2.ann2.Ah01g001100",
+          "control_mean_cpm": 9.2427,
+          "drought_mean_cpm": 18.4989
+        }
+      ]
+    },
+    "potato": {
+      "context": "PRJNA382846",
+      "organ": "leaf",
+      "project": "PRJNA382846",
+      "genes": [
+        {
+          "gene": "PGSC0003DMG400000001",
+          "control_mean_cpm": 14.9485,
+          "drought_mean_cpm": 14.7001
+        },
+        {
+          "gene": "PGSC0003DMG400000003",
+          "control_mean_cpm": 30.8233,
+          "drought_mean_cpm": 23.9126
+        },
+        {
+          "gene": "PGSC0003DMG400000004",
+          "control_mean_cpm": 32.315,
+          "drought_mean_cpm": 46.2191
+        },
+        {
+          "gene": "PGSC0003DMG400000005",
+          "control_mean_cpm": 2.8173,
+          "drought_mean_cpm": 3.0616
+        },
+        {
+          "gene": "PGSC0003DMG400000008",
+          "control_mean_cpm": 2.0822,
+          "drought_mean_cpm": 1.3945
+        }
+      ]
+    },
+    "rape": {
+      "context": "PRJNA615051",
+      "organ": "leaf",
+      "project": "PRJNA615051",
+      "genes": [
+        {
+          "gene": "GSBRNA2T00000001001",
+          "control_mean_cpm": 1.38,
+          "drought_mean_cpm": 1.1942
+        },
+        {
+          "gene": "GSBRNA2T00000003001",
+          "control_mean_cpm": 9.1065,
+          "drought_mean_cpm": 19.9771
+        },
+        {
+          "gene": "GSBRNA2T00000005001",
+          "control_mean_cpm": 3.6777,
+          "drought_mean_cpm": 4.007
+        },
+        {
+          "gene": "GSBRNA2T00000008001",
+          "control_mean_cpm": 10.9081,
+          "drought_mean_cpm": 19.2592
+        },
+        {
+          "gene": "GSBRNA2T00000009001",
+          "control_mean_cpm": 15.5841,
+          "drought_mean_cpm": 18.4219
+        }
+      ]
+    },
+    "rice": {
+      "context": "PRJDB36834",
+      "organ": "leaf",
+      "project": "PRJDB36834",
+      "genes": [
+        {
+          "gene": "Os01g0100100",
+          "control_mean_cpm": 68.8886,
+          "drought_mean_cpm": 16.9591
+        },
+        {
+          "gene": "Os01g0100200",
+          "control_mean_cpm": 0.2017,
+          "drought_mean_cpm": 0.0155
+        },
+        {
+          "gene": "Os01g0100500",
+          "control_mean_cpm": 83.8606,
+          "drought_mean_cpm": 81.888
+        },
+        {
+          "gene": "Os01g0100600",
+          "control_mean_cpm": 26.2026,
+          "drought_mean_cpm": 8.7452
+        },
+        {
+          "gene": "Os01g0100700",
+          "control_mean_cpm": 49.0836,
+          "drought_mean_cpm": 12.766
+        }
+      ]
+    },
+    "sorghum": {
+      "context": "PRJNA527782__leaf",
+      "organ": "leaf",
+      "project": "PRJNA527782",
+      "genes": [
+        {
+          "gene": "SORBI_3001G000100",
+          "control_mean_cpm": 0.0053,
+          "drought_mean_cpm": 0.0007
+        },
+        {
+          "gene": "SORBI_3001G000200",
+          "control_mean_cpm": 37.0054,
+          "drought_mean_cpm": 36.1852
+        },
+        {
+          "gene": "SORBI_3001G000400",
+          "control_mean_cpm": 0.1588,
+          "drought_mean_cpm": 0.1261
+        },
+        {
+          "gene": "SORBI_3001G000700",
+          "control_mean_cpm": 11.2289,
+          "drought_mean_cpm": 11.7888
+        },
+        {
+          "gene": "SORBI_3001G000800",
+          "control_mean_cpm": 695.9059,
+          "drought_mean_cpm": 568.0473
+        }
+      ]
+    },
+    "soybean": {
+      "context": "PRJNA285677",
+      "organ": "leaf",
+      "project": "PRJNA285677",
+      "genes": [
+        {
+          "gene": "GLYMA_01G000100",
+          "control_mean_cpm": 1.504,
+          "drought_mean_cpm": 1.6123
+        },
+        {
+          "gene": "GLYMA_01G000200",
+          "control_mean_cpm": 3.7704,
+          "drought_mean_cpm": 4.0531
+        },
+        {
+          "gene": "GLYMA_01G000400",
+          "control_mean_cpm": 32.2319,
+          "drought_mean_cpm": 29.7939
+        },
+        {
+          "gene": "GLYMA_01G000600",
+          "control_mean_cpm": 0.8774,
+          "drought_mean_cpm": 0.9909
+        },
+        {
+          "gene": "GLYMA_01G000700",
+          "control_mean_cpm": 3.829,
+          "drought_mean_cpm": 2.9842
+        }
+      ]
+    },
+    "tea": {
+      "context": "PRJNA900152",
+      "organ": "leaf",
+      "project": "PRJNA900152",
+      "genes": [
+        {
+          "gene": "LOC114255751",
+          "control_mean_cpm": 3.4187,
+          "drought_mean_cpm": 3.8412
+        },
+        {
+          "gene": "LOC114255766",
+          "control_mean_cpm": 28.4263,
+          "drought_mean_cpm": 29.0744
+        },
+        {
+          "gene": "LOC114255767",
+          "control_mean_cpm": 41.6818,
+          "drought_mean_cpm": 35.7801
+        },
+        {
+          "gene": "LOC114255768",
+          "control_mean_cpm": 25.7321,
+          "drought_mean_cpm": 25.1713
+        },
+        {
+          "gene": "LOC114255770",
+          "control_mean_cpm": 4.6694,
+          "drought_mean_cpm": 4.1848
+        }
+      ]
+    },
+    "tobacco": {
+      "context": "PRJNA883680",
+      "organ": "leaf",
+      "project": "PRJNA883680",
+      "genes": [
+        {
+          "gene": "ADC1A",
+          "control_mean_cpm": 127.905,
+          "drought_mean_cpm": 123.6482
+        },
+        {
+          "gene": "CHI",
+          "control_mean_cpm": 9.3011,
+          "drought_mean_cpm": 5.0488
+        },
+        {
+          "gene": "F3'5'H",
+          "control_mean_cpm": 0.8574,
+          "drought_mean_cpm": 1.1759
+        },
+        {
+          "gene": "FUL1",
+          "control_mean_cpm": 6.2666,
+          "drought_mean_cpm": 13.0631
+        },
+        {
+          "gene": "LOC107758906",
+          "control_mean_cpm": 37.5737,
+          "drought_mean_cpm": 37.0252
+        }
+      ]
+    },
+    "tomato": {
+      "context": "PRJNA592330",
+      "organ": "leaf",
+      "project": "PRJNA592330",
+      "genes": [
+        {
+          "gene": "Solyc00g005050",
+          "control_mean_cpm": 30.0361,
+          "drought_mean_cpm": 41.2161
+        },
+        {
+          "gene": "Solyc00g005840",
+          "control_mean_cpm": 196.5528,
+          "drought_mean_cpm": 227.4268
+        },
+        {
+          "gene": "Solyc00g006490",
+          "control_mean_cpm": 19.2974,
+          "drought_mean_cpm": 16.9613
+        },
+        {
+          "gene": "Solyc00g006800",
+          "control_mean_cpm": 12.5614,
+          "drought_mean_cpm": 17.2612
+        },
+        {
+          "gene": "Solyc00g006810",
+          "control_mean_cpm": 45.9567,
+          "drought_mean_cpm": 34.4707
+        }
+      ]
+    },
+    "wheat": {
+      "context": "PRJDB31316",
+      "organ": "leaf",
+      "project": "PRJDB31316",
+      "genes": [
+        {
+          "gene": "TraesCS1A02G000300",
+          "control_mean_cpm": 0.3591,
+          "drought_mean_cpm": 0.2364
+        },
+        {
+          "gene": "TraesCS1A02G000400",
+          "control_mean_cpm": 2.9067,
+          "drought_mean_cpm": 2.4104
+        },
+        {
+          "gene": "TraesCS1A02G000600",
+          "control_mean_cpm": 0.0219,
+          "drought_mean_cpm": 0.0194
+        },
+        {
+          "gene": "TraesCS1A02G000900",
+          "control_mean_cpm": 2.2505,
+          "drought_mean_cpm": 1.8751
+        },
+        {
+          "gene": "TraesCS1A02G001000",
+          "control_mean_cpm": 0.1781,
+          "drought_mean_cpm": 0.1582
+        }
+      ]
+    }
   },
   "bulk_format": "TSV/CSV：gene, control_mean_cpm, drought_mean_cpm（或 control_mean_cpm + log2FC）",
   "h5ad_format": "AnnData；X 或 layers['counts'] 为原始整数计数；var_names 为模型基因 ID；可选 obs['cell_type']、obs['sample_id']",

@@ -2010,6 +2010,23 @@
     return rows.map((o) => `<option value="${esc(o.key)}" ${o.key === selected ? 'selected' : ''}>${esc(organName(o.key))}${o.n_cells ? `（${compact(o.n_cells)} cells）` : ''}</option>`).join('');
   }
 
+  function inferenceGeneExampleHTML(meta, species) {
+    const ex = meta?.gene_examples?.[species];
+    if (!ex || !Array.isArray(ex.genes) || !ex.genes.length) return '';
+    const spMeta = (meta.species || []).find((s) => s.key === species) || {};
+    const name = spMeta.name || speciesName(species) || species;
+    const idw = Math.max(4, ...ex.genes.map((g) => String(g.gene).length));
+    const cell = (v) => (Number.isFinite(Number(v)) ? String(v) : '—');
+    const header = 'gene'.padEnd(idw) + '  ' + 'control_mean_cpm'.padStart(18) + '  ' + 'drought_mean_cpm'.padStart(18);
+    const rows = ex.genes.map((g) => String(g.gene).padEnd(idw) + '  ' + cell(g.control_mean_cpm).padStart(18) + '  ' + cell(g.drought_mean_cpm).padStart(18));
+    const ctx = [ex.context, ex.organ].filter(Boolean).join(' · ');
+    return `<div class="gene-format">
+      <div class="gene-format-head"><strong>${esc(name)} · 基因 ID 格式示例</strong><span>${esc(ctx)}</span></div>
+      <pre class="gene-format-code">${esc([header, ...rows].join('\n'))}</pre>
+      <p class="gene-format-note">以上 gene ID 来自该物种的模型词表，可直接放入 gene 列；CPM 数值取自内置 bulk 情境，仅示范格式，请替换为你的数据。可下载的示例数据仅提供水稻叶片。</p>
+    </div>`;
+  }
+
   function inferencePanelHTML(meta) {
     const apiBase = String(meta?.api_base || '').replace(/\/$/, '');
     const speciesList = meta?.species || S.site.species;
@@ -2064,8 +2081,9 @@
                 <span class="file-hint">两列：user_gene、model_gene；基因 ID 不一致时使用</span>
               </label>
             </div>
+            <div id="inf-gene-format">${inferenceGeneExampleHTML(meta, selected)}</div>
             <div class="inference-checks">
-              <label><input id="inf-use-example" type="checkbox"> 使用示例数据（水稻叶片 PRJDB36834，内置正常细胞）</label>
+              <label><input id="inf-use-example" type="checkbox"> 使用示例数据（仅水稻叶片 PRJDB36834，内置正常细胞）</label>
               <label><input id="inf-custom" type="checkbox"> 使用我上传的正常单细胞 h5ad（自定义模式）</label>
             </div>
             <div class="inference-actions">
@@ -2304,6 +2322,14 @@
       if (bulkInput) bulkInput.disabled = false;
       if (h5adInput) h5adInput.disabled = !customBox?.checked;
     }
+    updateInferenceFormat();
+  }
+
+  function updateInferenceFormat() {
+    const host = $('#inf-gene-format');
+    if (!host) return;
+    const sp = $('#inf-species')?.value || 'rice';
+    host.innerHTML = inferenceGeneExampleHTML(S.inferenceMeta, sp);
   }
 
   function updateInferenceOrgans() {
@@ -2314,6 +2340,7 @@
     const list = custom ? (S.inferenceMeta?.all_organs || []).map((k) => ({ key: k })) : (S.inferenceMeta?.organs?.[sp] || []);
     const current = organSel.value;
     organSel.innerHTML = inferenceOrganOptions(S.inferenceMeta, sp, custom, list.some((o) => o.key === current) ? current : (list[0]?.key || 'leaf'));
+    updateInferenceFormat();
   }
 
   async function checkInferenceHealth() {
