@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T08:18:43.705265+00:00",
+  "generated_at": "2026-10-30T08:28:47.864874+00:00",
   "api_base": "https://3a0a1adb9d5062.lhr.life",
   "model": "DroAIVC v10 M2 + D3 final",
   "species": [
@@ -1138,7 +1138,7 @@
     }
   },
   "perturb": {
-    "max_genes": 4,
+    "max_genes": 10,
     "modes": [
       "KO",
       "OE"

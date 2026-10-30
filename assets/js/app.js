@@ -2884,6 +2884,10 @@
   }
 
   /* ---------------- online perturbation ---------------- */
+  function perturbMaxGenes() {
+    return Math.max(1, Math.min(10, Number(S.inferenceMeta?.perturb?.max_genes) || 10));
+  }
+
   function pertGeneInputsHTML(count, values) {
     return Array.from({ length: count }, (_, i) => `
       <label class="field pert-gene-field">
@@ -2908,7 +2912,7 @@
     const organRows = organs.length ? organs : [{ key: 'leaf' }, { key: 'root' }];
     const organDefault = organRows.some((o) => o.key === 'leaf') ? 'leaf' : organRows[0].key;
     const cfg = meta?.perturb || {};
-    const maxGenes = Math.max(1, Math.min(4, Number(cfg.max_genes) || 4));
+    const maxGenes = perturbMaxGenes();
     const count = Math.max(1, Math.min(maxGenes, Number(S.perturbCount) || 1));
     const modes = cfg.modes || ['KO', 'OE'];
     const maxCells = Number(cfg.max_cells) || 3000;
@@ -2971,7 +2975,7 @@
   function renderPertGeneInputs(clear = false) {
     const host = $('#pert-gene-inputs');
     if (!host) return;
-    const count = Math.max(1, Math.min(4, Number($('#pert-count')?.value || S.perturbCount || 1)));
+    const count = Math.max(1, Math.min(perturbMaxGenes(), Number($('#pert-count')?.value || S.perturbCount || 1)));
     S.perturbCount = count;
     const current = clear ? [] : $$('#pert-gene-inputs input').map((x) => x.value);
     host.innerHTML = pertGeneInputsHTML(count, current);
