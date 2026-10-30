@@ -879,6 +879,60 @@
     });
   }
 
+  function renderRegTfNetwork(host, entry) {
+    if (!host) return;
+    if (!entry || !(entry.genes || []).length) {
+      host.innerHTML = `<div class="empty"><strong>暂无可绘制的下游靶基因</strong><span>该 TF 没有可用的靶基因列表。</span></div>`;
+      return;
+    }
+    const genes = entry.genes.slice(0, 30);
+    const W = 880;
+    const H = 470;
+    const cx = W / 2;
+    const cy = H / 2;
+    const R = 172;
+    const n = genes.length;
+    const nodes = genes.map((g, i) => {
+      const angle = -Math.PI / 2 + (i / Math.max(n, 1)) * Math.PI * 2;
+      return { g, x: cx + R * Math.cos(angle), y: cy + R * Math.sin(angle) };
+    });
+    const lines = nodes.map((nd) => `<line class="reg-edge" x1="${cx}" y1="${cy}" x2="${nd.x.toFixed(1)}" y2="${nd.y.toFixed(1)}"></line>`).join('');
+    const targetNodes = nodes.map((nd) => `<g class="reg-target"><title>${esc(nd.g)}</title><circle cx="${nd.x.toFixed(1)}" cy="${nd.y.toFixed(1)}" r="5"></circle></g>`).join('');
+    const labelLines = (() => {
+      if (entry.tf.length <= 9) return [entry.tf];
+      const out = [];
+      for (let i = 0; i < entry.tf.length && out.length < 2; i += 9) out.push(entry.tf.slice(i, i + 9));
+      if (entry.tf.length > 18) out[1] = `${entry.tf.slice(9, 17)}…`;
+      return out;
+    })();
+    const tfLabel = labelLines.map((line, i) => `<tspan x="${cx}" dy="${i === 0 ? (labelLines.length === 1 ? 0 : -5) : 11}">${esc(line)}</tspan>`).join('');
+    const shownNote = entry.targets > genes.length ? `（按文件顺序展示前 ${genes.length} 个）` : '';
+    const chips = genes.map((g) => `<span class="reg-gene-chip" title="${esc(g)}">${esc(g)}</span>`).join('');
+    host.innerHTML = `
+      <svg class="reg-network" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(entry.tf)} 调控网络">
+        ${lines}
+        <circle class="reg-tf-halo" cx="${cx}" cy="${cy}" r="38"></circle>
+        <circle class="reg-tf-node" cx="${cx}" cy="${cy}" r="30"></circle>
+        <text class="reg-tf-label" x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle">${tfLabel}</text>
+        ${targetNodes}
+      </svg>
+      <div class="reg-network-note"><strong>${esc(entry.tf)}</strong> → ${fmtInt(entry.targets)} 个下游靶基因${shownNote}；中心为 TF，外圈为靶基因节点，悬停节点可查看完整基因名。</div>
+      <div class="reg-network-genes-head">展示的靶基因</div>
+      <div class="reg-network-genes">${chips}</div>`;
+  }
+
+  function bindRegTfSelect(sp) {
+    const sel = $('#reg-tf-select');
+    const host = $('#reg-network');
+    if (!sel || !host || !sp) return;
+    const top = sp.top_tfs || [];
+    const initial = top.find((t) => t.tf === sel.value) || top[0];
+    renderRegTfNetwork(host, initial);
+    sel.addEventListener('change', () => {
+      renderRegTfNetwork(host, top.find((t) => t.tf === sel.value));
+    });
+  }
+
   function regulatorySpeciesDetail(sp) {
     if (!sp) return `<div class="empty"><strong>暂无该物种调控关系</strong><span>请切换其他物种。</span></div>`;
     const top = sp.top_tfs || [];
@@ -893,12 +947,26 @@
       </div>
       <div class="subgroup-head" style="margin-top:22px">
         <h3>出度最高的 TF</h3>
-        <span class="count">按原始调控关系中的靶基因条数</span>
+        <span class="count">按原始调控关系中的靶基因数排序</span>
       </div>
       ${top.length ? tableHTML(top, [
         { key: 'tf', label: 'TF', cls: 'gene' },
-        { key: 'targets', label: '靶基因条数', cls: 'num', fmt: (v) => fmtInt(v) },
+        { key: 'targets', label: '靶基因数', cls: 'num', fmt: (v) => fmtInt(v) },
+        { key: 'tf', label: '网络', cls: 'num', html: true, get: (r) => `<button class="btn tiny ghost" data-action="reg-tf" data-value="${esc(r.tf)}">查看网络</button>` },
       ]) : `<div class="empty"><strong>暂无调控关系明细</strong><span>源文件未找到或为空。</span></div>`}
+      ${top.length ? `
+      <div class="subgroup-head" style="margin-top:26px">
+        <h3>TF 调控网络</h3>
+        <span class="count">选择转录因子，查看它与下游靶基因的网络</span>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-row">
+          <label class="field"><span>转录因子</span>
+            <select class="select" id="reg-tf-select">${top.map((t) => `<option value="${esc(t.tf)}">${esc(t.tf)}（${fmtInt(t.targets)} 个靶基因）</option>`).join('')}</select>
+          </label>
+        </div>
+      </div>
+      <div id="reg-network" class="reg-network-wrap" style="margin-top:16px"></div>` : ''}
       <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px">
         <span style="font-size:12.5px;color:var(--muted)">源文件 <code>${esc(sp.reg_file)}</code> · 原始 ${fmtInt(sp.raw_edges)} 条 → 匹配后 ${fmtInt(sp.filtered_edges)} 条</span>
         ${sp.grn_figures
@@ -946,7 +1014,7 @@
           <div>
             <div class="eyebrow">Regulatory relationships · prior TF–target</div>
             <h1 class="page-title">初始<em>调控关系</em></h1>
-            <p class="page-lead">21 物种已知 TF–靶基因调控关系：原始 ${fmtInt(totals.raw_edges)} 条边，匹配到物种基因后保留 ${fmtInt(totals.filtered_edges)} 条；先按物种查看单物种调控关系，页面底部为全部物种汇总。</p>
+            <p class="page-lead">21 物种已知 TF–靶基因调控关系：原始 ${fmtInt(totals.raw_edges)} 条边，匹配到物种基因后保留 ${fmtInt(totals.filtered_edges)} 条；先按物种查看单物种调控关系并可展开 TF–靶基因网络，页面底部为全部物种汇总。</p>
           </div>
           <div class="page-actions">
             <a class="btn ghost" href="#/data">返回数据层</a>
@@ -964,7 +1032,7 @@
 
         <section class="section">
           <div class="section-head">
-            <div><div class="section-kicker">Single species</div><h2 class="section-title">单个物种调控关系</h2><p class="section-desc">选择物种查看先验边数量、TF/基因匹配情况与出度最高的 TF；可进入该物种的 GRN 图件。</p></div>
+            <div><div class="section-kicker">Single species</div><h2 class="section-title">单个物种调控关系</h2><p class="section-desc">选择物种查看先验边数量、TF/基因匹配情况与出度最高的 TF；选择转录因子可自动展开它与下游靶基因的网络图。</p></div>
           </div>
           <div class="filter-bar">
             <div class="filter-row">
@@ -992,11 +1060,13 @@
           </div>
         </section>
       </div>`;
+    bindRegTfSelect(selected);
     const sel = $('#reg-species-select');
     if (sel) sel.addEventListener('change', () => {
       const sp = species.find((x) => x.key === sel.value);
       const host = $('#reg-species-detail');
       if (host) host.innerHTML = regulatorySpeciesDetail(sp);
+      bindRegTfSelect(sp);
       if (sp) {
         S.species = sp.key;
         localStorage.setItem('droaivc.species', sp.key);
@@ -3212,6 +3282,16 @@
       case 'reg-download':
         downloadRegulatorySummary();
         break;
+      case 'reg-tf': {
+        const sel = $('#reg-tf-select');
+        if (sel) {
+          sel.value = value;
+          sel.dispatchEvent(new Event('change'));
+          const net = $('#reg-network');
+          if (net) net.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        break;
+      }
       case 'open-atlas-species':
         { const spKey = el.dataset.species || value;
           if (spKey) {
