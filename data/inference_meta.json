@@ -1,0 +1,469 @@
+{
+  "generated_at": "2026-10-30T02:46:12.619278+00:00",
+  "api_base": "https://b72a8e6b9fe372.lhr.life",
+  "model": "DroAIVC v10 M2 + D3 final",
+  "species": [
+    {
+      "key": "alfalfa",
+      "name": "紫花苜蓿",
+      "latin": "Medicago sativa",
+      "code": "Mt",
+      "clade": "dicot"
+    },
+    {
+      "key": "arabidopsis",
+      "name": "拟南芥",
+      "latin": "Arabidopsis thaliana",
+      "code": "At",
+      "clade": "dicot"
+    },
+    {
+      "key": "banana",
+      "name": "香蕉",
+      "latin": "Musa acuminata",
+      "code": "Ma",
+      "clade": "monocot"
+    },
+    {
+      "key": "barley",
+      "name": "大麦",
+      "latin": "Hordeum vulgare",
+      "code": "Hv",
+      "clade": "monocot"
+    },
+    {
+      "key": "broccoli",
+      "name": "西兰花",
+      "latin": "Brassica oleracea var. italica",
+      "code": "Bo",
+      "clade": "dicot"
+    },
+    {
+      "key": "cabbage",
+      "name": "甘蓝",
+      "latin": "Brassica oleracea",
+      "code": "Br",
+      "clade": "dicot"
+    },
+    {
+      "key": "cassava",
+      "name": "木薯",
+      "latin": "Manihot esculenta",
+      "code": "Me",
+      "clade": "dicot"
+    },
+    {
+      "key": "cotton",
+      "name": "棉花",
+      "latin": "Gossypium hirsutum",
+      "code": "Gh",
+      "clade": "dicot"
+    },
+    {
+      "key": "grape",
+      "name": "葡萄",
+      "latin": "Vitis vinifera",
+      "code": "Vv",
+      "clade": "dicot"
+    },
+    {
+      "key": "kiwifruit",
+      "name": "猕猴桃",
+      "latin": "Actinidia chinensis",
+      "code": "Ac",
+      "clade": "dicot"
+    },
+    {
+      "key": "maize",
+      "name": "玉米",
+      "latin": "Zea mays",
+      "code": "Zm",
+      "clade": "monocot"
+    },
+    {
+      "key": "peanut",
+      "name": "花生",
+      "latin": "Arachis hypogaea",
+      "code": "Ah",
+      "clade": "dicot"
+    },
+    {
+      "key": "potato",
+      "name": "马铃薯",
+      "latin": "Solanum tuberosum",
+      "code": "St",
+      "clade": "dicot"
+    },
+    {
+      "key": "rape",
+      "name": "油菜",
+      "latin": "Brassica napus",
+      "code": "Bn",
+      "clade": "dicot"
+    },
+    {
+      "key": "rice",
+      "name": "水稻",
+      "latin": "Oryza sativa",
+      "code": "Os",
+      "clade": "monocot"
+    },
+    {
+      "key": "sorghum",
+      "name": "高粱",
+      "latin": "Sorghum bicolor",
+      "code": "Sb",
+      "clade": "monocot"
+    },
+    {
+      "key": "soybean",
+      "name": "大豆",
+      "latin": "Glycine max",
+      "code": "Gm",
+      "clade": "dicot"
+    },
+    {
+      "key": "tea",
+      "name": "茶",
+      "latin": "Camellia sinensis",
+      "code": "Cs",
+      "clade": "dicot"
+    },
+    {
+      "key": "tobacco",
+      "name": "烟草",
+      "latin": "Nicotiana tabacum",
+      "code": "Nt",
+      "clade": "dicot"
+    },
+    {
+      "key": "tomato",
+      "name": "番茄",
+      "latin": "Solanum lycopersicum",
+      "code": "Sl",
+      "clade": "dicot"
+    },
+    {
+      "key": "wheat",
+      "name": "小麦",
+      "latin": "Triticum aestivum",
+      "code": "Ta",
+      "clade": "monocot"
+    }
+  ],
+  "organs": {
+    "alfalfa": [
+      {
+        "key": "root",
+        "n_cells": 20527
+      }
+    ],
+    "arabidopsis": [
+      {
+        "key": "root",
+        "n_cells": 850360
+      },
+      {
+        "key": "leaf",
+        "n_cells": 539389
+      },
+      {
+        "key": "ovule",
+        "n_cells": 152871
+      },
+      {
+        "key": "callus",
+        "n_cells": 110190
+      },
+      {
+        "key": "pollen",
+        "n_cells": 110032
+      },
+      {
+        "key": "shoot_apex",
+        "n_cells": 63034
+      },
+      {
+        "key": "whole_plant",
+        "n_cells": 51027
+      },
+      {
+        "key": "shoot",
+        "n_cells": 36107
+      },
+      {
+        "key": "flower",
+        "n_cells": 15662
+      },
+      {
+        "key": "embryo_seed",
+        "n_cells": 595
+      }
+    ],
+    "banana": [
+      {
+        "key": "root",
+        "n_cells": 43142
+      }
+    ],
+    "barley": [
+      {
+        "key": "root",
+        "n_cells": 5729
+      }
+    ],
+    "broccoli": [
+      {
+        "key": "whole_seedling",
+        "n_cells": 14872
+      }
+    ],
+    "cabbage": [
+      {
+        "key": "leaf",
+        "n_cells": 36813
+      },
+      {
+        "key": "shoot",
+        "n_cells": 9628
+      }
+    ],
+    "cassava": [
+      {
+        "key": "root",
+        "n_cells": 39699
+      }
+    ],
+    "cotton": [
+      {
+        "key": "ovule_fibre",
+        "n_cells": 127326
+      },
+      {
+        "key": "leaf",
+        "n_cells": 54717
+      },
+      {
+        "key": "stem",
+        "n_cells": 29202
+      },
+      {
+        "key": "anther",
+        "n_cells": 22004
+      },
+      {
+        "key": "embryo_seed",
+        "n_cells": 21911
+      },
+      {
+        "key": "hypocotyl",
+        "n_cells": 5137
+      }
+    ],
+    "grape": [
+      {
+        "key": "leaf",
+        "n_cells": 70236
+      }
+    ],
+    "kiwifruit": [
+      {
+        "key": "leaf",
+        "n_cells": 15824
+      }
+    ],
+    "maize": [
+      {
+        "key": "leaf",
+        "n_cells": 352968
+      },
+      {
+        "key": "root",
+        "n_cells": 52766
+      },
+      {
+        "key": "shoot_apex",
+        "n_cells": 39956
+      },
+      {
+        "key": "embryo_seed",
+        "n_cells": 31506
+      },
+      {
+        "key": "stem",
+        "n_cells": 31246
+      },
+      {
+        "key": "flower",
+        "n_cells": 18066
+      },
+      {
+        "key": "pollen",
+        "n_cells": 391
+      }
+    ],
+    "peanut": [
+      {
+        "key": "leaf",
+        "n_cells": 95007
+      },
+      {
+        "key": "fruit_pod",
+        "n_cells": 1792
+      }
+    ],
+    "potato": [
+      {
+        "key": "leaf",
+        "n_cells": 49505
+      },
+      {
+        "key": "tuber_stolon",
+        "n_cells": 38496
+      },
+      {
+        "key": "shoot",
+        "n_cells": 23161
+      }
+    ],
+    "rape": [
+      {
+        "key": "leaf",
+        "n_cells": 126782
+      }
+    ],
+    "rice": [
+      {
+        "key": "root_and_leaf",
+        "n_cells": 1207985
+      },
+      {
+        "key": "root",
+        "n_cells": 179740
+      },
+      {
+        "key": "leaf",
+        "n_cells": 88531
+      },
+      {
+        "key": "flower",
+        "n_cells": 36896
+      },
+      {
+        "key": "stem",
+        "n_cells": 7636
+      },
+      {
+        "key": "whole_seedling",
+        "n_cells": 1496
+      }
+    ],
+    "sorghum": [
+      {
+        "key": "whole_seedling",
+        "n_cells": 21136
+      },
+      {
+        "key": "root",
+        "n_cells": 6274
+      }
+    ],
+    "soybean": [
+      {
+        "key": "nodule",
+        "n_cells": 161109
+      },
+      {
+        "key": "whole_plant",
+        "n_cells": 115626
+      },
+      {
+        "key": "root",
+        "n_cells": 51324
+      }
+    ],
+    "tea": [
+      {
+        "key": "leaf",
+        "n_cells": 67807
+      },
+      {
+        "key": "root",
+        "n_cells": 58293
+      }
+    ],
+    "tobacco": [
+      {
+        "key": "whole_seedling",
+        "n_cells": 12698
+      },
+      {
+        "key": "leaf",
+        "n_cells": 6162
+      },
+      {
+        "key": "root",
+        "n_cells": 4015
+      }
+    ],
+    "tomato": [
+      {
+        "key": "shoot_apex",
+        "n_cells": 145650
+      },
+      {
+        "key": "leaf",
+        "n_cells": 72971
+      }
+    ],
+    "wheat": [
+      {
+        "key": "root",
+        "n_cells": 26909
+      }
+    ]
+  },
+  "all_organs": [
+    "anther",
+    "callus",
+    "embryo_seed",
+    "flower",
+    "fruit_pod",
+    "hypocotyl",
+    "leaf",
+    "nodule",
+    "ovule",
+    "ovule_fibre",
+    "pollen",
+    "root",
+    "root_and_leaf",
+    "shoot",
+    "shoot_apex",
+    "stem",
+    "tuber_stolon",
+    "whole_plant",
+    "whole_seedling"
+  ],
+  "taus": [
+    1.0,
+    0.75,
+    0.5,
+    0.25
+  ],
+  "max_cells": 5000,
+  "limits": {
+    "bulk_mb": 50,
+    "h5ad_mb": 300,
+    "map_mb": 5
+  },
+  "examples": {
+    "species": "rice",
+    "organ": "leaf",
+    "bulk": "/api/v1/examples/rice_leaf_context.tsv",
+    "h5ad": "/api/v1/examples/rice_leaf_normal_200.h5ad",
+    "description": "水稻叶片 bulk 情境（PRJDB36834）+ 200 个正常叶片细胞"
+  },
+  "bulk_format": "TSV/CSV：gene, control_mean_cpm, drought_mean_cpm（或 control_mean_cpm + log2FC）",
+  "h5ad_format": "AnnData；X 或 layers['counts'] 为原始整数计数；var_names 为模型基因 ID；可选 obs['cell_type']、obs['sample_id']",
+  "disclaimer": "模型输出为计算预测，不是实验证据；请勿上传敏感数据。"
+}

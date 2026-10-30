@@ -18,6 +18,8 @@
     virtual: null,
     interactive: null,
     regulatory: null,
+    inferenceMeta: null,
+    inference: { jobId: localStorage.getItem('droaivc.inference.job') || '', timer: null, started: 0 },
     allFigures: null,
     speciesByKey: new Map(),
     statsBySpecies: new Map(),
@@ -201,6 +203,7 @@
   async function ensureLandscape() { if (!S.landscape) S.landscape = await loadJSON('landscape.json'); return S.landscape; }
   async function ensureResults() { if (!S.results) S.results = await loadJSON('results.json'); return S.results; }
   async function ensureRegulatory() { if (!S.regulatory) S.regulatory = await loadJSON('regulatory.json'); return S.regulatory; }
+  async function ensureInferenceMeta() { if (!S.inferenceMeta) S.inferenceMeta = await loadJSON('inference_meta.json'); return S.inferenceMeta; }
   async function ensureInteractive() { if (!S.interactive) S.interactive = await loadJSON('interactive.json'); return S.interactive; }
   async function ensureAllFigures() {
     if (S.allFigures) return S.allFigures;
@@ -434,6 +437,8 @@
   async function renderRoute() {
     if (!S.site) return;
     stopTrajectory();
+    if (S.inference.timer) { clearInterval(S.inference.timer); S.inference.timer = null; }
+    S.inference.polling = false;
     const { parts, params } = parseHash();
     let route = { name: 'home', module: null, tab: null };
     if (parts[0] === 'atlas') {
@@ -1940,6 +1945,7 @@
           </div>
         </div>
       </div>`;
+    if (tabKey === 'prediction') bindInferencePanel();
   }
 
   function coverageLabel(key) {
@@ -1989,7 +1995,337 @@
       ${pipeline ? `<section class="section"><div class="callout"><strong>如何阅读：</strong>本网站把“原始结果图”和“模型交互”分开呈现。图件来自源目录；交互轨迹/网络数据由源 CSV/JSON 抽取，只写入网站目录，不改动源结果。</div></section>` : ''}`;
   }
 
+  function inferenceOrganOptions(meta, species, custom, selected) {
+    const list = custom
+      ? (meta?.all_organs || []).map((k) => ({ key: k }))
+      : (meta?.organs?.[species] || []);
+    const rows = list.length ? list : [{ key: 'leaf' }, { key: 'root' }];
+    return rows.map((o) => `<option value="${esc(o.key)}" ${o.key === selected ? 'selected' : ''}>${esc(organName(o.key))}${o.n_cells ? `（${compact(o.n_cells)} cells）` : ''}</option>`).join('');
+  }
+
+  function inferencePanelHTML(meta) {
+    const apiBase = String(meta?.api_base || '').replace(/\/$/, '');
+    const speciesList = meta?.species || S.site.species;
+    const selected = speciesList.some((s) => s.key === S.predictionSpecies) ? S.predictionSpecies : 'rice';
+    const organs = meta?.organs?.[selected] || [];
+    const organDefault = organs.some((o) => o.key === 'leaf') ? 'leaf' : (organs[0]?.key || 'leaf');
+    const taus = meta?.taus || [1, 0.75, 0.5, 0.25];
+    const bulkExample = meta?.examples?.bulk ? `${apiBase}${meta.examples.bulk}` : '#';
+    const h5adExample = meta?.examples?.h5ad ? `${apiBase}${meta.examples.h5ad}` : '#';
+    const formatHint = meta?.bulk_format || 'TSV：gene, control_mean_cpm, drought_mean_cpm';
+    const h5adHint = meta?.h5ad_format || "AnnData；X 或 layers['counts'] 为原始整数计数";
+    return `
+      <section class="section" id="inference-section">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Online inference · GPU</div>
+            <h2 class="section-title">在线生成干旱单细胞</h2>
+            <p class="section-desc">上传 bulk 正常/干旱情境（可选自带正常单细胞 h5ad），调用 ${esc(meta?.model || 'DroAIVC v10 M2 + D3 final')} 生成干旱单细胞。正常细胞默认取自内置 21 物种图谱；自定义 h5ad 为探索模式，建议同时用内置图谱对照。</p>
+          </div>
+          <span class="tag" id="inf-api-badge">检查服务…</span>
+        </div>
+        <div class="inference-panel">
+          <form id="inference-form">
+            <div class="inference-row">
+              <label class="field"><span>物种</span>
+                <select class="select" id="inf-species">${speciesList.map((s) => `<option value="${esc(s.key)}" ${s.key === selected ? 'selected' : ''}>${esc(s.name || s.key)}（${esc(s.code || '')}）</option>`).join('')}</select>
+              </label>
+              <label class="field"><span>器官</span>
+                <select class="select" id="inf-organ">${inferenceOrganOptions(meta, selected, false, organDefault)}</select>
+              </label>
+              <label class="field"><span>干旱进程 τ</span>
+                <select class="select" id="inf-tau">${taus.map((t) => `<option value="${t}" ${t === 1 ? 'selected' : ''}>τ = ${t}${t === 1 ? '（干旱终点）' : ''}</option>`).join('')}</select>
+              </label>
+              <label class="field"><span>最大细胞数</span>
+                <select class="select" id="inf-maxcells">${[5000, 3000, 1000, 500].map((n) => `<option value="${n}" ${n === 3000 ? 'selected' : ''}>${fmtInt(n)} cells</option>`).join('')}</select>
+              </label>
+            </div>
+            <div class="inference-upload-grid">
+              <label class="file-field">
+                <span class="file-label">bulk 情境表 <em>必需</em></span>
+                <input class="input" id="inf-bulk" type="file" accept=".tsv,.csv,.txt">
+                <span class="file-hint">${esc(formatHint)}</span>
+              </label>
+              <label class="file-field">
+                <span class="file-label">正常单细胞 h5ad <em>可选</em></span>
+                <input class="input" id="inf-h5ad" type="file" accept=".h5ad" disabled>
+                <span class="file-hint">${esc(h5adHint)}</span>
+              </label>
+              <label class="file-field">
+                <span class="file-label">基因映射表 <em>可选</em></span>
+                <input class="input" id="inf-map" type="file" accept=".tsv,.csv">
+                <span class="file-hint">两列：user_gene、model_gene；基因 ID 不一致时使用</span>
+              </label>
+            </div>
+            <div class="inference-checks">
+              <label><input id="inf-use-example" type="checkbox"> 使用示例数据（水稻叶片 PRJDB36834，内置正常细胞）</label>
+              <label><input id="inf-custom" type="checkbox"> 使用我上传的正常单细胞 h5ad（自定义模式）</label>
+            </div>
+            <div class="inference-actions">
+              <button class="btn primary" id="inf-submit" type="submit">开始推理 ${ICONS.spark}</button>
+              <a class="btn tiny ghost" href="${esc(bulkExample)}" download>下载示例 bulk</a>
+              <a class="btn tiny ghost" href="${esc(h5adExample)}" download>下载示例 h5ad</a>
+              <span class="inference-hint">公开 GPU 服务，单任务排队；请勿上传敏感数据。模型输出为计算预测，不是实验证据。</span>
+            </div>
+          </form>
+          <div class="inference-job" id="inf-job" hidden>
+            <div class="job-head"><strong id="inf-job-stage">排队中</strong><span id="inf-job-progress">0%</span></div>
+            <div class="progress-track"><div class="progress-fill" id="inf-progress-fill"></div></div>
+            <div class="job-message" id="inf-job-message">正在提交…</div>
+            <div class="job-meta" id="inf-job-meta"></div>
+          </div>
+          <div class="inference-result" id="inf-result" hidden></div>
+        </div>
+      </section>`;
+  }
+
+  function setInferenceJobVisible(show) {
+    const box = $('#inf-job');
+    if (box) box.hidden = !show;
+  }
+
+  function updateInferenceJobStatus(st) {
+    const stageNames = {
+      queued: '排队中', running: '运行中', preparing: '准备数据', loading_model: '加载模型', encoding: '编码正常细胞',
+      calibrating: '校准干旱终点', generating: '生成干旱细胞', writing: '写出 h5ad', packaging: '打包结果',
+      done: '完成', failed: '失败',
+    };
+    const stage = stageNames[st.stage] || st.stage || '运行中';
+    const pctVal = Math.round(Number(st.progress || 0) * 100);
+    const stageEl = $('#inf-job-stage');
+    const progEl = $('#inf-job-progress');
+    const fill = $('#inf-progress-fill');
+    const msg = $('#inf-job-message');
+    const meta = $('#inf-job-meta');
+    if (stageEl) stageEl.textContent = stage;
+    if (progEl) progEl.textContent = `${pctVal}%`;
+    if (fill) fill.style.width = `${pctVal}%`;
+    if (msg) msg.textContent = st.message || '';
+    if (meta) {
+      const job = st.job || {};
+      const elapsed = S.inference.started ? Math.max(0, Math.round((Date.now() - S.inference.started) / 1000)) : 0;
+      meta.textContent = [job.species ? `${job.species}/${job.organ}` : '', job.job_id ? `job ${job.job_id}` : '', elapsed ? `已用 ${elapsed}s` : '', st.queue ? `队列 ${st.queue}` : ''].filter(Boolean).join(' · ');
+    }
+  }
+
+  function inferenceTopTable(rows, title) {
+    if (!rows || !rows.length) return '';
+    return `<div><div class="subgroup-head"><h3>${esc(title)}</h3><span class="count">预测 logFC</span></div>${tableHTML(rows, [
+      { key: 'gene', label: '基因', cls: 'gene' },
+      { key: 'pred_logFC', label: 'logFC', cls: 'num', fmt: (v) => signed(v, 3) },
+    ])}</div>`;
+  }
+
+  function renderInferenceResult(summary, jobId, apiBase) {
+    const host = $('#inf-result');
+    if (!host) return;
+    host.hidden = false;
+    const warnings = summary.warnings || [];
+    host.innerHTML = `
+      <div class="result-head">
+        <div><h3>干旱单细胞生成完成</h3><p>${esc(speciesName(summary.species))} · ${esc(organName(summary.organ))} · τ = ${esc(String(summary.tau))} · ${esc(summary.cell_source === 'custom_h5ad' ? '自定义正常细胞' : '内置正常图谱')}</p></div>
+        <a class="btn primary" href="${esc(apiBase)}/api/v1/jobs/${esc(jobId)}/result">下载结果 zip ${ICONS.arrow}</a>
+      </div>
+      <div class="stat-grid six">
+        ${statBox(fmtInt(summary.n_cells), '细胞数')}
+        ${statBox(fmtInt(summary.n_genes), '基因数')}
+        ${statBox(compact(summary.n_expressed_genes), '表达基因')}
+        ${statBox(fixed(summary.path_scale, 3), '路径尺度')}
+        ${statBox(summary.cell_source === 'custom_h5ad' ? '自定义' : '内置图谱', '细胞来源')}
+        ${statBox(fmtInt((summary.bulk_stats || {}).genes_matched), '匹配基因')}
+      </div>
+      ${warnings.length ? `<div class="callout warn" style="margin-top:14px"><strong>注意：</strong>${warnings.map(esc).join('；')}</div>` : ''}
+      <div class="result-tables">
+        ${inferenceTopTable(summary.top_up, '预测上调 Top 20')}
+        ${inferenceTopTable(summary.top_down, '预测下调 Top 20')}
+      </div>
+      <div class="callout info" style="margin-top:14px">
+        <strong>结果文件：</strong>zip 内含 h5ad（X=预测干旱计数，layers['control']=正常计数，obsm 含 TF 活性）、summary.json、predicted_logFC.tsv、context_used.tsv。模型输出为计算预测，需要实验验证。
+      </div>`;
+  }
+
+  async function fetchInferenceSummary(jobId, apiBase) {
+    const r = await fetch(`${apiBase}/api/v1/jobs/${jobId}/summary`);
+    if (!r.ok) throw new Error('结果摘要尚未生成');
+    return r.json();
+  }
+
+  async function pollInferenceJob(jobId) {
+    const base = String(S.inferenceMeta?.api_base || '').replace(/\/$/, '');
+    if (!base) return;
+    clearInterval(S.inference.timer);
+    S.inference.jobId = jobId;
+    S.inference.started = Date.now();
+    localStorage.setItem('droaivc.inference.job', jobId);
+    setInferenceJobVisible(true);
+    const tick = async () => {
+      if (S.inference.polling) return;
+      S.inference.polling = true;
+      try {
+        const r = await fetch(`${base}/api/v1/jobs/${jobId}`);
+        if (!r.ok) throw new Error(r.status === 404 ? '任务已过期或不存在' : `状态查询失败（${r.status}）`);
+        const st = await r.json();
+        updateInferenceJobStatus(st);
+        if (st.stage === 'done') {
+          clearInterval(S.inference.timer);
+          S.inference.timer = null;
+          const btn = $('#inf-submit');
+          if (btn) { btn.disabled = false; btn.innerHTML = `开始推理 ${ICONS.spark}`; }
+          const summary = await fetchInferenceSummary(jobId, base);
+          renderInferenceResult(summary, jobId, base);
+          localStorage.removeItem('droaivc.inference.job');
+          S.inference.jobId = '';
+        } else if (st.stage === 'failed') {
+          clearInterval(S.inference.timer);
+          S.inference.timer = null;
+          localStorage.removeItem('droaivc.inference.job');
+          S.inference.jobId = '';
+          const btn = $('#inf-submit');
+          if (btn) { btn.disabled = false; btn.innerHTML = `开始推理 ${ICONS.spark}`; }
+          const msg = $('#inf-job-message');
+          if (msg) msg.textContent = st.message || st.error || '推理失败';
+          toast('推理失败，请查看任务信息');
+        }
+      } catch (err) {
+        clearInterval(S.inference.timer);
+        S.inference.timer = null;
+        const msg = $('#inf-job-message');
+        if (msg) msg.textContent = err.message || String(err);
+        const btn = $('#inf-submit');
+        if (btn) { btn.disabled = false; btn.innerHTML = `开始推理 ${ICONS.spark}`; }
+        toast('无法获取任务状态');
+      } finally {
+        S.inference.polling = false;
+      }
+    };
+    await tick();
+    if (S.inference.jobId) S.inference.timer = setInterval(tick, 2500);
+  }
+
+  async function submitInference(event) {
+    event.preventDefault();
+    const base = String(S.inferenceMeta?.api_base || '').replace(/\/$/, '');
+    if (!base) { toast('推理服务未配置'); return; }
+    const useExample = $('#inf-use-example')?.checked;
+    const custom = $('#inf-custom')?.checked && !useExample;
+    const species = $('#inf-species')?.value || '';
+    const organ = $('#inf-organ')?.value || '';
+    const bulk = $('#inf-bulk')?.files?.[0];
+    const h5ad = $('#inf-h5ad')?.files?.[0];
+    const map = $('#inf-map')?.files?.[0];
+    if (!useExample && !bulk) { toast('请上传 bulk 情境表，或勾选使用示例数据'); return; }
+    if (custom && !h5ad) { toast('已勾选自定义单细胞，请上传 h5ad'); return; }
+    const fd = new FormData();
+    fd.append('species', species);
+    fd.append('organ', organ);
+    fd.append('tau', $('#inf-tau')?.value || '1');
+    fd.append('max_cells', $('#inf-maxcells')?.value || '3000');
+    fd.append('use_example', useExample ? 'true' : 'false');
+    fd.append('custom_cells', custom ? 'true' : 'false');
+    if (!useExample && bulk) fd.append('bulk', bulk);
+    if (custom && h5ad) fd.append('normal_h5ad', h5ad);
+    if (map) fd.append('gene_map', map);
+    const btn = $('#inf-submit');
+    if (btn) { btn.disabled = true; btn.textContent = '提交中…'; }
+    setInferenceJobVisible(true);
+    const resultBox = $('#inf-result');
+    if (resultBox) { resultBox.hidden = true; resultBox.innerHTML = ''; }
+    updateInferenceJobStatus({ stage: 'queued', progress: 0, message: '正在提交任务…' });
+    try {
+      const r = await fetch(`${base}/api/v1/jobs`, { method: 'POST', body: fd });
+      let data = {};
+      try { data = await r.json(); } catch { data = {}; }
+      if (!r.ok) throw new Error(data.detail || `提交失败（${r.status}）`);
+      if (btn) { btn.disabled = true; btn.textContent = '排队中…'; }
+      await pollInferenceJob(data.job_id);
+    } catch (err) {
+      if (btn) { btn.disabled = false; btn.innerHTML = `开始推理 ${ICONS.spark}`; }
+      const msg = $('#inf-job-message');
+      if (msg) msg.textContent = err.message || String(err);
+      toast(err.message || '提交失败');
+    }
+  }
+
+  function syncInferenceExampleState() {
+    const useExample = $('#inf-use-example')?.checked;
+    const customBox = $('#inf-custom');
+    const h5adInput = $('#inf-h5ad');
+    const bulkInput = $('#inf-bulk');
+    const speciesSel = $('#inf-species');
+    const organSel = $('#inf-organ');
+    if (useExample) {
+      if (speciesSel) { speciesSel.value = 'rice'; speciesSel.disabled = true; }
+      if (organSel) {
+        organSel.innerHTML = inferenceOrganOptions(S.inferenceMeta, 'rice', false, 'leaf');
+        organSel.value = 'leaf';
+        organSel.disabled = true;
+      }
+      if (customBox) { customBox.checked = false; customBox.disabled = true; }
+      if (h5adInput) { h5adInput.disabled = true; h5adInput.value = ''; }
+      if (bulkInput) { bulkInput.disabled = true; bulkInput.value = ''; }
+    } else {
+      if (speciesSel) speciesSel.disabled = false;
+      if (organSel) {
+        organSel.disabled = false;
+        const sp = speciesSel?.value || 'rice';
+        const list = S.inferenceMeta?.organs?.[sp] || [];
+        organSel.innerHTML = inferenceOrganOptions(S.inferenceMeta, sp, customBox?.checked, list[0]?.key || 'leaf');
+      }
+      if (customBox) customBox.disabled = false;
+      if (bulkInput) bulkInput.disabled = false;
+      if (h5adInput) h5adInput.disabled = !customBox?.checked;
+    }
+  }
+
+  function updateInferenceOrgans() {
+    const sp = $('#inf-species')?.value || 'rice';
+    const custom = $('#inf-custom')?.checked;
+    const organSel = $('#inf-organ');
+    if (!organSel) return;
+    const list = custom ? (S.inferenceMeta?.all_organs || []).map((k) => ({ key: k })) : (S.inferenceMeta?.organs?.[sp] || []);
+    const current = organSel.value;
+    organSel.innerHTML = inferenceOrganOptions(S.inferenceMeta, sp, custom, list.some((o) => o.key === current) ? current : (list[0]?.key || 'leaf'));
+  }
+
+  async function checkInferenceHealth() {
+    const badge = $('#inf-api-badge');
+    const base = String(S.inferenceMeta?.api_base || '').replace(/\/$/, '');
+    if (!badge) return;
+    if (!base) { badge.textContent = '未配置推理服务'; badge.className = 'tag gold'; return; }
+    badge.textContent = '检查服务…';
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 6000);
+      const r = await fetch(`${base}/health`, { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (!r.ok) throw new Error('health');
+      const d = await r.json();
+      badge.textContent = `GPU 服务在线${typeof d.queue === 'number' ? ` · 队列 ${d.queue}` : ''}`;
+      badge.className = 'tag teal';
+    } catch {
+      badge.textContent = '服务离线 · 请稍后再试';
+      badge.className = 'tag gold';
+    }
+  }
+
+  function bindInferencePanel() {
+    const form = $('#inference-form');
+    if (!form) return;
+    syncInferenceExampleState();
+    $('#inf-species')?.addEventListener('change', updateInferenceOrgans);
+    $('#inf-custom')?.addEventListener('change', () => {
+      const h5ad = $('#inf-h5ad');
+      if (h5ad) h5ad.disabled = !$('#inf-custom').checked;
+      updateInferenceOrgans();
+    });
+    $('#inf-use-example')?.addEventListener('change', syncInferenceExampleState);
+    form.addEventListener('submit', submitInference);
+    checkInferenceHealth();
+    if (S.inference.jobId) pollInferenceJob(S.inference.jobId);
+  }
+
   async function virtualPrediction() {
+    const inferenceMeta = await ensureInferenceMeta().catch(() => null);
     const allPred = S.virtual.figures.filter((f) => f.tab === 'prediction');
     const speciesKeys = S.site.species.map((s) => s.key);
     if (S.species !== 'all' && S.species !== 'multi' && speciesKeys.includes(S.species)) {
@@ -2019,6 +2355,7 @@
       </button>`;
     }).join('');
     return `
+      ${inferencePanelHTML(inferenceMeta)}
       <section class="section" style="margin-top:22px">
         <div class="chart-card">
           <div class="chart-head">
