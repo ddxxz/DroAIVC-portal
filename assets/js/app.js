@@ -623,12 +623,7 @@
       ensureModelPerformance().catch(() => null),
     ]);
     const totals = S.site.totals;
-    const perfFigs = MP?.figures || [];
-    const perfPick = [
-      perfFigs.find((f) => f.module_key === '326_baselines'),
-      perfFigs.find((f) => f.module_key === '327_ablations'),
-    ].filter(Boolean);
-    const perfThumbs = perfPick.map((f) => thumbUrl(f, 640)).filter(Boolean);
+    const perfStats = MP?.stats || {};
     view.innerHTML = `
       <div class="page">
         <section class="hero">
@@ -679,24 +674,30 @@
           </div>
           <div class="home-model-grid">
             <a class="home-model-card" href="#/data" data-scroll-target="model-framework">
-              <div class="hmc-media"><img src="assets/framework/thumbs/overall.jpg" alt="DroAIVC 模型总体框架" loading="lazy"></div>
               <div class="hmc-body">
-                <div class="hmc-kicker">Model framework</div>
+                <div class="hmc-top"><span class="hmc-icon">${ICONS.layers}</span><span class="hmc-kicker">Model framework</span></div>
                 <h3>模型框架</h3>
                 <p>正常状态编码 → 干旱轨迹 ODE → 干旱单细胞生成；扰动层支持任意基因 KO / OE，并沿轨迹传播到干旱状态。</p>
+                <div class="hmc-stats">
+                  <div><b>21</b><span>物种</span></div>
+                  <div><b>4,942</b><span>TF 基因</span></div>
+                  <div><b>3.42M</b><span>先验边</span></div>
+                  <div><b>475k</b><span>表达基因</span></div>
+                </div>
                 <div class="hmc-tags"><span>模块一 M2</span><span>模块二 D3</span><span>模块三生成</span><span>NetPerturber</span></div>
               </div>
             </a>
             <a class="home-model-card" href="#/data" data-scroll-target="model-performance">
-              <div class="hmc-media hmc-media-pair">
-                ${perfThumbs.length
-                  ? perfThumbs.map((src, i) => `<img src="${esc(src)}" alt="${esc(perfPick[i]?.title || '模型性能图')}" loading="lazy">`).join('')
-                  : '<div class="hmc-placeholder">性能图暂未载入</div>'}
-              </div>
               <div class="hmc-body">
-                <div class="hmc-kicker">Model performance</div>
+                <div class="hmc-top"><span class="hmc-icon">${ICONS.chart}</span><span class="hmc-kicker">Model performance</span></div>
                 <h3>模型性能</h3>
                 <p>5 项留出研究上的基线方法比较与关键模块消融，并覆盖网络证据、组成/解卷积、种子稳定性、适用范围与扰动验证。</p>
+                <div class="hmc-stats">
+                  <div><b>${perfStats.heldout_studies || 5}</b><span>留出研究</span></div>
+                  <div><b>${perfStats.ablations || 5}</b><span>消融版本</span></div>
+                  <div><b>${perfStats.seeds || 3}</b><span>随机种子</span></div>
+                  <div><b>${perfStats.figures || 17}</b><span>评价图件</span></div>
+                </div>
                 <div class="hmc-tags"><span>基线</span><span>消融</span><span>留出研究</span><span>扰动验证</span></div>
               </div>
             </a>
