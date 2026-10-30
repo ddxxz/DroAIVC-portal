@@ -886,18 +886,48 @@
       return;
     }
     const genes = entry.genes.slice(0, 30);
-    const W = 880;
-    const H = 470;
+    const W = 960;
+    const H = 520;
     const cx = W / 2;
     const cy = H / 2;
-    const R = 172;
     const n = genes.length;
+    const innerCount = Math.ceil(n / 2);
+    const outerCount = Math.floor(n / 2);
     const nodes = genes.map((g, i) => {
-      const angle = -Math.PI / 2 + (i / Math.max(n, 1)) * Math.PI * 2;
-      return { g, x: cx + R * Math.cos(angle), y: cy + R * Math.sin(angle) };
+      const ring = i % 2 === 0 ? 0 : 1;
+      const idxInRing = Math.floor(i / 2);
+      const countInRing = ring === 0 ? innerCount : outerCount;
+      const offset = ring === 1 ? Math.PI / Math.max(countInRing, 1) : 0;
+      const angle = -Math.PI / 2 + (idxInRing / Math.max(countInRing, 1)) * Math.PI * 2 + offset;
+      const R = ring === 0 ? 112 : 188;
+      return { g, i, ring, R, angle, x: cx + R * Math.cos(angle), y: cy + R * Math.sin(angle) };
     });
-    const lines = nodes.map((nd) => `<line class="reg-edge" x1="${cx}" y1="${cy}" x2="${nd.x.toFixed(1)}" y2="${nd.y.toFixed(1)}"></line>`).join('');
-    const targetNodes = nodes.map((nd) => `<g class="reg-target"><title>${esc(nd.g)}</title><circle cx="${nd.x.toFixed(1)}" cy="${nd.y.toFixed(1)}" r="5"></circle></g>`).join('');
+    const startR = 46;
+    const edges = nodes.map((nd) => {
+      const nodeR = nd.ring === 0 ? 9.5 : 8.5;
+      const endR = nd.R - nodeR - 4;
+      const sx = cx + Math.cos(nd.angle) * startR;
+      const sy = cy + Math.sin(nd.angle) * startR;
+      const ex = cx + Math.cos(nd.angle) * endR;
+      const ey = cy + Math.sin(nd.angle) * endR;
+      const mx = (sx + ex) / 2;
+      const my = (sy + ey) / 2;
+      const dx = ex - sx;
+      const dy = ey - sy;
+      const len = Math.hypot(dx, dy) || 1;
+      const bend = (nd.i % 2 === 0 ? 1 : -1) * 12;
+      const qx = mx - (dy / len) * bend;
+      const qy = my + (dx / len) * bend;
+      return `<path class="reg-edge" data-idx="${nd.i}" pathLength="1" style="animation-delay:${(0.05 + nd.i * 0.025).toFixed(2)}s" d="M ${sx.toFixed(1)} ${sy.toFixed(1)} Q ${qx.toFixed(1)} ${qy.toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}" marker-end="url(#reg-arrow)"></path>`;
+    }).join('');
+    const targetNodes = nodes.map((nd) => {
+      const nodeR = nd.ring === 0 ? 9.5 : 8.5;
+      return `<g class="reg-target" data-idx="${nd.i}" data-tip="<strong>${esc(nd.g)}</strong><br>靶基因 ${String(nd.i + 1).padStart(2, '0')} · ${esc(entry.tf)} 下游" style="animation-delay:${(0.18 + nd.i * 0.02).toFixed(2)}s">
+        <circle class="reg-node-aura" cx="${nd.x.toFixed(1)}" cy="${nd.y.toFixed(1)}" r="${(nodeR + 4.5).toFixed(1)}"></circle>
+        <circle class="reg-node" cx="${nd.x.toFixed(1)}" cy="${nd.y.toFixed(1)}" r="${nodeR}"></circle>
+        <text class="reg-node-idx" x="${nd.x.toFixed(1)}" y="${nd.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">${String(nd.i + 1).padStart(2, '0')}</text>
+      </g>`;
+    }).join('');
     const labelLines = (() => {
       if (entry.tf.length <= 9) return [entry.tf];
       const out = [];
@@ -905,20 +935,82 @@
       if (entry.tf.length > 18) out[1] = `${entry.tf.slice(9, 17)}…`;
       return out;
     })();
-    const tfLabel = labelLines.map((line, i) => `<tspan x="${cx}" dy="${i === 0 ? (labelLines.length === 1 ? 0 : -5) : 11}">${esc(line)}</tspan>`).join('');
+    const tfName = labelLines.map((line, i) => `<tspan x="${cx}" dy="${i === 0 ? 0 : 12}">${esc(line)}</tspan>`).join('');
     const shownNote = entry.targets > genes.length ? `（按文件顺序展示前 ${genes.length} 个）` : '';
-    const chips = genes.map((g) => `<span class="reg-gene-chip" title="${esc(g)}">${esc(g)}</span>`).join('');
+    const chips = genes.map((g, i) => `<span class="reg-gene-chip" data-idx="${i}"><em>${String(i + 1).padStart(2, '0')}</em><span>${esc(g)}</span></span>`).join('');
     host.innerHTML = `
       <svg class="reg-network" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(entry.tf)} 调控网络">
-        ${lines}
-        <circle class="reg-tf-halo" cx="${cx}" cy="${cy}" r="38"></circle>
-        <circle class="reg-tf-node" cx="${cx}" cy="${cy}" r="30"></circle>
-        <text class="reg-tf-label" x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle">${tfLabel}</text>
+        <defs>
+          <radialGradient id="reg-bg-glow" cx="50%" cy="50%" r="58%">
+            <stop offset="0%" stop-color="#3ce0b2" stop-opacity=".13"></stop>
+            <stop offset="45%" stop-color="#3ce0b2" stop-opacity=".045"></stop>
+            <stop offset="100%" stop-color="#3ce0b2" stop-opacity="0"></stop>
+          </radialGradient>
+          <linearGradient id="reg-edge-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3ce0b2" stop-opacity=".62"></stop>
+            <stop offset="100%" stop-color="#3ce0b2" stop-opacity=".10"></stop>
+          </linearGradient>
+          <marker id="reg-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#3ce0b2" fill-opacity=".45"></path>
+          </marker>
+        </defs>
+        <rect class="reg-bg" x="0" y="0" width="${W}" height="${H}" fill="url(#reg-bg-glow)"></rect>
+        <g class="reg-deco">
+          <circle class="reg-ring" cx="${cx}" cy="${cy}" r="70"></circle>
+          <circle class="reg-ring" cx="${cx}" cy="${cy}" r="140"></circle>
+          <circle class="reg-ring faint" cx="${cx}" cy="${cy}" r="210"></circle>
+        </g>
+        ${edges}
+        <g class="reg-hub" data-tip="<strong>${esc(entry.tf)}</strong><br>转录因子 · ${fmtInt(entry.targets)} 个下游靶基因">
+          <circle class="reg-orbit" cx="${cx}" cy="${cy}" r="76"></circle>
+          <circle class="reg-tf-halo" cx="${cx}" cy="${cy}" r="58"></circle>
+          <circle class="reg-tf-node" cx="${cx}" cy="${cy}" r="42"></circle>
+          <text class="reg-tf-kicker" x="${cx}" y="${cy - 15}" text-anchor="middle">TF</text>
+          <text class="reg-tf-label" x="${cx}" y="${cy - 1}" text-anchor="middle">${tfName}</text>
+        </g>
         ${targetNodes}
       </svg>
-      <div class="reg-network-note"><strong>${esc(entry.tf)}</strong> → ${fmtInt(entry.targets)} 个下游靶基因${shownNote}；中心为 TF，外圈为靶基因节点，悬停节点可查看完整基因名。</div>
+      <div class="reg-network-note"><strong>${esc(entry.tf)}</strong> → ${fmtInt(entry.targets)} 个下游靶基因${shownNote}。悬停节点可查看完整基因名，编号对应下方列表。</div>
+      <div class="reg-network-legend">
+        <span class="reg-legend-item"><i class="reg-dot hub"></i>转录因子</span>
+        <span class="reg-legend-item"><i class="reg-dot target"></i>下游靶基因</span>
+        <span class="reg-legend-hint">悬停节点或编号可高亮调控边</span>
+      </div>
       <div class="reg-network-genes-head">展示的靶基因</div>
       <div class="reg-network-genes">${chips}</div>`;
+    const edgeFor = (idx) => $(`.reg-edge[data-idx="${idx}"]`, host);
+    const targetFor = (idx) => $(`.reg-target[data-idx="${idx}"]`, host);
+    const chipFor = (idx) => $(`.reg-gene-chip[data-idx="${idx}"]`, host);
+    $$('.reg-target', host).forEach((el) => {
+      const idx = el.dataset.idx;
+      el.addEventListener('mouseenter', () => {
+        const edge = edgeFor(idx);
+        const chip = chipFor(idx);
+        if (edge) edge.classList.add('hot');
+        if (chip) chip.classList.add('hot');
+      });
+      el.addEventListener('mouseleave', () => {
+        const edge = edgeFor(idx);
+        const chip = chipFor(idx);
+        if (edge) edge.classList.remove('hot');
+        if (chip) chip.classList.remove('hot');
+      });
+    });
+    $$('.reg-gene-chip', host).forEach((el) => {
+      const idx = el.dataset.idx;
+      el.addEventListener('mouseenter', () => {
+        const edge = edgeFor(idx);
+        const target = targetFor(idx);
+        if (edge) edge.classList.add('hot');
+        if (target) target.classList.add('hot');
+      });
+      el.addEventListener('mouseleave', () => {
+        const edge = edgeFor(idx);
+        const target = targetFor(idx);
+        if (edge) edge.classList.remove('hot');
+        if (target) target.classList.remove('hot');
+      });
+    });
   }
 
   function bindRegTfSelect(sp) {

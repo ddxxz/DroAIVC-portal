@@ -1507,29 +1507,67 @@ body::after {
 .reg-network-wrap {
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: rgba(7, 24, 19, .42);
+  background: radial-gradient(circle at 50% 42%, rgba(15, 60, 48, .55), rgba(5, 20, 15, .72) 62%);
   padding: 12px 14px 10px;
   overflow: hidden;
 }
 .reg-network { display: block; width: 100%; height: auto; }
-.reg-edge { stroke: rgba(60, 224, 178, .24); stroke-width: 1.2; }
-.reg-target circle { fill: rgba(60, 224, 178, .78); stroke: rgba(7, 20, 17, .9); stroke-width: 1.2; transition: fill .18s; }
-.reg-target text { fill: var(--muted); font-family: var(--mono); font-size: 9px; }
-.reg-target:hover circle { fill: var(--gold); }
-.reg-target:hover text { fill: var(--text); }
-.reg-tf-halo { fill: rgba(60, 224, 178, .10); }
-.reg-tf-node { fill: rgba(60, 224, 178, .92); }
-.reg-tf-label { fill: #06211a; font-family: var(--mono); font-size: 10px; font-weight: 600; }
+.reg-bg, .reg-deco, .reg-ring { pointer-events: none; }
+.reg-ring { fill: none; stroke: rgba(116, 219, 188, .10); stroke-width: 1; }
+.reg-ring.faint { stroke: rgba(116, 219, 188, .06); stroke-dasharray: 2 8; }
+.reg-edge {
+  fill: none; stroke: url(#reg-edge-grad); stroke-width: 1.35; stroke-linecap: round;
+  stroke-dasharray: 1; stroke-dashoffset: 0;
+  animation: reg-draw .95s cubic-bezier(.3, .7, .2, 1) both;
+  transition: stroke .18s, stroke-width .18s;
+}
+.reg-edge.hot { stroke: var(--gold); stroke-width: 2.4; }
+@keyframes reg-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.reg-target { cursor: pointer; transform-box: fill-box; transform-origin: center; animation: reg-pop .5s cubic-bezier(.2, .9, .3, 1.2) both; }
+.reg-target .reg-node { fill: rgba(60, 224, 178, .84); stroke: rgba(5, 20, 15, .9); stroke-width: 1.2; transition: fill .18s; }
+.reg-target .reg-node-aura { fill: none; stroke: rgba(60, 224, 178, .16); transition: stroke .18s; }
+.reg-target .reg-node-idx { fill: #041b15; font-family: var(--mono); font-size: 7.5px; font-weight: 700; pointer-events: none; }
+.reg-target:hover .reg-node, .reg-target.hot .reg-node { fill: var(--gold); }
+.reg-target:hover .reg-node-aura, .reg-target.hot .reg-node-aura { stroke: rgba(241, 201, 107, .62); }
+@keyframes reg-pop { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+.reg-orbit {
+  fill: none; stroke: rgba(241, 201, 107, .36); stroke-width: 1.2; stroke-dasharray: 2 7;
+  transform-box: fill-box; transform-origin: center; animation: reg-spin 36s linear infinite;
+}
+.reg-tf-halo {
+  fill: rgba(241, 201, 107, .10);
+  transform-box: fill-box; transform-origin: center; animation: reg-pulse 3.8s ease-in-out infinite;
+}
+.reg-tf-node { fill: var(--gold); stroke: rgba(255, 255, 255, .24); stroke-width: 1.2; }
+.reg-tf-kicker { fill: rgba(6, 24, 19, .55); font-family: var(--mono); font-size: 6.5px; font-weight: 700; letter-spacing: 2px; }
+.reg-tf-label { fill: #241a06; font-family: var(--mono); font-size: 9.5px; font-weight: 700; }
+.reg-hub { cursor: default; }
+@keyframes reg-pulse { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+@keyframes reg-spin { to { transform: rotate(360deg); } }
 .reg-network-note { margin-top: 8px; font-size: 12px; color: var(--muted); }
 .reg-network-note strong { color: var(--text); font-family: var(--mono); }
+.reg-network-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 8px; font-size: 11.5px; color: var(--dim); }
+.reg-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.reg-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.reg-dot.hub { background: var(--gold); box-shadow: 0 0 8px rgba(241, 201, 107, .5); }
+.reg-dot.target { background: var(--teal); box-shadow: 0 0 8px rgba(60, 224, 178, .4); }
+.reg-legend-hint { margin-left: auto; }
 .reg-network-genes-head { margin-top: 14px; font-size: 12px; color: var(--dim); letter-spacing: .04em; }
 .reg-network-genes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .reg-gene-chip {
+  display: inline-flex; align-items: center; gap: 7px;
   font-family: var(--mono); font-size: 11px; color: var(--muted);
   border: 1px solid var(--line); border-radius: 7px; padding: 3px 7px;
   background: rgba(60, 224, 178, .04);
+  transition: color .18s, border-color .18s, background .18s;
 }
-.reg-gene-chip:hover { color: var(--text); border-color: var(--line-strong); }
+.reg-gene-chip em { font-style: normal; color: var(--teal); font-size: 9.5px; opacity: .9; }
+.reg-gene-chip:hover, .reg-gene-chip.hot { color: var(--text); border-color: rgba(241, 201, 107, .45); background: rgba(241, 201, 107, .06); }
+.reg-gene-chip:hover em, .reg-gene-chip.hot em { color: var(--gold); }
+@media (prefers-reduced-motion: reduce) {
+  .reg-edge { animation: none !important; stroke-dashoffset: 0; }
+  .reg-target, .reg-tf-halo, .reg-orbit { animation: none !important; }
+}
 .result-card { text-decoration: none; color: var(--text); }
 .result-card .fig-media img { padding: 10px; }
 .result-card .fig-body { min-height: 96px; }
