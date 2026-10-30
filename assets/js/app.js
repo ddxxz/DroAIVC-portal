@@ -20,6 +20,8 @@
     regulatory: null,
     inferenceMeta: null,
     inference: { jobId: localStorage.getItem('droaivc.inference.job') || '', timer: null, started: 0 },
+    perturb: { jobId: localStorage.getItem('droaivc.perturb.job') || '', timer: null, started: 0, polling: false, searchTimer: null },
+    perturbCount: 1,
     allFigures: null,
     speciesByKey: new Map(),
     statsBySpecies: new Map(),
@@ -446,6 +448,8 @@
     stopTrajectory();
     if (S.inference.timer) { clearInterval(S.inference.timer); S.inference.timer = null; }
     S.inference.polling = false;
+    if (S.perturb.timer) { clearInterval(S.perturb.timer); S.perturb.timer = null; }
+    S.perturb.polling = false;
     const { parts, params } = parseHash();
     let route = { name: 'home', module: null, tab: null };
     if (parts[0] === 'atlas') {
@@ -1953,6 +1957,7 @@
         </div>
       </div>`;
     if (tabKey === 'prediction') bindInferencePanel();
+    if (tabKey === 'perturbation') bindPerturbPanel();
   }
 
   function coverageLabel(key) {
@@ -2878,9 +2883,429 @@
     animateBars();
   }
 
+  /* ---------------- online perturbation ---------------- */
+  function pertGeneInputsHTML(count, values) {
+    return Array.from({ length: count }, (_, i) => `
+      <label class="field pert-gene-field">
+        <span>扰动基因 ${i + 1}</span>
+        <input class="input" id="pert-gene-${i}" list="pert-gene-list" placeholder="输入或搜索基因 ID" autocomplete="off" spellcheck="false" value="${esc(values[i] || '')}">
+      </label>`).join('');
+  }
+
+  function pertSuggestHTML(meta, species) {
+    const rec = meta?.perturb_genes?.[species] || [];
+    if (!rec.length) return '<span class="muted">暂无推荐基因，可直接搜索基因 ID。</span>';
+    return rec.map((g) => {
+      const tip = [g.gene, g.name, g.family, g.model_tf ? 'TF' : 'non-TF'].filter(Boolean).join(' · ');
+      return `<button type="button" class="chip-btn" data-action="pert-fill" data-value="${esc(g.gene)}" title="${esc(tip)}">${esc(g.name || g.gene)}</button>`;
+    }).join('');
+  }
+
+  function perturbPanelHTML(meta) {
+    const speciesList = meta?.species || S.site.species;
+    const selected = speciesList.some((s) => s.key === S.predictionSpecies) ? S.predictionSpecies : 'rice';
+    const organs = meta?.organs?.[selected] || [];
+    const organRows = organs.length ? organs : [{ key: 'leaf' }, { key: 'root' }];
+    const organDefault = organRows.some((o) => o.key === 'leaf') ? 'leaf' : organRows[0].key;
+    const cfg = meta?.perturb || {};
+    const maxGenes = Math.max(1, Math.min(4, Number(cfg.max_genes) || 4));
+    const count = Math.max(1, Math.min(maxGenes, Number(S.perturbCount) || 1));
+    const modes = cfg.modes || ['KO', 'OE'];
+    const maxCells = Number(cfg.max_cells) || 3000;
+    const defaultCells = Math.min(Number(cfg.default_cells) || 3000, maxCells);
+    const cellOpts = [3000, 1000, 500].filter((n) => n <= maxCells);
+    return `
+      <section class="section" id="perturb-online-section">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Online perturbation · GPU</div>
+            <h2 class="section-title">在线基因扰动</h2>
+            <p class="section-desc">选定物种与器官，同时扰动 1–${maxGenes} 个基因（全部 KO 或全部 OE），输出扰动后的单细胞矩阵、全基因效应表和 TF 活性变化。正常细胞取自内置图谱。</p>
+          </div>
+          <span class="tag" id="pert-api-badge">检查服务…</span>
+        </div>
+        <div class="inference-panel">
+          <form id="perturb-form">
+            <div class="inference-row">
+              <label class="field"><span>物种</span>
+                <select class="select" id="pert-species">${speciesList.map((s) => `<option value="${esc(s.key)}" ${s.key === selected ? 'selected' : ''}>${esc(s.name || s.key)}（${esc(s.code || '')}）</option>`).join('')}</select>
+              </label>
+              <label class="field"><span>器官</span>
+                <select class="select" id="pert-organ">${organRows.map((o) => `<option value="${esc(o.key)}" ${o.key === organDefault ? 'selected' : ''}>${esc(organName(o.key))}${o.n_cells ? `（${compact(o.n_cells)} cells）` : ''}</option>`).join('')}</select>
+              </label>
+              <label class="field"><span>扰动基因个数</span>
+                <select class="select" id="pert-count">${Array.from({ length: maxGenes }, (_, i) => `<option value="${i + 1}" ${i + 1 === count ? 'selected' : ''}>${i + 1}</option>`).join('')}</select>
+              </label>
+              <label class="field"><span>扰动模式</span>
+                <select class="select" id="pert-mode">${modes.map((m) => `<option value="${esc(m)}" ${m === 'KO' ? 'selected' : ''}>${m === 'KO' ? '敲低 KO' : '过表达 OE'}</option>`).join('')}</select>
+              </label>
+            </div>
+            <div class="perturb-gene-grid" id="pert-gene-inputs">${pertGeneInputsHTML(count, [])}</div>
+            <datalist id="pert-gene-list"></datalist>
+            <div class="perturb-suggest-wrap">
+              <div class="perturb-suggest-head"><span>推荐抗旱基因</span><span>点击填入第一个空位</span></div>
+              <div class="filter-chips" id="pert-suggest">${pertSuggestHTML(meta, selected)}</div>
+            </div>
+            <div class="inference-row" style="margin-top:12px">
+              <label class="field" id="pert-fold-field"><span>过表达倍数</span><input class="input" id="pert-fold" type="number" min="1" max="100" step="1" value="${Number(cfg.default_fold) || 10}"></label>
+              <label class="field"><span>最大细胞数</span>
+                <select class="select" id="pert-cells">${cellOpts.map((n) => `<option value="${n}" ${n === defaultCells ? 'selected' : ''}>${fmtInt(n)} cells</option>`).join('')}</select>
+              </label>
+            </div>
+            <div class="inference-actions">
+              <button class="btn primary" id="pert-submit" type="submit">开始扰动推理 ${ICONS.flask}</button>
+              <span class="inference-hint">单任务排队；结果含 h5ad 矩阵、全基因效应表、TF 活性与伪 bulk，最多保留 1 小时。模型输出为计算预测，不是实验证据。</span>
+            </div>
+          </form>
+          <div class="inference-job" id="pert-job" hidden>
+            <div class="job-head"><strong id="pert-job-stage">排队中</strong><span id="pert-job-progress">0%</span></div>
+            <div class="progress-track"><div class="progress-fill" id="pert-progress-fill"></div></div>
+            <div class="job-message" id="pert-job-message">正在提交…</div>
+            <div class="job-meta" id="pert-job-meta"></div>
+          </div>
+          <div class="inference-result" id="pert-result" hidden></div>
+        </div>
+      </section>`;
+  }
+
+  function renderPertGeneInputs(clear = false) {
+    const host = $('#pert-gene-inputs');
+    if (!host) return;
+    const count = Math.max(1, Math.min(4, Number($('#pert-count')?.value || S.perturbCount || 1)));
+    S.perturbCount = count;
+    const current = clear ? [] : $$('#pert-gene-inputs input').map((x) => x.value);
+    host.innerHTML = pertGeneInputsHTML(count, current);
+  }
+
+  function fillPertGeneOptions(genes) {
+    const list = $('#pert-gene-list');
+    if (!list) return;
+    list.innerHTML = (genes || []).map((g) => {
+      const label = [g.name, g.family, g.tf ? 'TF' : 'non-TF'].filter(Boolean).join(' · ');
+      return `<option value="${esc(g.gene)}" label="${esc(label)}"></option>`;
+    }).join('');
+  }
+
+  async function loadPertGeneOptions(q = '') {
+    const base = String(S.inferenceMeta?.api_base || '').replace(/\/$/, '');
+    const sp = $('#pert-species')?.value || 'rice';
+    const recommended = (S.inferenceMeta?.perturb_genes?.[sp] || []).map((g) => ({ gene: g.gene, name: g.name, family: g.family, tf: g.model_tf }));
+    if (!q) fillPertGeneOptions(recommended);
+    if (!base) return;
+    try {
+      const r = await fetch(`${base}/api/v1/genes?species=${encodeURIComponent(sp)}&q=${encodeURIComponent(q)}&limit=30`);
+      if (!r.ok) throw new Error('genes');
+      const d = await r.json();
+      if (d.genes && d.genes.length) fillPertGeneOptions(d.genes);
+    } catch {
+      if (q) fillPertGeneOptions(recommended);
+    }
+  }
+
+  function updatePertSuggest() {
+    const host = $('#pert-suggest');
+    if (!host) return;
+    host.innerHTML = pertSuggestHTML(S.inferenceMeta, $('#pert-species')?.value || 'rice');
+  }
+
+  function updatePertFoldVisibility() {
+    const field = $('#pert-fold-field');
+    if (!field) return;
+    field.style.display = ($('#pert-mode')?.value || 'KO') === 'OE' ? '' : 'none';
+  }
+
+  function updatePertOrgans() {
+    const sel = $('#pert-organ');
+    if (!sel) return;
+    const sp = $('#pert-species')?.value || 'rice';
+    const rows = S.inferenceMeta?.organs?.[sp] || [];
+    const list = rows.length ? rows : [{ key: 'leaf' }, { key: 'root' }];
+    const current = sel.value;
+    const chosen = list.some((o) => o.key === current) ? current : (list.some((o) => o.key === 'leaf') ? 'leaf' : list[0].key);
+    sel.innerHTML = list.map((o) => `<option value="${esc(o.key)}" ${o.key === chosen ? 'selected' : ''}>${esc(organName(o.key))}${o.n_cells ? `（${compact(o.n_cells)} cells）` : ''}</option>`).join('');
+  }
+
+  async function checkPerturbHealth() {
+    const badge = $('#pert-api-badge');
+    const base = String(S.inferenceMeta?.api_base || '').replace(/\/$/, '');
+    if (!badge) return;
+    if (!base) { badge.textContent = '未配置推理服务'; badge.className = 'tag gold'; return; }
+    badge.textContent = '检查服务…';
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 6000);
+      const r = await fetch(`${base}/health`, { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (!r.ok) throw new Error('health');
+      const d = await r.json();
+      badge.textContent = `GPU 服务在线${typeof d.queue === 'number' ? ` · 队列 ${d.queue}` : ''}`;
+      badge.className = 'tag teal';
+    } catch {
+      badge.textContent = '服务离线 · 请稍后再试';
+      badge.className = 'tag gold';
+    }
+  }
+
+  function setPerturbJobVisible(show) {
+    const box = $('#pert-job');
+    if (box) box.hidden = !show;
+  }
+
+  function updatePerturbJobStatus(st) {
+    const stageNames = {
+      queued: '排队中', running: '运行中', preparing: '准备数据', loading_model: '加载模型',
+      encoding: '编码正常细胞', calibrating: '校准干旱轨迹', perturbing: '计算扰动',
+      writing: '写出扰动矩阵', packaging: '打包结果', done: '完成', failed: '失败',
+    };
+    const stage = stageNames[st.stage] || st.stage || '运行中';
+    const pctVal = Math.round(Number(st.progress || 0) * 100);
+    const stageEl = $('#pert-job-stage');
+    const progEl = $('#pert-job-progress');
+    const fill = $('#pert-progress-fill');
+    const msg = $('#pert-job-message');
+    const meta = $('#pert-job-meta');
+    if (stageEl) stageEl.textContent = stage;
+    if (progEl) progEl.textContent = `${pctVal}%`;
+    if (fill) fill.style.width = `${pctVal}%`;
+    if (msg) msg.textContent = st.message || '';
+    if (meta) {
+      const job = st.job || {};
+      const genes = Array.isArray(job.genes) ? job.genes.join(' + ') : '';
+      const elapsed = S.perturb.started ? Math.max(0, Math.round((Date.now() - S.perturb.started) / 1000)) : 0;
+      meta.textContent = [job.species ? `${job.species}/${job.organ}` : '', genes, job.mode || '',
+        job.job_id ? `job ${job.job_id}` : '', elapsed ? `已用 ${elapsed}s` : '', st.queue ? `队列 ${st.queue}` : ''].filter(Boolean).join(' · ');
+    }
+  }
+
+  function pertTopTable(rows, title) {
+    if (!rows || !rows.length) return '<div class="callout">无 |logFC| 明显变化的基因。</div>';
+    return `<div><div class="subgroup-head"><h3>${esc(title)}</h3><span class="count">logFC</span></div>${tableHTML(rows, [
+      { key: 'gene', label: '基因', cls: 'gene' },
+      { key: 'lfc', label: 'logFC', cls: 'num', fmt: (v) => signed(v, 3) },
+    ])}</div>`;
+  }
+
+  function pertTfTable(rows, title) {
+    if (!rows || !rows.length) return '<div class="callout">无明显的 TF 活性变化。</div>';
+    return `<div><div class="subgroup-head"><h3>${esc(title)}</h3><span class="count">Δ activity</span></div>${tableHTML(rows, [
+      { key: 'tf', label: 'TF', cls: 'gene' },
+      { key: 'delta', label: 'Δ 活性', cls: 'num', fmt: (v) => signed(v, 3) },
+    ])}</div>`;
+  }
+
+  function pertAdditivityHTML(add) {
+    if (!add) return '';
+    const val = (v) => (v == null || !Number.isFinite(Number(v)) ? '—' : Number(v).toFixed(3));
+    return `<div class="subgroup" style="margin-top:20px">
+      <div class="subgroup-head"><h3>组合扰动可加性</h3><span class="count">组合 vs 单基因之和</span></div>
+      <div class="stat-grid six">
+        ${statBox(val(add.norm_ratio_control), 'norm ratio · 正常')}
+        ${statBox(val(add.gain_vs_best_single_control), 'vs 最强单基因')}
+        ${statBox(val(add.rel_epistasis_control), '相对上位效应')}
+        ${statBox(fmtInt(add['n_abs_epistasis_gt_0.1_control'] || 0), '|上位|>0.1')}
+        ${statBox(val(add.norm_ratio_drought_t1), 'norm ratio · 干旱')}
+        ${statBox(val(add.rel_epistasis_drought_t1), '相对上位 · 干旱')}
+      </div>
+      ${add.top_epistasis_control?.length ? `<div style="margin-top:12px">${tableHTML(add.top_epistasis_control, [
+        { key: 'gene', label: '基因', cls: 'gene' },
+        { key: 'epistasis', label: '上位效应', cls: 'num', fmt: (v) => signed(v, 3) },
+      ])}</div>` : ''}
+    </div>`;
+  }
+
+  function renderPerturbResult(summary, jobId, apiBase) {
+    const host = $('#pert-result');
+    if (!host) return;
+    host.hidden = false;
+    const genes = summary.genes || [];
+    const warnings = summary.warnings || [];
+    const head = `${esc(speciesName(summary.species))} · ${esc(organName(summary.organ))} · ${genes.map(esc).join(' + ')}`;
+    host.innerHTML = `
+      <div class="result-head">
+        <div><h3>基因扰动完成</h3><p>${head} · ${esc(summary.mode)}${summary.fold ? `（${esc(String(summary.fold))}×）` : ''} · ${esc(summary.context || '内置情境')}</p></div>
+        <div class="result-actions">
+          <a class="btn primary" href="${esc(apiBase)}/api/v1/jobs/${esc(jobId)}/result">下载结果 zip ${ICONS.arrow}</a>
+          <button class="btn tiny ghost" data-action="pert-delete" data-value="${esc(jobId)}">删除服务器结果</button>
+        </div>
+      </div>
+      <div class="stat-grid six">
+        ${statBox(fmtInt(summary.n_cells), '细胞数')}
+        ${statBox(fmtInt(genes.length), '扰动基因')}
+        ${statBox(fmtInt(summary.n_changed_control), '|logFC|>0.1')}
+        ${statBox(fixed(summary.max_abs_control, 3), '最大 |logFC|')}
+        ${statBox(summary.covered ? '已覆盖' : '部分未覆盖', '扰动路径')}
+        ${statBox(fmtInt(summary.n_expressed_genes), '表达基因')}
+      </div>
+      ${warnings.length ? `<div class="callout warn" style="margin-top:14px"><strong>注意：</strong>${warnings.map(esc).join('；')}</div>` : ''}
+      <div class="result-tables">
+        ${pertTopTable(summary.top_up_control, '正常 · 上调 Top 10')}
+        ${pertTopTable(summary.top_down_control, '正常 · 下调 Top 10')}
+        ${pertTopTable(summary.top_up_drought_t1, '干旱 τ=1 · 上调 Top 10')}
+        ${pertTopTable(summary.top_down_drought_t1, '干旱 τ=1 · 下调 Top 10')}
+      </div>
+      <div class="result-tables">
+        ${pertTfTable(summary.tf_top_control, 'TF 活性变化 · 正常')}
+        ${pertTfTable(summary.tf_top_drought_t1, 'TF 活性变化 · 干旱 τ=1')}
+      </div>
+      ${pertAdditivityHTML(summary.additivity)}
+      <div class="callout info" style="margin-top:14px">
+        <strong>结果文件：</strong>zip 内含 h5ad（X=扰动后干旱计数，layers 含 control/control_perturbed/drought）、
+        perturbation_effects.tsv.gz（全基因 logFC 与交互项）、tf_activity.tsv、celltype_pseudobulk.npz 和单基因效应表。
+        结果最多保留 1 小时；模型输出为计算预测，需要实验验证。
+      </div>`;
+  }
+
+  async function deletePerturbJob(jobId) {
+    const base = String(S.inferenceMeta?.api_base || '').replace(/\/$/, '');
+    if (!base || !jobId) return;
+    if (!window.confirm('确定删除服务器上的扰动结果？删除后无法再次下载。')) return;
+    try {
+      const r = await fetch(`${base}/api/v1/jobs/${jobId}`, { method: 'DELETE' });
+      if (!r.ok) throw new Error(`删除失败（${r.status}）`);
+      const host = $('#pert-result');
+      if (host) { host.hidden = true; host.innerHTML = ''; }
+      const jobBox = $('#pert-job');
+      if (jobBox) jobBox.hidden = true;
+      localStorage.removeItem('droaivc.perturb.job');
+      S.perturb.jobId = '';
+      toast('已删除服务器结果');
+    } catch (err) {
+      toast(err.message || '删除失败');
+    }
+  }
+
+  async function pollPerturbJob(jobId) {
+    const base = String(S.inferenceMeta?.api_base || '').replace(/\/$/, '');
+    if (!base) return;
+    clearInterval(S.perturb.timer);
+    S.perturb.jobId = jobId;
+    S.perturb.started = Date.now();
+    localStorage.setItem('droaivc.perturb.job', jobId);
+    setPerturbJobVisible(true);
+    const tick = async () => {
+      if (S.perturb.polling) return;
+      S.perturb.polling = true;
+      try {
+        const r = await fetch(`${base}/api/v1/jobs/${jobId}`);
+        if (!r.ok) throw new Error(r.status === 404 ? '任务已过期或不存在' : `状态查询失败（${r.status}）`);
+        const st = await r.json();
+        updatePerturbJobStatus(st);
+        if (st.stage === 'done') {
+          clearInterval(S.perturb.timer);
+          S.perturb.timer = null;
+          const btn = $('#pert-submit');
+          if (btn) { btn.disabled = false; btn.innerHTML = `开始扰动推理 ${ICONS.flask}`; }
+          const sr = await fetch(`${base}/api/v1/jobs/${jobId}/summary`);
+          if (!sr.ok) throw new Error('结果摘要尚未生成');
+          renderPerturbResult(await sr.json(), jobId, base);
+          localStorage.removeItem('droaivc.perturb.job');
+          S.perturb.jobId = '';
+        } else if (st.stage === 'failed') {
+          clearInterval(S.perturb.timer);
+          S.perturb.timer = null;
+          localStorage.removeItem('droaivc.perturb.job');
+          S.perturb.jobId = '';
+          const btn = $('#pert-submit');
+          if (btn) { btn.disabled = false; btn.innerHTML = `开始扰动推理 ${ICONS.flask}`; }
+          const msg = $('#pert-job-message');
+          if (msg) msg.textContent = st.message || st.error || '扰动推理失败';
+          toast('扰动推理失败，请查看任务信息');
+        }
+      } catch (err) {
+        clearInterval(S.perturb.timer);
+        S.perturb.timer = null;
+        const msg = $('#pert-job-message');
+        if (msg) msg.textContent = err.message || String(err);
+        const btn = $('#pert-submit');
+        if (btn) { btn.disabled = false; btn.innerHTML = `开始扰动推理 ${ICONS.flask}`; }
+        toast('无法获取扰动任务状态');
+      } finally {
+        S.perturb.polling = false;
+      }
+    };
+    await tick();
+    if (S.perturb.jobId) S.perturb.timer = setInterval(tick, 2500);
+  }
+
+  async function submitPerturb(event) {
+    event.preventDefault();
+    const base = String(S.inferenceMeta?.api_base || '').replace(/\/$/, '');
+    if (!base) { toast('推理服务未配置'); return; }
+    const species = $('#pert-species')?.value || '';
+    const organ = $('#pert-organ')?.value || '';
+    const count = Number($('#pert-count')?.value || 1);
+    const mode = $('#pert-mode')?.value || 'KO';
+    const fold = Number($('#pert-fold')?.value || 10);
+    const maxCells = Number($('#pert-cells')?.value || 3000);
+    const genes = [];
+    for (let i = 0; i < count; i += 1) {
+      const v = String($(`#pert-gene-${i}`)?.value || '').trim();
+      if (!v) { toast(`请填写扰动基因 ${i + 1}`); return; }
+      if (genes.includes(v)) { toast('扰动基因不能重复'); return; }
+      genes.push(v);
+    }
+    if (mode === 'OE' && !(fold >= 1 && fold <= 100)) { toast('过表达倍数需在 1–100 之间'); return; }
+    const fd = new FormData();
+    fd.append('job_type', 'perturb');
+    fd.append('species', species);
+    fd.append('organ', organ);
+    fd.append('genes', genes.join(','));
+    fd.append('mode', mode);
+    fd.append('fold', String(fold));
+    fd.append('max_cells', String(maxCells));
+    const btn = $('#pert-submit');
+    if (btn) { btn.disabled = true; btn.textContent = '提交中…'; }
+    setPerturbJobVisible(true);
+    const resultBox = $('#pert-result');
+    if (resultBox) { resultBox.hidden = true; resultBox.innerHTML = ''; }
+    updatePerturbJobStatus({ stage: 'queued', progress: 0, message: '正在提交任务…' });
+    try {
+      const r = await fetch(`${base}/api/v1/jobs`, { method: 'POST', body: fd });
+      let data = {};
+      try { data = await r.json(); } catch { data = {}; }
+      if (!r.ok) throw new Error(data.detail || `提交失败（${r.status}）`);
+      if (btn) { btn.disabled = true; btn.textContent = '排队中…'; }
+      await pollPerturbJob(data.job_id);
+    } catch (err) {
+      if (btn) { btn.disabled = false; btn.innerHTML = `开始扰动推理 ${ICONS.flask}`; }
+      const msg = $('#pert-job-message');
+      if (msg) msg.textContent = err.message || String(err);
+      toast(err.message || '提交失败');
+    }
+  }
+
+  function bindPerturbPanel() {
+    const form = $('#perturb-form');
+    if (!form) return;
+    renderPertGeneInputs();
+    updatePertOrgans();
+    updatePertSuggest();
+    updatePertFoldVisibility();
+    loadPertGeneOptions('');
+    checkPerturbHealth();
+    $('#pert-species')?.addEventListener('change', () => {
+      S.predictionSpecies = $('#pert-species')?.value || 'rice';
+      updatePertOrgans();
+      updatePertSuggest();
+      renderPertGeneInputs(true);
+      loadPertGeneOptions('');
+    });
+    $('#pert-count')?.addEventListener('change', () => renderPertGeneInputs());
+    $('#pert-mode')?.addEventListener('change', updatePertFoldVisibility);
+    $('#pert-gene-inputs')?.addEventListener('input', (e) => {
+      clearTimeout(S.perturb.searchTimer);
+      const q = String(e.target.value || '').trim();
+      if (q.length < 2) { loadPertGeneOptions(''); return; }
+      S.perturb.searchTimer = setTimeout(() => loadPertGeneOptions(q), 300);
+    });
+    form.addEventListener('submit', submitPerturb);
+    if (S.perturb.jobId) pollPerturbJob(S.perturb.jobId);
+  }
+
   /* ---------------- perturbation ---------------- */
   async function virtualPerturbation() {
     await Promise.all([ensureInteractive(), ensureVirtual()]);
+    const inferenceMeta = await ensureInferenceMeta().catch(() => null);
     const allPert = S.virtual.figures.filter((f) => f.tab === 'perturbation');
     const celloracle = allPert.filter((f) => f.tags.includes('celloracle'));
     const datasets = Array.from(new Set(celloracle.map((f) => f.dataset).filter(Boolean))).sort();
@@ -2900,6 +3325,7 @@
       };
     }) : [];
     return `
+      ${perturbPanelHTML(inferenceMeta)}
       <section class="section" style="margin-top:22px">
         <div class="section-head">
           <div><div class="section-kicker">CellOracle</div><h2 class="section-title">CellOracle 虚拟敲除</h2><p class="section-desc">在 GRN 模型上设置 TF 表达为 0，模拟细胞状态位移；覆盖 ${datasets.length} 个物种-器官数据集。不是实验证据。</p></div>
@@ -3766,6 +4192,19 @@
         break;
       case 'inf-delete':
         deleteInferenceJob(value);
+        break;
+      case 'pert-fill': {
+        const inputs = $$('#pert-gene-inputs input');
+        const target = inputs.find((x) => !x.value.trim()) || inputs[inputs.length - 1];
+        if (target) {
+          target.value = value;
+          target.dispatchEvent(new Event('input', { bubbles: true }));
+          target.focus();
+        }
+        break;
+      }
+      case 'pert-delete':
+        deletePerturbJob(value);
         break;
       case 'reg-download':
         downloadRegulatorySummary();
