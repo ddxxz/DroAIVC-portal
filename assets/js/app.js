@@ -1151,16 +1151,16 @@
       <svg class="reg-network" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(entry.tf)} 调控网络">
         <defs>
           <radialGradient id="reg-bg-glow" cx="50%" cy="50%" r="58%">
-            <stop offset="0%" stop-color="#3ce0b2" stop-opacity=".13"></stop>
-            <stop offset="45%" stop-color="#3ce0b2" stop-opacity=".045"></stop>
-            <stop offset="100%" stop-color="#3ce0b2" stop-opacity="0"></stop>
+            <stop offset="0%" stop-color="#e5008a" stop-opacity=".13"></stop>
+            <stop offset="45%" stop-color="#e5008a" stop-opacity=".045"></stop>
+            <stop offset="100%" stop-color="#e5008a" stop-opacity="0"></stop>
           </radialGradient>
           <linearGradient id="reg-edge-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#3ce0b2" stop-opacity=".62"></stop>
-            <stop offset="100%" stop-color="#3ce0b2" stop-opacity=".10"></stop>
+            <stop offset="0%" stop-color="#e5008a" stop-opacity=".62"></stop>
+            <stop offset="100%" stop-color="#e5008a" stop-opacity=".10"></stop>
           </linearGradient>
           <marker id="reg-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#3ce0b2" fill-opacity=".45"></path>
+            <path d="M0,0 L6,3 L0,6 Z" fill="#e5008a" fill-opacity=".45"></path>
           </marker>
         </defs>
         <rect class="reg-bg" x="0" y="0" width="${W}" height="${H}" fill="url(#reg-bg-glow)"></rect>
@@ -1422,8 +1422,8 @@
       const y = C + R * Math.sin(a);
       const r = clamp(18 + Math.log10((sp.sc_cells || 1) + 1) * 0.95, 18, 25);
       const sig = String(sp.signal || 'NONE').toUpperCase();
-      const stroke = sig === 'HIGH' ? 'rgba(60,224,178,.96)' : sig === 'LOW' ? 'rgba(241,201,107,.96)' : 'rgba(140,168,159,.9)';
-      const dot = sig === 'HIGH' ? '#3ce0b2' : sig === 'LOW' ? '#f1c96b' : '#8ca89f';
+      const stroke = sig === 'HIGH' ? 'rgba(229,0,138,.96)' : sig === 'LOW' ? 'rgba(22,104,227,.96)' : 'rgba(255,255,255,.4)';
+      const dot = sig === 'HIGH' ? '#1668e3' : sig === 'LOW' ? '#e5008a' : '#999999';
       const icon = SPECIES_ICONS[sp.key] || '';
       const size = (r * 1.3).toFixed(1);
       return `<line class="spoke" x1="${C}" y1="${C}" x2="${x}" y2="${y}"/>
@@ -1438,9 +1438,9 @@
     return `<svg id="constellation-svg" class="constellation-svg" viewBox="0 0 ${W} ${W}" role="img" aria-label="21 物种星座，节点为物种抽象图标，大小表示单细胞数量，圆环颜色表示干旱信号等级">
       <defs>
         <radialGradient id="cellGrad" cx="38%" cy="32%" r="72%">
-          <stop offset="0" stop-color="#b9ffea" stop-opacity=".95"/>
-          <stop offset=".38" stop-color="#38e0b0" stop-opacity=".62"/>
-          <stop offset="1" stop-color="#0a5f4f" stop-opacity=".18"/>
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/>
+          <stop offset=".38" stop-color="#1668e3" stop-opacity=".62"/>
+          <stop offset="1" stop-color="#000000" stop-opacity=".18"/>
         </radialGradient>
         <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
           <feGaussianBlur stdDeviation="7" result="b"/>
@@ -2898,9 +2898,9 @@
             <span class="time-readout" id="traj-time-readout">${(S.trajTime / 10).toFixed(1)}</span>
           </div>
           <div class="traj-legend">
-            <span class="legend-item"><span class="legend-swatch" style="background:#3ce0b2"></span>正常细胞</span>
-            <span class="legend-item"><span class="legend-swatch" style="background:#f1c96b"></span>干旱预测细胞</span>
-            <span class="legend-item"><span class="legend-swatch" style="background:linear-gradient(90deg,#3ce0b2,#f1c96b);border-radius:2px"></span>轨迹路标点（颜色随时间）</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#1668e3"></span>正常细胞</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#e5008a"></span>干旱预测细胞</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:linear-gradient(90deg,#1668e3,#e5008a);border-radius:2px"></span>轨迹路标点（颜色随时间）</span>
             <span class="legend-item" style="color:var(--dim)">滚轮/滑块查看轨迹 · 播放自动推进</span>
           </div>
         </div>
@@ -2968,7 +2968,7 @@
     const sy = (y) => h - mb - ((y - minY) / (maxY - minY || 1)) * (h - mt - mb);
     // grid
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgba(116,219,188,.07)';
+    ctx.strokeStyle = 'rgba(0,0,0,.07)';
     for (let i = 0; i <= 5; i++) {
       const x = ml + (i / 5) * (w - ml - mr);
       const y = mt + (i / 5) * (h - mt - mb);
@@ -2979,17 +2979,17 @@
     for (const p of pts) {
       if (p[6] !== 2) continue;
       const t = p[7] < 0 ? 0 : p[7];
-      const hue = 168 - 126 * clamp(t, 0, 1);
+      const hue = 220 + 110 * clamp(t, 0, 1);
       ctx.fillStyle = `hsla(${hue},78%,58%,.16)`;
       ctx.beginPath(); ctx.arc(sx(p[xi]), sy(p[yi]), 1.15, 0, Math.PI * 2); ctx.fill();
     }
     // normal / drought
     for (const p of pts) {
       if (p[6] === 0) {
-        ctx.fillStyle = 'rgba(60,224,178,.30)';
+        ctx.fillStyle = 'rgba(22,104,227,.18)';
         ctx.beginPath(); ctx.arc(sx(p[xi]), sy(p[yi]), 1.15, 0, Math.PI * 2); ctx.fill();
       } else if (p[6] === 1) {
-        ctx.fillStyle = 'rgba(241,201,107,.30)';
+        ctx.fillStyle = 'rgba(229,0,138,.18)';
         ctx.beginPath(); ctx.arc(sx(p[xi]), sy(p[yi]), 1.15, 0, Math.PI * 2); ctx.fill();
       }
     }
@@ -3003,7 +3003,7 @@
     const centers = sums.map((s) => s.n ? [s.x / s.n, s.y / s.n] : null);
     ctx.save();
     ctx.setLineDash([6, 7]);
-    ctx.strokeStyle = 'rgba(241,201,107,.55)';
+    ctx.strokeStyle = 'rgba(229,0,138,.55)';
     ctx.lineWidth = 1.8;
     ctx.beginPath();
     let started = false;
@@ -3017,20 +3017,20 @@
     centers.forEach((p, i) => {
       if (!p) return;
       const x = sx(p[0]), y = sy(p[1]);
-      const hue = 168 - 126 * (i / 10);
+      const hue = 220 + 110 * (i / 10);
       ctx.fillStyle = `hsla(${hue},82%,62%,.9)`;
       ctx.beginPath(); ctx.arc(x, y, 3.2, 0, Math.PI * 2); ctx.fill();
       if (i === 0 || i === 10 || i === S.trajTime) {
-        ctx.fillStyle = '#f5fffb';
+        ctx.fillStyle = '#333333';
         ctx.font = '10px ui-monospace, monospace';
         ctx.fillText(i === 10 ? '干旱 · t=1.0' : i === 0 ? '正常 · t=0' : `t=${(i / 10).toFixed(1)}`, x + 7, y - 6);
       }
     });
     // current time points
     const t = S.trajTime / 10;
-    const hue = 168 - 126 * t;
+    const hue = 220 + 110 * t;
     ctx.fillStyle = `hsla(${hue},88%,64%,.92)`;
-    ctx.strokeStyle = 'rgba(245,255,251,.55)';
+    ctx.strokeStyle = 'rgba(0,0,0,.28)';
     ctx.lineWidth = .5;
     for (const p of pts) {
       if (p[6] === 2 && Math.abs((p[7] < 0 ? -1 : p[7]) - t) < .01) {
@@ -3038,7 +3038,7 @@
       }
     }
     // labels
-    ctx.fillStyle = 'rgba(157,186,176,.75)';
+    ctx.fillStyle = '#888888';
     ctx.font = '10px ui-monospace, monospace';
     const label = mode === 'latent' ? 'LATENT UMAP' : mode === 'expr' ? 'EXPRESSION UMAP' : 'PCA';
     ctx.fillText(label, 14, 18);
@@ -3086,7 +3086,7 @@
   }
 
   /* ---------------- GRN trajectory ---------------- */
-  const CHART_COLORS = ['#3ce0b2', '#f1c96b', '#70b8ff', '#ff8d7a', '#c39bff', '#8ce99a', '#ffb86b', '#67e8f9'];
+  const CHART_COLORS = ['#1668e3', '#e5008a', '#f2a900', '#7a5af8', '#12b5a5', '#c62828', '#00a3a3', '#8e8e8e'];
 
   async function virtualGrn() {
     await ensureInteractive();
@@ -3209,10 +3209,10 @@
     const rows = S.interactive?.rice_grn?.topology || [];
     if (!rows.length) { host.innerHTML = '<div class="empty"><strong>暂无拓扑数据</strong></div>'; return; }
     const metrics = [
-      ['avg_outdeg', '平均出度', '#3ce0b2'],
-      ['avg_indeg', '平均入度', '#70b8ff'],
-      ['net_entropy', '网络熵', '#f1c96b'],
-      ['hub_conc', 'Hub 集中度', '#ff8d7a'],
+      ['avg_outdeg', '平均出度', '#1668e3'],
+      ['avg_indeg', '平均入度', '#1668e3'],
+      ['net_entropy', '网络熵', '#e5008a'],
+      ['hub_conc', 'Hub 集中度', '#c62828'],
     ];
     host.innerHTML = metrics.map(([key, label, color]) => {
       const vals = rows.map((r) => r[key]);
@@ -3855,8 +3855,8 @@
     const n = Number(v);
     if (!Number.isFinite(n)) return '<span style="color:var(--dim)">—</span>';
     const a = clamp(Math.abs(n), 0, 1);
-    const color = n >= 0 ? `rgba(60,224,178,${0.08 + a * 0.30})` : `rgba(255,141,122,${0.08 + a * 0.30})`;
-    const text = n >= 0 ? '#bff5e5' : '#ffc3b8';
+    const color = n >= 0 ? `rgba(22,104,227,${0.07 + a * 0.20})` : `rgba(198,40,40,${0.07 + a * 0.18})`;
+    const text = n >= 0 ? '#0b4fb3' : '#a51f1f';
     return `<span style="display:inline-block;min-width:52px;padding:2px 6px;border-radius:4px;background:${color};color:${text}">${n.toFixed(digits)}</span>`;
   }
 
