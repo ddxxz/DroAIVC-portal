@@ -2268,3 +2268,10 @@ details.fold[open] summary { color: #111; border-bottom-color: #eee; }
   .constellation { display: none; }
   .hero { min-height: 0; }
 }
+
+/* loading view: blue droplet */
+.boot-drop {
+  background: linear-gradient(145deg, #6aa2ff, #1668e3 55%, #0b4fb3);
+  border-color: #1668e3;
+  box-shadow: 0 8px 24px rgba(22, 104, 227, .25);
+}
